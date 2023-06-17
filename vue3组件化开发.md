@@ -1,0 +1,446 @@
+
+
+
+
++ 自动导入组件
+
+![image-20221018084755615](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221018084755615.png)
+
+
+
++ 这里写后缀的好处：按住ctrl键，然后点击组件名，可进入当前子组件，且写组件的时候会有提示
+
+![image-20221018085115565](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221018085115565.png)
+
+不写后缀名的好处
+
+vue-cli基于webpack有一个extesion
+
+## 认识组件的嵌套
+
++ 前面我们是将所有的逻辑放到一个App.vue中： 
+  + 在之前的案例中，我们只是**创建了一个组件App**； 
+  + 如果我们一个应用程序**将所有的逻辑都放在一个组件**中，那么这个组件就会变成非 常的臃肿和难以维护； 
+  + 所以组件化的核心思想应该是**对组件进行拆分**，拆分成**一个个小的组件**； 
+  + 再将这些**组件组合嵌套在一起**，最终形成**我们的应用程序**； 
++ 我们来分析一下下面代码的嵌套逻辑，假如我们将所有的代码逻辑都放到一个App.vue 组件中： 
+  + 我们会发现，将所有的代码逻辑全部放到一个组件中，代码是非常的臃肿和难以维 护的。 
+  + 并且在真实开发中，我们会有更多的内容和代码逻辑，对于扩展性和可维护性来说 都是非常差的。 
+  + 所以，在真实的开发中，我们会对组件进行拆分，拆分成一个个功能的小组件。
+
+![image-20221013203133766](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221013203133766.png)
+
+
+
+## 组件的通信
+
++ 上面的嵌套逻辑如下，它们存在如下关系： 
+  + App组件是Header、Main、Footer组件的父组件； 
+  + Main组件是Banner、ProductList组件的父组件； 
++ 在开发过程中，我们会经常遇到需要组件之间相互进行通信： 
+  + 比如App可能使用了多个Header，每个地方的Header展示的内容不同，那么我们就需要使用者传递给Header 一些数据，让其进行展示； 
+  + 又比如我们在Main中一次性请求了Banner数据和ProductList数据，那么就需要传递给它们来进行展示； 
+  + 也可能是子组件中发生了事件，需要由父组件来完成某些操作，那就需要子组件向父组件传递事件； 
++ 总之，在一个Vue项目中，组件之间的通信是非常重要的环节，所以接下来我们就具体学习一下组件之间是如何相 互之间传递数据的；
+
+
+
+## 父子组件之间的通信方式
+
++ 父子组件之间如何进行通信呢？ p
+  + 组件传递给子组件：通过props属性； 
+  + 子组件传递给父组件：通过$emit触发事件；
+
+![image-20221013204032641](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221013204032641.png)
+
+
+
+## 父组件传给子组件
+
++ 在开发中很常见的就是父子组件之间通信，比如父组件有一些数据，需要子组件来进行展示： 
+  + 这个时候我们可以通过props来完成组件之间的通信； 
++ 什么是Props呢？ pProps是你可以在组件上注册一些自定义的attribute； 
+  + 父组件给这些attribute赋值，子组件通过attribute的名称获取到对应的值； 
++ Props有两种常见的用法： 
+  + 方式一：字符串数组，数组中的字符串就是attribute的名称； 
+  + 方式二：对象类型，对象类型我们可以在指定attribute名称的同时，指定它需要传递的类型、是否是必须的、 默认值等等；
+
+
+
+## props的对象用法
+
++ 数组用法中我们只能说明传入的attribute的名称，并不能对其进行任何形式的限制，接下来我们来看一下对象的 写法是如何让我们的props变得更加完善的
++ 当使用对象语法的时候，我们可以对传入的内容限制更多： 
+  + 比如指定传入的attribute的类型； 
+  + 比如指定传入的attribute是否是必传的； 
+  + 比如指定没有传入时，attribute的默认值；
+
+
+
+那么type的类型都可以是哪些呢？ pString pNumber pBoolean pArray pObject pDate pFunction pSymbol
+
+
+
+![image-20230606162921683](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606162921683.png)
+
+
+
+
+
+![image-20230606164222826](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606164222826.png)
+
+
+
+![image-20230606165832822](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606165832822.png)
+
+
+
+![image-20230606171027805](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606171027805.png)
+
+
+
+## 细节三：prop的大小写命名
+
++ Prop 的大小写命名(camelCase vs kebab-case) 
+  + HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符； 
+  + 这意味着当你使用 DOM 中的模板时，camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短 横线分隔命名) 命名；
+
+
+
+什么是非Prop的Attribute呢？ p当我们传递给一个组件某个属性，但是该属性并没有定义对应的props或者emits时，就称之为 非Prop的 Attribute； p常见的包括class、style、id属性等； n Attribute继承 p当组件有单个根节点时，非Prop的Attribute将自动添加到根节点的Attribute中：
+
+![image-20230606194805551](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606194805551.png)
+
+
+
+### 禁用Attribute继承和多根节点
+
++ 如果我们不希望组件的根元素继承attribute，可以在组件中设置 `inheritAttrs: false`： 
+  + 禁用attribute继承的常见情况是需要将attribute应用于根元素之外的其他元素； 
+  + 我们可以通过 $attrs来访问所有的 非props的attribute；
+
++ 多个根节点的attribute 
+  + 多个根节点的attribute如果没有显示的绑定，那么会报警告，我们必须手动的指定要绑定到哪一个属性上：
+  + ![image-20230606200512945](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606200512945.png)
+
+![image-20221018161327592](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221018161327592.png)
+
+
+
+
+
+## 子组件传给父组件
+
++ 什么情况下子组件需要传递内容到父组件呢？ 当子组件有一些事件发生的时候，比如在组件中发生了点击，父组件需要切换内容； p子组件有一些内容想要传递给父组件的时候； 
++ 我们如何完成上面的操作呢？ p首先，我们需要在子组件中定义好在某些情况下触发的事件名称； p其次，在父组件中以v-on的方式传入要监听的事件名称，并且绑定到对应的方法中； p最后，在子组件中发生某个事件的时候，根据事件名称触发对应的事件；
+
+
+
+![image-20230606203537922](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606203537922.png)
+
+![image-20230606203801641](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606203801641.png)
+
+
+
+
+
+### 计数小案例
+
+![image-20230606204545465](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606204545465.png)
+
++ 父组件
+
+```
+<template>
+  <div>
+    <h2>当前计数为：{{ counter }}</h2>
+    <counter-operation @add="addOne" @sub="subOne" @addN="addNum"></counter-operation>
+  </div>
+</template>
+
+<script>
+  import CounterOperation from './CounterOperation.vue'
+  export default {
+    components:{
+      CounterOperation,
+    },
+    data(){
+      return {
+        counter:0
+      }
+    },
+    methods:{
+      addOne(){
+        this.counter++;
+      },
+      subOne(){
+        this.counter--;
+      },
+      addNum(num) {
+        this.counter += num 
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
+```
+
+
+
+
+
++ 子组件
+
+```
+<template>
+  <div>
+    <button @click="increment">+1</button>
+    <button @click="decrement">-1</button>
+
+    <input type="text" v-model.number="num">
+    <button @click="incrementN">+N</button>
+  </div>
+</template>
+
+<script>
+  export default {
+    emits:["add","sub","addN"],
+    data(){
+      return {
+        num:0
+      }
+    },
+    methods:{
+      increment() {
+        this.$emit("add")
+      },
+      decrement() {
+        this.$emit("sub")
+      },
+      incrementN() {
+        this.$emit('addN',this.num)
+      }
+    }
+  }
+</script>
+```
+
+
+
+![image-20230606205722596](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230606205722596.png)
+
+## 非父子组件之间的通信
+
++ 在开发中，我们构建了组件树之后，除了父子组件之间的通信之外，还会有非父子组件之间的通信。 
++ 这里我们主要讲两种方式： 
+  + Provide/Inject； 
+  + Mitt全局事件总线；
+  + ![image-20221021103434980](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221021103434980.png)
+
+### provide和inject
+
++ Provide/Inject用于非父子组件之间共享数据： 
+  + 比如有一些深度嵌套的组件，子组件想要获取父组件的部分内 容； 
+  + 在这种情况下，如果我们仍然将props沿着组件链逐级传递下 去，就会非常的麻烦； 
++ 对于这种情况下，我们可以使用 Provide 和 Inject ： 
+  + 无论层级结构有多深，父组件都可以作为其所有子组件的**依赖 提供者**； 
+  + 父组件有一个 provide 选项来提供数据； 
+  + 子组件有一个 inject 选项来开始使用这些数据； 
++ 实际上，你可以将依赖注入看作是“long range props”，除了： 
+  + 父组件不需要知道哪些子组件使用它 provide 的 property 
+  + 子组件不需要知道 inject 的 property 来自哪里
+
+![image-20221014104812497](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20221014104812497.png)
+
+![image-20230607102246094](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607102246094.png)
+
+
+
+![image-20230607102322216](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607102322216.png)
+
++ 一般不用于复杂数据，一般适用于主题样式,复杂数据采用vuex
+
+
+
+## 处理响应式数据
+
++ 我们先来验证一个结果：如果我们修改了this.names的内容，那么使用length的子组件会不会是响应式的？ 
++ 我们会发现对应的子组件中是没有反应的： 
+  + 这是因为当我们修改了names之后，之前在provide中引入的 this.names.length 本身并不是响应式的； 
++ 那么怎么样可以让我们的数据变成响应式的呢？ 
+  + 非常的简单，我们可以使用响应式的一些API来完成这些功能，比如说computed函数； 
+  + 当然，这个computed是vue3的新特性，在后面我会专门讲解，这里大家可以先直接使用一下； 
++ 注意：我们在使用length的时候需要获取其中的value 
+  + 这是因为computed返回的是一个ref对象，需要取出其中的value来使用；
+
+![image-20230607105634663](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607105634663.png)
+
+
+
+![image-20230607105851250](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607105851250.png)
+
+
+
+## 全局事件总线mitt库
+
++ Vue3从实例中移除了 $on、$off 和 $once 方法，所以我们如果希望继续使用全局事件总线，要通过第三方的库： 
+  + Vue3官方有推荐一些库，例如 mitt 或 tiny-emitter； 
+  + 这里我们主要讲解一下mitt库的使用； 
++ 首先，我们需要先安装这个库： 
++ 其次，我们可以封装一个工具eventbus.js：
+
+![image-20230607144716214](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607144716214.png)
+
+
+
+![image-20230607151348368](C:\Users\tjj\AppData\Roaming\Typora\typora-user-images\image-20230607151348368.png)
+
+
+
+### 使用事件总线工具
+
+在项目中可以使用它们： 
+
++ 我们在Home.vue中监听事件； 
++ 我们在App.vue中触发事件
+
+
+
+```
+//取消emitter中所有监听
+      emitter.all.clear()
+```
+
+
+
+
+
+## 认识插槽slot
+
++ 在开发中，我们会经常封装一个个可复用的组件： 
+  + 前面我们会通过props传递给组件一些数据，让组件来进行展示； 
+  + 但是为了让这个组件具备更强的通用性，我们不能将组件中的内容限制为固定的div、span等等这些元素； 
+  + 比如某种情况下我们使用组件，希望组件显示的是一个按钮，某种情况下我们使用组件希望显示的是一张图片； 
+  + 我们应该让使用者可以决定某一块区域到底存放什么内容和元素； 
++ 举个栗子：假如我们定制一个通用的导航组件 - NavBar 
+  + 这个组件分成三块区域：左边-中间-右边，每块区域的内容是不固定； 
+  + 左边区域可能显示一个菜单图标，也可能显示一个返回按钮，可能什么都不显示； 
+  + 中间区域可能显示一个搜索框，也可能是一个列表，也可能是一个标题，等等； 
+  + 右边可能是一个文字，也可能是一个图标，也可能什么都不显示；
+
+
+
+## 如何使用插槽
+
++ 这个时候我们就可以来定义插槽slot： 
+  + 插槽的使用过程其实是抽取共性、预留不同； 
+  + 我们会将共同的元素、内容依然在组件内进行封装； 
+  + 同时会将不同的元素使用slot作为占位，让外部决定到底显示什么样的元素； 
++ 如何使用slot呢？ 
+  + Vue中将  元素作为承载分发内容的出口； 
+  + 在封装组件中，使用特殊的元素就可以为封装组件开启一个插槽； 
+  + 该插槽插入什么内容取决于父组件如何使用；
+
+
+
+### 插槽的基本使用
+
++ 我们一个组件MySlotCpn.vue：该组件中有一个插槽，我们可以在插槽中放入需要显示的内容； 
+
++ 我们在App.vue中使用它们：我们可以插入普通的内容、html元素、组件元素，都可以是可以的；
+
+
+
+### 具名插槽的使用
+
++ 事实上，我们希望达到的效果是插槽对应的显示，这个时候我们就可以使用 具名插槽： 
+  + 具名插槽顾名思义就是给插槽起一个名字， 元素有一个特殊的 attribute：name； 
+  + 一个不带 name 的slot，会带有隐含的名字 default；
+
+
+
+## 渲染作用域
+
++ 在Vue中有渲染作用域的概念： 
+  + 父级模板里的所有内容都是在父级作用域中编译的； 
+  + 子模板里的所有内容都是在子作用域中编译的； 
++ 如何理解这句话呢？我们来看一个案例： 
+  + 在我们的案例中ChildCpn自然是可以让问自己作用域中的title内容的； 
+  + 但是在App中，是访问不了ChildCpn中的内容的，因为它们是跨作用域的访问；
+
+
+
+1 熟悉自己产品
+
+2 填充竟品分析
+
+3 整个领域的痛点难点 word形式
+
+
+
+
+
+```
+<template>
+  <div>
+    <button v-for="item in tabs" :key="item"
+            @click="itemClick(item)"
+            :class="{active:currentTab=== item}" >
+      {{ item }}
+    </button>
+
+
+
+    <!-- 1.v-if -->
+    <template v-if="currentTab === 'home'">
+      <home></home>
+    </template>
+    <template v-else-if="currentTab === 'about'">
+      <about></about>
+    </template>
+    <template v-else-if="currentTab === 'category'">
+      <category></category>
+    </template>
+
+    <!-- 2.动态组件 -->
+    <component :is="currentTab"></component>
+  </div>
+</template>
+
+<script>
+import About from './pages/About.vue'
+import Category from './pages/Category.vue'
+import Home from './pages/Home.vue'
+  export default {
+    components:{
+      Home,
+      About,
+      Category
+    },
+    data() {
+      return {
+        tabs:["home","about","category"],
+        currentTab:'home'
+      }
+    },
+    methods:{
+      itemClick(item) {
+        this.currentTab = item
+      }
+    }
+  }
+</script>
+
+<style scoped>
+.active {
+  color: red;
+}
+</style>
+```
+
+
+
+![image-20230617230327902](https://raw.githubusercontent.com/bigshcool/myPic/main/image-20230617230327902.png)
