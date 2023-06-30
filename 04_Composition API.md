@@ -143,3 +143,178 @@ props非常好理解，它其实就是父组件传递过来的属性会被放到
 
 
 + data中return的数据能够实时变化是因为会经过一个reactive函数所返回的，它是响应式的会搜集
+
+
+
+### setup不可以使用this
+
+官方关于this有这样一段描述（这段描述是我给官方提交了PR之后的一段描述）： 
+
++ 表达的含义是this并没有指向当前组件实例； 
+
++ 并且在setup被调用之前，**data、computed、methods等**都没有被解析； 
+
++ 所以无法在setup中获取this； 
+
+
+
+在执行setup()之前，组件实例已经被创建了
+
+
+
+### Reactive API
+
++ Proxy对象调用get函数，进行一个数据劫持，
++ n 如果想为在setup中定义的数据提供响应式的特性，那么我们可以使用reactive的函数： n 那么这是什么原因呢？为什么就可以变成响应式的呢？ p这是因为当我们使用reactive函数处理我们的数据之后，数据再次被使用时就会进行依赖收集； p当数据发生改变时，所有收集到的依赖都是进行对应的响应式操作（比如更新界面）； p事实上，我们编写的data选项，也是在内部交给了reactive函数将其编程响应式对象的；
+
+
+
+![image-20230630092717637](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630092717637.png)
+
+
+
+### refAPI
+
+reactive API对传入的类型是有限制的，它要求我们必须传入的是一个对象或者数组类型： 
+
++ 如果我们传入一个基本数据类型（String、Number、Boolean）会报一个警告； 
+
+这个时候Vue3给我们提供了另外一个API：ref API pref 会返回一个可变的响应式对象，该对象作为一个 响应式的引用 维护着它内部的值，这就是ref名称的来源;
+
++ 它内部的值是在ref的 value 属性中被维护的； 
+
+这里有两个注意事项： 
+
++ 在模板中引入ref的值时，Vue会自动帮助我们进行解包操作，所以我们并不需要在模板中通过 ref.value 的方式 来使用； 
++ 但是在 setup 函数内部，它依然是一个 ref引用， 所以对其进行操作时，我们依然需要使用 ref.value的方式；
+
+![image-20230630094305119](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630094305119.png)
+
+
+
+![image-20230630094353990](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630094353990.png)
+
+
+
+ref自动解包
+
++ ref解包只能是一个浅层解包，例如在counter外面包裹一个对象的话是不能进行解包的
++ 但如果外层包裹是一个reactive可响应式，那么内容的ref是可以解包的
+
+
+
+### 认识readonly
+
+我们通过reactive或者ref可以获取到一个响应式的对象，但是某些情况下，我们传入给其他地方（组件）的这个 响应式对象希望在另外一个地方（组件）被使用，但是不能被修改，这个时候如何防止这种情况的出现呢？ 
+
++ Vue3为我们提供了readonly的方法； 
++ readonly会返回原生对象的只读代理（也就是它依然是一个Proxy，这是一个proxy的set方法被劫持，并且不 能对其进行修改）； 
+
+在开发中常见的readonly方法会传入三个类型的参数： 
+
++ 类型一：普通对象； 
++ 类型二：reactive返回的对象； 
++ 类型三：ref的对象；
+
+![image-20230630095742915](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630095742915.png)
+
+
+
+
+
+在readonly的使用过程中，有如下规则： preadonly返回的对象都是不允许修改的； 
+
++ 但是经过readonly处理的原来的对象是允许被修改的； ü
+  + 比如 const info = readonly(obj)，info对象是不允许被修改的； 
+  + 当obj被修改时，readonly返回的info对象也会被修改； 
+  + 但是我们不能去修改readonly返回的对象info； 
++ 其实本质上就是readonly返回的对象的setter方法被劫持了而已；
+
+![image-20230630101939741](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630101939741.png)
+
+
+
+
+
++ isProxy ：检查对象是否是由 reactive 或 readonly创建的 proxy。 
++ isReactive 
+  + 检查对象是否是由 reactive创建的响应式代理： 
+  + 如果该代理是 readonly 建的，但包裹了由 reactive 创建的另一个代理，它也会返回 true； 
+
++ isReadonly p 检查对象是否是由 readonly 创建的只读代理。 
+
++ toRaw 
+  + 返回 reactive 或 readonly 代理的原始对象（不建议保留对原始对象的持久引用。请谨慎使用）。 
+
++  shallowReactive 
+  + 创建一个响应式代理，它跟踪其自身 property 的响应性，但不执行嵌套对象的深层响应式转换 (深层还是原生对象)。 
+
++ shallowReadonly 
+  + 创建一个 proxy，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换（深层还是可读、可写的）。
+
+
+
+### toRef
+
+如果我们使用ES6的解构语法，对reactive返回的对象进行解构获取值，那么之后无论是修改结构后的变量，还是修改reactive 返回的state对象，数据都不再是响应式的： 
+
+```js
+export default {
+    setup() {
+      const info = reactive({name:'tjj',age:18})
+      const {name,age} = info
+
+      const changeAge = ()=>{
+        age++;
+      }
+
+      return {
+        name,
+        age,
+        changeAge
+      }
+    }
+  }
+```
+
+
+
+那么有没有办法让我们解构出来的属性是响应式的呢？ 
+
++ Vue为我们提供了一个toRefs的函数，可以**将reactive返回的对象中的属性**都转成ref； 
++ 那么我们再次进行结构出来的 name 和 age 本身都是 ref的； 
+
+这种做法相当于已经在state.name和ref.value之间建立了 链接，任何一个修改都会引起另外一个变化
+
+![image-20230630150428844](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630150428844.png)
+
+
+
+
+
+![image-20230630150749840](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230630150749840.png)
+
++ 要求我们传入一个reactive对象，想对这个reactive对象进行结构赋值，然后展示结构赋值后的属性
+
+
+
+
+
+unref 
+
+如果我们想要获取一个ref引用中的value，那么也可以通过unref方法： p如果参数是一个 ref，则返回内部值，否则返回参数本身； p这是 val = isRef(val) ? val.value : val 的语法糖函数； 
+
+isRef p判断值是否是一个ref对象。 
+
+shallowRef p创建一个浅层的ref对象； 
+
+triggerRef p手动触发和 shallowRef 相关联的副作用：
+
+```
+const name = ref("why")
+foo(name.value) foo(name)
+function foo(bar) {
+unref(bar)
+}
+```
+
