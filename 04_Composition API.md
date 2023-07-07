@@ -318,3 +318,80 @@ unref(bar)
 }
 ```
 
+16节
+
+
+
+当你读取一个变量的时候会触发该变量的getter. 
+
+当你修改该变量时候会触发他的setter
+
+![image-20230703194727184](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230703194727184.png)
+
+
+
+
+
+![image-20230703195640339](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230703195640339.png)
+
+
+
+
+
+
+
++ 监听name或者age的改变，采用watchEffect
++ watchEffect默认情况下，其回调函数会立即执行一次，自动收集可响应式的依赖
+
+
+
++ 网络请求数据还没有回来，但name数据发生了变化，应该取消上一次的网络请求，重新根据新的值发送网络请求
+
+
+
+
+
+![image-20230706095815564](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230706095815564.png)
+
+
+
+
+
+![image-20230706101138434](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230706101138434.png)
+
+
+
++ 最开始时会调用一次，值为null，因为watchEffect可以监听响应数据的依赖，当DOM挂载之后，title的值发生改变吗，watchEffect会监听到，然后打印相应的标签值，如果不想要打印第一次的null值，可以采用第二个参数flush，默认值为pre，（watchEffect会提前执行第一个参数也就是一个函数，不论DOM是否挂载完成），DOM挂载完之后再执行，使用post值
+
+
+
++ 传入一个可侦听的对象
+
+![image-20230706144604974](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230706144604974.png)
+
+
+
+
+
+![image-20230706150429953](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230706150429953.png)
+
+
+
+
+
+![image-20230706150801469](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230706150801469.png)
+
+```js
+	watch(()=>({...info}),(newInfo,oldInfo)=>{
+        console.log(newInfo,oldInfo);
+      },{
+        deep:true,
+        immediate:true//第一次也进行打印
+      })
+```
+
+
+
+
+
+单项数据流，父组件的数据流向子组件，父组件数据改变，子组件会改变，而子组件改变数据时 父组件数据不应该改变（子组件不应该能修改父组件的数据）
