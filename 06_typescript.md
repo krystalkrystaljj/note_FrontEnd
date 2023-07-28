@@ -665,3 +665,143 @@ printMessageLength("aaaa")
 printMessageLength("hello world")
 ```
 
+
+
+
+
+```ts
+type person = {
+  name:string,
+  friend?:{
+    name:string,
+    age:number,
+    girlfriend?:{
+      name:'why'
+    }
+  }
+}
+
+const personInfo:person = {
+  name:'tjj',
+  friend:{
+    name:"rl",
+    age:18,
+  }
+} 
+
+
+// 1.如果要获取一个可选类型的值，可以采用非空断言，确定此时这个值一定存在
+console.log(personInfo.friend!.name);
+// 2.但我们不能每次都去源代码确认这个值是否存在，如果采用条件判断，太麻烦
+if(personInfo.friend) {
+  console.log(personInfo.friend.name);
+}
+//3.可以采用可选链接,如果没有值时会打印undefined
+console.log(personInfo.friend?.name);
+console.log(personInfo.friend?.girlfriend?.name);
+```
+
+
+
+
+
+```ts
+const message3 = "hello world"
+
+// !取反运算符，但是为了保持与原来的布尔值不变采用!!
+const flag3 = !!message3
+console.log(flag3);
+
+```
+
+
+
+```ts
+let message4:string|null = null
+// 类似于三目运算符，如果messgae4为null则将后面的默认值赋值过去
+const content = message4 ?? "你好，李银河"
+console.log(content);
+```
+
+
+
+### 字面量类型
+
+```ts
+// "hello world"也是可以作为类型的，叫做字面量类型
+const message:"hello world" = "hello world"
+
+// 字面量类型的意义必须结合联合类型
+type Alignment = "left" |"right" |"center"
+let align:Alignment = "left"
+
+align = "center"
+```
+
+
+
+![image-20230728160504049](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230728160504049.png)
+
+
+
+```ts
+// 方法三
+type request ={
+  url:string,
+  method:Method
+}
+
+let options:request = {
+  url:"http://www.com",
+  method:"POST"
+}
+
+// 方法一
+request(options.url,options.method as Method )
+
+// 方法二
+let options = {
+  url:"http://www.com",
+  method:"POST"
+} as const
+```
+
+
+
+
+
+```ts
+// 1.typeof的类型缩小
+type IDType = number | string
+function printID(id:IDType) {
+  if(typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id);
+  }
+}
+
+// 2.平等的类型缩小（=== == != !=/ switch)
+type Direction = "left"|"right"|"top"|"bottom"
+
+function printDirection(direction:Direction) {
+  // if(direction === "left") {
+  //   console.log(direction);
+  // } else if()
+
+  // switch(direction) {
+  //   case 'left':
+  //     console.log(direction);
+  //     break;
+  // }
+}
+
+// 3.instanceof
+function printTime(time:string | Date) {
+  // time是Date中的一个实例
+  if(time instanceof Date) {
+    console.log(time.toUTCString())
+  }
+}
+```
+
