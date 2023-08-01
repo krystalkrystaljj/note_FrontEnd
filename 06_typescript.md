@@ -1645,3 +1645,96 @@ const p: IPerson = {
 console.log(p);
 ```
 
+
+
+### 泛型类的使用
+
+```ts
+class Point<T>{
+  x: T
+  y: T
+  z: T
+
+  constructor(x: T, y: T, z: T) {
+    this.x = x
+    this.y = y
+    this.z = z
+  }
+}
+// 默认类型推导
+const p1 = new Point("123","1" ,"3")
+const p2 = new Point<string>("1.33.2", "2.22.3", "4.22.1")
+const p3: Point<string> = new Point("1.33.2", "2.22.3", "4.22.1")
+
+const nums1: string[] = ["abc", "cba", "nba"]
+const nums2: Array<string> =  ["abc", "cba", "nba"] // 不推荐(react jsx <>)
+
+export{}
+```
+
+
+
+
+
+### 泛型类的类型约束
+
+```ts
+interface ILength {
+  length: number
+}
+
+function getLength<T extends ILength> (arg: T) {
+  return arg.length
+}
+
+// 只能传递带有length属性的参数
+getLength("abc")
+getLength(["abc", "cba"])
+getLength({length: 100})
+```
+
+
+
+## 10、模块化
+
+
+
+### 命名空间
+
++ format.ts文件中
++ 2014出来TypeScript
+
+```ts
+export namespace time {
+  export function format(time: string) {
+    return "2222-02-22"
+  }
+
+  export function foo() {
+
+  }
+
+  export let name: string = "abc"
+}
+
+export namespace price {
+  export function format(price: number) {
+    return "99.99"
+  }
+}
+```
+
+
+
++ main.ts文件中使用
+
+```ts
+import {time,price} from './utils/format'
+
+console.log(time.format("123"));
+console.log(price.format(123));
+```
+
+
+
++ ts中能不能找到模块或者组件库，与它有没有被声明是有关的
