@@ -1701,6 +1701,8 @@ getLength({length: 100})
 
 ### 命名空间
 
++ 命名空间在TypeScript早期时，称之为内部模块，主要目的是将一个模块内部再进行作用域的划分，防止一些命名 冲突的问题。
+
 + format.ts文件中
 + 2014出来TypeScript
 
@@ -1738,3 +1740,146 @@ console.log(price.format(123));
 
 
 + ts中能不能找到模块或者组件库，与它有没有被声明是有关的
+
+
+
+### 类型查找
+
+之前我们所有的typescript中的类型，几乎都是我们自己编写的，但是我们也有用到一些其他的类型： 
+
+![image-20230802094603309](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230802094603309.png)
+
++ 大家是否会奇怪，我们的HTMLImageElement类型来自哪里呢？甚至是document为什么可以有getElementById的方 法呢？ 
+  + 其实这里就涉及到typescript对类型的管理和查找规则了。 
+
+```
+npm install lodash
+```
+
+
+
++ 同样都是第三方库，axios就能识别，而lodash就会报错
+
+![image-20230802100334520](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230802100334520.png)
+
++ typescript能不能找到对应的模块，变量，与其有没有被声明是有关的
+
++ 我们这里先给大家介绍另外的一种typescript文件：.d.ts文件 
+  + 我们之前编写的typescript文件都是 .ts 文件，这些文件最终会输出 .js 文件，也是我们通常编写代码的地方； 
+  + 还有另外一种文件 **.d.ts 文件**，它是用来做**类型的声明(declare)**。 它仅仅用来做类型检测，告知typescript我们有哪 些类型； 
++ 那么typescript会在哪里查找我们的类型声明呢？ 
+  + 内置类型声明； 
+  + 外部定义类型声明； /@types/loadash
+  + 自己定义类型声明；
+
+
+
+### 内置类型声明
+
+内置类型声明是typescript自带的、帮助我们内置了JavaScript运行时的一些标准化API的声明文件； 
+
++ 包括比如Math、Date等内置类型，也包括DOM API，比如Window、Document等； 
+
+![image-20230802102239488](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230802102239488.png)
+
+内置类型声明通常在我们安装typescript的环境中会带有的； 
+
++ https://github.com/microsoft/TypeScript/tree/main/lib
+
+
+
+
+
+### 外部定义类型声明
+
+外部类型声明通常是我们使用一些库（比如第三方库）时，需要的一些类型声明。 
+
+这些库通常有两种类型声明方式： 
+
++ 方式一：在自己库中进行类型声明（编写.d.ts文件），比如axios 
+
++ 方式二：通过社区的一个公有库DefinitelyTyped存放类型声明文件 (第三方库和声明文件不在同一个地方时)
+
+  + 该库的GitHub地址：https://github.com/DefinitelyTyped/DefinitelyTyped/ ，包含了许多第三方库的类型声明
+
+  + 该库查找声明安装方式的地址：https://www.typescriptlang.org/dt/search?search= 
+
+  + 比如我们安装react的类型声明： npm i @types/react --save-dev 
+
+
+
+### 自定义声明
+
+什么情况下需要自己来定义声明文件呢？ 
+
+情况一：我们使用的第三方库是一个纯的JavaScript库，没有对应的声明文件；比如lodash 
+
+情况二：我们给自己的代码中声明一些类型，方便在其他地方直接进行使用；
+
++ 编写一个.d.ts文件
+
+```ts
+declare module "lodash" {
+  export function join(arr: any[]): void
+}
+```
+
++ 使用
+
+```ts
+import lodash from 'lodash'
+console.log(lodash.join(["abc","cda"]));
+```
+
+
+
++ 在ts文件中引入图片
+
+```ts
+import co2 from './img/co2.png'
+```
+
++ 文件声明
+
+```ts
+// 声明文件
+declare module '*.jpg'
+declare module '*.jpeg'
+declare module '*.png'
+declare module '*.svg'
+declare module '*.gif'
+```
+
+
+
+
+
+```ts
+$.ajax({
+  
+})
+```
+
+
+
+```ts
+// 声明命名空间
+declare namespace $ {
+  export function ajax(settings: any): any
+}
+```
+
+
+
+声明变量—函数—类
+
+
+
+### 声明模块
+
+我们也可以声明模块，比如lodash模块默认不能使用的情况，可以自己来声明这个模块： 
+
+声明模块的语法: declare module '模块名' {}。 
+
+在声明模块的内部，我们可以通过 export 导出对应库的类、函数等；
+
