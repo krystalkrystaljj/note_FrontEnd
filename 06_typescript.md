@@ -724,7 +724,19 @@ const [flag, setFlag] = useState(true)
 
 
 
-### 4.6 对象
+### 7.6 对象类型
+
+在这里我们使用了一个对象来作为类型： 
+
++ 在对象我们可以添加属性，并且告知TypeScript该属性需要是什么类型； 
+
++ 属性之间可以使用 , 或者 ; 来分割，最后一个分隔符是可选的； 
+
++ 每个属性的类型部分也是可选的，如果不指定，那么就是any类型；
+
+#### 可选类型
+
++ 对象类型也可以指定哪些属性是可选的，可以在属性的后面添加一个?：
 
 ```ts
 function printPoint(point:{x:number,y:string,z?:number}) {
@@ -740,7 +752,15 @@ printPoint({x:123,y:"abc",z:123})
 
 
 
-### 4.7 联合类型
+### 7.7 联合类型
+
+TypeScript的类型系统允许我们使用多种运算符，从现有类型中构建新类型。 
+
++ 联合类型是由两个或者多个其他类型组成的类型； 
+
++ 表示可以是这些类型中的任何一个值； 
+
++ 联合类型中的每一个类型被称之为**联合成员（union's members）**；
 
 ```ts
 // number|string 联合类型
@@ -764,7 +784,19 @@ printID(true)
 
 
 
-### 5.1 可选类型和联合类型关系
+### 7.8 可选类型和联合类型关系
+
+传入给一个联合类型的值是非常简单的：只要保证是联合类型中的某一个类型的值即可 
+
++ 但是我们拿到这个值之后，我们应该如何使用它呢？因为它可能是任何一种类型。 
+
++ 比如我们拿到的值可能是string或者number，我们就不能对其调用string上的一些方法； 
+
+那么我们怎么处理这样的问题呢？ 
+
++ 我们需要使用**缩小（narrow）联合**（后续我们还会专门讲解缩小相关的功能）； 
+
++ TypeScript可以根据我们缩小的代码结构，推断出更加具体的类型；
 
 ```ts
 // 让一个参数是可选的
@@ -774,7 +806,6 @@ function foo(messgae?:string) {
   
 }
 
-
 function foo(messgae:string|undefined) {
   console.log(messgae);
   
@@ -782,11 +813,17 @@ function foo(messgae:string|undefined) {
 foo(undefined)
 ```
 
++ 其实上，可选类型可以看做是 类型 和 undefined 的联合类型：
 
 
-## 5、 其他
 
-### 5.1 类型别名
+## 8、 其他
+
+### 8.1 类型别名
+
+在前面，我们通过在类型注解中编写 对象类型 和 联合类型，但是当我们想要多次在其他地方使用时，就要编写多 次。 
+
++ 可以给对象类型起一个别名
 
 ```ts
 // type 用于定义类型别名
@@ -809,11 +846,11 @@ function printPoint(pointt:PointType) {
 
 
 
-### 5.2 类型断言as
+### 8.2 类型断言as
 
-有时候TypeScript无法获取具体的类型信息，这个我们需要使用类型断言（Type Assertions）。 
+有时候TypeScript无法获取具体的类型信息，这个我们需要使用类型断言（Type Assertions）
 
-比如我们通过 document.getElementById，TypeScript只知道该函数会返回 HTMLElement ，但并不知道它 具体的类型：
++ 比如我们通过 document.getElementById，TypeScript只知道该函数会返回 HTMLElement ，但并不知道它 具体的类型
 
 ```ts
 // 1.类型断言 as
@@ -839,7 +876,7 @@ const stu = new Student()
 sayHello(stu)
 ```
 
-TypeScript只允许类型断言转换为 更具体 或者 不太具体(指的是any和unknow) 的类型版本，此规则可防止不可能的强制转换：
++ TypeScript只允许类型断言转换为 **更具体 或者 不太具体(指的是any和unknow) 的类型版本**，此规则可防止不可能的强制转换：
 
 ```ts
 //  3.了解 可以将一个类型转换为any或者是unknown类型
@@ -851,13 +888,24 @@ const num7:number = (message7 as any) as number
 
 
 
-
-
-### 5.3 非空类型断言
+### 8.3 非空类型断言
 
 当我们编写下面的代码时，在执行ts的编译阶段会报错： 
 
 + 这是因为传入的message有可能是为undefined的，这个时候是不能执行方法的；
+
+```ts
+// message? -> undefined | string
+function printMessageLength(message?: string) {
+  // if (message) {
+  //   console.log(message.length)
+  // }
+  // vue3源码
+  console.log(message!.length)
+}
+```
+
+
 
 但是，我们确定传入的参数是有值的，这个时候我们可以使用非空类型断言： 
 
@@ -879,7 +927,15 @@ printMessageLength("hello world")
 
 
 
-### 5.4 可选链
+### 8.4 可选链
+
+可选链事实上并不是TypeScript独有的特性，它是ES11（ES2020）中增加的特性： 
+
++ 可选链使用可选链操作符 **?.**
+
++ 它的作用是当对象的属性不存在时，会短路，直接返回undefined，如果存在，那么才会继续执行； 
+
++ 虽然可选链操作是ECMAScript提出的特性，但是和TypeScript一起使用更版本；
 
 ```ts
 type person = {
@@ -917,6 +973,11 @@ console.log(personInfo.friend?.girlfriend?.name);
 
 ### 5.5 !!与??运算符
 
+!!操作符： 
+
++ 将一个其他类型转换成boolean类型； 
++ 类似于Boolean(变量)的方式； 
+
 ```ts
 const message3 = "hello world"
 
@@ -926,7 +987,10 @@ console.log(flag3);
 
 ```
 
+ ??操作符： 
 
++ 它是ES11增加的新特性； 
++ 空值合并操作符（??）是一个逻辑操作符，当操作符的左侧是 null 或者 undefined 时，返回其右侧操作数， 否则返回左侧操作数；
 
 ```ts
 let message4:string|null = null
@@ -938,6 +1002,8 @@ console.log(content);
 
 
 ### 5.6 字面量类型
+
++ 默认情况下这么做是没有太大的意义的，但是我们可以将多个类型联合在一起；
 
 ```ts
 // "hello world"也是可以作为类型的，叫做字面量类型
@@ -957,6 +1023,7 @@ align = "center"
 
 
 + 字面量推理
++ 这是因为我们的对象再进行字面量推理的时候，info其实是一个 {url: string, method: string}，所以我们没办法将 一个 string 赋值给一个 字面量 类型。
 
 ```ts
 // 方法三
