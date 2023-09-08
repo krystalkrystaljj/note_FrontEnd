@@ -504,3 +504,161 @@ export function useState(mapper) {
 + 为了解决以上问题，Vuex 允许我们将 store 分割成模块（module）； 
 
 + 每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块；
+
+![image-20230904095912620](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230904095912620.png)
+
+![image-20230904100027518](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230904100027518.png)
+
+
+
+![image-20230904100047684](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230904100047684.png)
+
+
+
+### module的局部状态
+
+对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象：
+
+
+
++ 对于提交相同的mutations事件或者派发相同名称的actions，不同module中的相同mutations方法都会触发
++ 所以此时我们需要命名空间
+
+
+
+### module的命名空间
+
++ 默认情况下，模块内部的action和mutation仍然是注册在全局的命名空间中的： 
+
+  + 这样使得多个模块能够对同一个 action 或 mutation 作出响应； 
+
+  + Getter 同样也默认注册在全局命名空间； 
+
++ 如果我们希望模块具有更高的封装度和复用性，可以添加 namespaced: true 的方式使其成为带命名空间的模块： 
+  + 当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名；
+
+![image-20230904212015842](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230904212015842.png)
+
+
+
++ context与store的区别之一就是context会有根目录的state与dispatch等
+
+```js
+  actions:{
+    changeNameAction({commit,dispatch,state,rootState,getters,RootGetters}) {
+      commit ('changeName','kobe')
+    }
+  }
+```
+
+
+
+### module修改或派发根组件
+
+如果我们希望在action中修改root中的state，那么有如下的方式：
+
+![image-20230905092744106](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230905092744106.png)
+
+
+
+### module的辅助函数
+
+如果辅助函数有三种使用方法： 
+
++ 方式一：通过完整的模块空间名称来查找； 
++ 方式二：第一个参数传入模块空间名称，后面写上要使用的属性； 
+
+```js
+export default {
+    computed: {
+      // 1.写法一:
+      ...mapState({
+        homeCounter: state => state.home.homeCounter
+      }),
+      ...mapGetters({
+        doubleHomeCounter: "home/doubleHomeCounter"
+      })
+
+      // 2.写法二:
+      ...mapState("home", ["homeCounter"]),
+      ...mapGetters("home", ["doubleHomeCounter"])
+    },
+    methods: {
+      // 1.写法一:
+      ...mapMutations({
+        increment: "home/increment"
+      }),
+      ...mapActions({
+        incrementAction: "home/incrementAction"
+      }),
+
+      // 2.写法二
+      ...mapMutations("home", ["increment"]),
+      ...mapActions("home", ["incrementAction"]),
+
+    },
+  }
+```
+
+
+
++ 方式三：通过 createNamespacedHelpers 生成一个模块的辅助函数；
+
+```js
+const { mapState, mapGetters, mapMutations, mapActions } = createNamespacedHelpers("home")
+
+export default {
+    computed: {
+      // 3.写法三:会在home模块中查找
+      ...mapState(["homeCounter"]),
+      ...mapGetters(["doubleHomeCounter"])
+    },
+    methods: {
+      // 3.写法三:
+      ...mapMutations(["increment"]),
+      ...mapActions(["incrementAction"]),
+    },
+}
+```
+
+
+
+### 对useState和useGetters修改
+
+```js
+setup() {
+      {homeCounter: function}
+      const state = useState(["rootCounter"])
+      const rootGetters = useGetters(["doubleRootCounter"])
+      const getters = useGetters("home", ["doubleHomeCounter"])
+
+      const mutations = mapMutations(["increment"])
+      const actions = mapActions(["incrementAction"])
+
+      return {
+        ...state,
+        ...getters,
+        ...rootGetters
+        ...mutations,
+        ...actions
+      }
+    }
+```
+
+
+
+```js
+import { useMapper} from './useMapper'
+import { mapGetters, createNamespacedHelpers} from 'vuex'
+
+export function useGetters(moduleName,mapper) {
+  let mapperFn = mapGetters
+  if(typeof moduleName === 'string' && moduleName.length > 0) {
+    mapperFn = createNamespacedHelpers(moduleName).mapGetters
+  } else {
+    mapper = moduleName
+  }
+  return useMapper(mapper, mapperFn)
+}
+```
+
