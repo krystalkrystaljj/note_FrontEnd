@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="box"></div>
+
+    <!-- 加上defer之后不会影响后面的DOM树的执行 -->
+    <script src="./test.js" defer></script>
+
+    <script>
+      // defer代码是在这个事件之前执行的
+      window.addEventListener("DOMContentLoaded", () => {
+        console.log("DOMContentLoaded");
+      });
+    </script>
+
+    <h2>哈哈哈</h2>
+    <h3>嘿嘿嘿</h3>
+  </body>
+</html>
