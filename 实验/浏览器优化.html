@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      #el {
+        width: 100px;
+        height: 100px;
+        background-color: yellow;
+        position: absolute;
+      }
+      .btn {
+        margin-top: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <button onClick="handle()" class="btn">点击</button>
+    <script>
+      // 这里循环判定比较简单，实际中或许会拓展出比较复杂的判定需求
+      function handle() {
+        let container = document.getElementById("container");
+        container.style.width = "100px";
+        container.style.height = "200px";
+        container.style.border = "10px solid red";
+        container.style.color = "red";
+      }
+    </script>
+  </body>
+</html>
