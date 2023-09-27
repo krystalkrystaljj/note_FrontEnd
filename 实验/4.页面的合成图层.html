@@ -16,20 +16,16 @@
       .container {
         background-color: red;
 
-        position: fixed;
-        /* transform: translateX(10px); */
+        /* position: fixed; */
 
-        /* transform3d中的z轴 */
-        transform: translateZ(10px);
+        /* transform: translateZ(10px); */
 
         /* 执行动画的过程是在新的图层 */
         transition: transform 1s ease;
-
-        /* opacity: 0.9; */
-        /* transition:all 1s ease */
-
-        /* 一个实验性的属性，提前告诉浏览器可能发生哪些变化，提前生成一个图层 */
-        /* will-change: transform; */
+      }
+      /* 采用hover进行移动 */
+      .container:hover {
+        transform: translateX(100px);
       }
     </style>
   </head>
