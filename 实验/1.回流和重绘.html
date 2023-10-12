@@ -21,9 +21,9 @@
     <div id="el"></div>
     <button onClick="handle()" class="btn">点击</button>
     <script>
-      // 获取el元素
+
       const el = document.getElementById("el");
-      // 这里循环判定比较简单，实际中或许会拓展出比较复杂的判定需求
+
       function handle() {
         for (let i = 0; i < 10; i++) {
           el.style.top = el.offsetTop + 10 + "px";
