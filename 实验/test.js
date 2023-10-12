@@ -1,6 +1,6 @@
-console.log('defer script');
+console.log('deferscript');
 
-// debugger
+debugger;
 
 // 在defer代码中DOM Tree已经构建完成
 var boxEl = document.querySelector(".box")
