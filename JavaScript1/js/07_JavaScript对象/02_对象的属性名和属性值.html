@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*特殊的属性名用特殊的方式
+          语法：对象["属性名"] = 属性值;
+          使用[]这种形式操作属性更加灵活
+          在[]中可以直接传递一个变量，这样变量值是多少就会读取那个属性*/
+        var obj = new Object();
+        obj["123"] = "适合你";
+        console.log(obj["123"]);
+
+        obj["125"] = "你是在干嘛";
+        obj["nihao"] = "迷彩";
+        var n = "125";
+        console.log(obj[n]);
+
+        // 属性值也可以是一个对象
+        var obj2 = new Object();
+        obj2.name = "猪八戒";
+        obj.test = obj2;
+        console.log(obj.test);
+
+        /*in运算符
+          通过该运算符可以检查一个对象中是否含有指定的属性
+          如果有则返回true，没有则返回false
+          语法："属性名" in 对象
+        */
+       console.log("test2" in obj);
+    </script>
+</body>
+</html>

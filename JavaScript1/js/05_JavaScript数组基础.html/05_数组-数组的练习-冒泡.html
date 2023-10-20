@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // var nums = [10, 7, 89, 45, 1, 0];
+        // for (var i = 0; i < nums.length-1; i++) {
+        //     for (var j = 0; j < nums.length-1-i; j++) {
+        //         if (nums[j] > nums[j+1]) {
+        //             var temp = nums[j];
+        //             nums[j] = nums[j+1];
+        //             nums[j+1] = temp;
+        //         }
+        //     }
+        // }
+        // console.log(nums);
+
+        var nums = [10, 7, 89, 45, 1, 0];
+        for (var i = 0; i < nums.length-1; i++) {
+            for (var j = 0; j < nums.length-1-i; j++) {
+                
+                if(nums[j] > nums[j+1])
+                {
+                    var max = nums[j+1];
+                    nums[j+1] = nums[j];
+                    nums[j] = max;
+                } 
+            }
+            
+        }
+        console.log(nums);
+
+
+    </script>
+</body>
+</html>

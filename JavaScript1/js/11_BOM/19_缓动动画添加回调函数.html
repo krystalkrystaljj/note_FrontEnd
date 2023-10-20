@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            position: absolute;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <button>点击到500</button>
+    <button class="btn2">点击到800</button>
+    <div></div>
+
+    <script>
+        var btn500 = document.querySelector('button');
+        var btn800 = document.querySelector('.btn2');
+        var div = document.querySelector('div');
+
+        function antimates(obj, target,callback) {
+            clearInterval(obj.timer)
+            obj.timer = setInterval(function () {
+                // 把步长值写到定时器里面
+                // 把我们步长值改为整数，不要出现小数问题
+                // var step = Math.ceil((target - obj.offsetLeft) / 10);
+                var step = (target - obj.offsetLeft) / 10
+                step = step > 0 ? Math.ceil(step) : Math.floor(step);
+                if (obj.offsetLeft == target) {
+                    clearInterval(obj.timer);
+                    if(callback){
+                        callback();
+                    }
+                } 
+                obj.style.left = obj.offsetLeft + step + 'px';
+            }, 50);
+        }
+
+        btn500.addEventListener('click', function(){
+            antimates(div,500);
+        })
+        btn800.addEventListener('click',function(){
+            antimates(div,800,function(){
+                div.style.backgroundColor = 'red';
+            });
+        })
+    </script>
+</body>
+
+</html>

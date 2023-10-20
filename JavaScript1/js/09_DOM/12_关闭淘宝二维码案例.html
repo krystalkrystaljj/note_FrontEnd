@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a{
+			text-decoration: none;
+			color: #333;
+		}
+
+        .kaola {
+            position: relative;
+            margin-left: 300px;
+        }
+        .kaola .box{
+            position: absolute;
+
+            display: block;
+            border: 1px solid #eaeaea;
+            top: 40px;
+            left: -50px;
+            
+        }
+        .kaola .box img {
+            vertical-align: middle;
+        }
+        .kaola .box .download{
+            display: block;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .kaola .box .money {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .kaola .box .close-btn {
+            position: absolute;
+            top: -1px;
+            left: -14px;
+
+            border-top: 1px solid #eaeaea;
+            border-left: 1px solid #eaeaea;
+            border-bottom: 1px solid #eaeaea;
+
+            cursor: pointer;
+
+        }
+
+       
+    </style>
+</head>
+<body>
+    <a href="#" class="kaola">
+        <span class="dest">手机二维码</span>
+        <span class="box">
+            <i class="close-btn">×</i>
+            <img src="../pic/考拉二维码.png" alt="">
+            <span class="download">下载app</span>
+            <span class="money">领1000元新人礼包</span>
+        </span>
+    </a>
+   
+
+    <script>
+        var close_btn = document.getElementsByClassName('close-btn');
+        var box = document.querySelector('.box');
+        
+        console.log(close_btn[0]);
+        close_btn[0].onclick = function() {
+            box.style.display = 'none';    
+        }
+    </script>
+</body>
+</html>
+

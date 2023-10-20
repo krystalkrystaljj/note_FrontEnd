@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 函数声明
+        // name属性的值为函数的名字
+        function test1() {
+            console.log("test1函数被调用");
+        }
+        test1();
+
+        // 命名函数表达式
+        // name属性的值 函数的名字
+        var abc = function test() {
+            console.log("test函数被调用");
+        }
+        abc();
+
+        // 匿名函数表达式
+        // name属性的值 赋值的变量的名字
+        var cba = function() {
+            console.log("cba函数被调用");
+        }
+        cba();
+
+        // 函数都有属性name
+        console.log(test1.name);
+        console.log(abc.name);
+        console.log(cba.name);
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Myclass() {
+
+        }
+        // 向Myclass的原型中添加一个name属性
+        Myclass.prototype.name = "我是原型中的name"
+        var mc = new Myclass();
+        console.log(mc.name);
+
+        //使用in检查都对象中是否含有某个属性时，如果对象中没有，但原型中有，也会返回true
+        console.log("name" in mc);
+
+        //可以使用对象的hasOwnProperty()来检查对象自身中是否含有该属性
+        console.log(mc.hasOwnProperty("name"));
+
+        //原型的原型中有hasOwnProperty()属性
+        console.log(mc.__proto__.__proto__.hasOwnProperty("hasOwnProperty"));
+
+        //结果为空，mc创建的是MyClass型对象，在这个对象中的原型，应为原型也是对象，所以他还有原型
+        //而二代原型创建的原型类型为Object，而又因为Object没有原型，所以只有几层。
+        console.log(mc.__proto__.__proto__.__proto__);
+        
+    </script>
+</body>
+</html>

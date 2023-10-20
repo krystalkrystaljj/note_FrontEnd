@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box">firstly你猜猜</div>
+    <div class="box">春天爱情和樱花</div>
+    <div id="nav">
+        <ul>
+            <li>首页</li>
+            <li>产品</li>
+        </ul>
+    </div>
+    <button class="btn">十二月的奇迹</button>
+    <div>第一场雪</div>
+    
+
+    <script>
+        var btn = document.getElementsByClassName('btn');
+        console.log(btn);
+        btn[0].onclick = function () {
+            alert('我望眼欲穿，看我看不到的你！');
+        }
+
+
+        var snow = document.getElementsByTagName('div');
+
+        snow[3].onclick = function() {
+            console.log('我被选中了');
+        }
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var names = ["why", "lilei", "hanmeimei", "lucy", "lily"];
+        for (var i = 0; i < names.length; i++) {
+            console.log(names[i]);
+        }
+        for (var j = names.length-1; j >= 0; j--) {
+            console.log(names[j]);
+        }
+
+        var message = "";
+        for (var n = 0; n < names.length; n++) {
+            message += names[n];
+            if (n === names.length-1) {
+                break;
+            }
+            message += "-";
+
+        }
+        console.log(message);
+    </script>
+</body>
+</html>

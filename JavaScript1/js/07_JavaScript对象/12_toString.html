@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Person(name, age, gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+        }
+
+        //创建一个Person实例
+        var pre = new Person("孙悟空", 18, "男");
+
+        pre.toString = function() {
+            return "快乐小Person"
+        }
+
+        //当我们直接在页面中打印一个对象时，实际上输出的对象toString()方法的返回值
+        //相当于pre.toString()
+        var result = pre.toString();
+        console.log(result);
+    </script>
+</body>
+</html>

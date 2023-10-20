@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">唐伯虎</button>
+    <div>123</div>
+    <script>
+        //事件源:按钮
+        var btn = document.getElementById('btn');
+        //事件类型：鼠标点击（onclick）
+        //事件处理程序
+        btn.onclick = function() {
+            alert('点秋香');
+        }
+
+        //事件执行步骤
+        // 点击div，控制台输出，我被选中l
+        //1、获取事件源
+        var div = document.querySelector('div');
+        //2、绑定事件，注册事件
+        //div.onclick
+        //3、添加事件处理程序
+        div.onclick = function() {
+            console.log('我被选中l');
+        }
+    </script>
+</body>
+</html>

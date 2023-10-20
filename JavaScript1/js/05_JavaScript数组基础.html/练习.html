@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //算出大于10的数，存到新的数组
+        var newArr = [];
+        var arr = [2,0,6,177,0,52,0,25,7];
+        for (var i = 0; i < arr.length; i++) {
+            if(arr[i] >= 10)
+            {
+                newArr[newArr.length] = arr[i];
+            }
+            
+        }
+        console.log(arr);
+        console.log(newArr);
+
+        //去掉0后形成一个不包含0的数组
+        var arr = [2,0,6,177,0,52,0,25,7];
+        for (var i = 0; i < arr.length; i++) {
+            if(arr[i] == 0)
+            {
+                for (let j = i; j < arr.length; j++) {
+                    arr[j] = arr[j+1];
+                    
+                }
+                arr.length--;
+            }
+            
+        }
+        console.log(arr);
+
+        //翻转数组
+        var arr = ['blue','pink','purple','green','red'];
+        var newArr = [];
+        for (var i = arr.length-1; i >= 0 ; i--) {
+            newArr[newArr.length] = arr[i];
+        }
+        console.log(newArr)
+    </script>
+</body>
+</html>

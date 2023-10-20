@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //1、变量之间的相互命名
+        var apple = 34;
+        var pear = 12;
+        var temp;
+        var temp = apple;
+        apple = pear;
+        pear = temp;
+        console.log(apple);
+        console.log(pear);
+
+        var num1 = 20;
+        var num2 = num1;
+        console.log(num2);
+
+        //交换两个数字：利用加减特性，对他们进行交换
+        //不引入临时变量的情况对两个数字进行交换
+        var num3 = 100;
+        var num4 = 200;
+        num3 = num3 + num4;
+        num4 = num3 - num4;
+        num3 = num3 - num4;
+    </script>
+</body>
+</html>

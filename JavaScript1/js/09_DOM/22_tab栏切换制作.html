@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul,li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tab {
+            width: 630px;
+            margin: 100px auto;
+        }
+        .tab_list {
+            display: inline-block;
+            border: 1px solid #aaa;
+            background-color: #eee;
+        }
+        .tab .tab_list li {
+            
+            float: left;
+            height: 39px;
+            line-height: 39px;
+            padding: 0 20px;
+            text-align: center;
+
+            cursor: pointer;
+        }
+        .tab .tab_list .current {
+            background-color: #c81623;
+            color: #fff;
+        }
+        .tab .tab_con .item {
+            display: none;
+        }
+        .tab .tab_con #info {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab">
+        <div class="tab_list">
+            <ul>
+                <li class="current">商品介绍</li>
+                <li>规格与包装</li>
+                <li>售后保障</li>
+                <li>商品评价（50000）</li>
+                <li>手机社区</li>
+            </ul>
+        </div>
+        <div class="tab_con">
+            <div class="item" id="info">
+                商品介绍模块内容
+            </div>
+            <div class="item">
+                规格与包装模块内容
+            </div>
+            <div class="item">
+                售后保障模块内容
+            </div>
+            <div class="item">
+                商品评价（50000）模块内容
+            </div>
+            <div class="item">
+                手机社区模块内容
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var tab_list = document.querySelector('.tab_list');
+        var lis = tab_list.querySelectorAll('li');
+        var items = document.querySelectorAll('.item');
+        for( var i = 0; i < lis.length; i++) {
+            lis[i].setAttribute('index',i);
+            lis[i].onclick = function() {
+                // 干掉其人
+                for ( var i = 0; i < lis.length; i++) {
+                    lis[i].className = '';
+                    items[i].style.display = 'none';
+                }
+                // 留下自己
+                this.className = 'current';
+                var index  = this.getAttribute('index');
+                items[index].style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

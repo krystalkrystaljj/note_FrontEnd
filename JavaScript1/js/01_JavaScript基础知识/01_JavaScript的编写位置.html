@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1.直接在html元素中直接执行JavaScript代码 -->
+    <input type="button" value="唐伯虎" onclick="alert('秋香姐')">
+    <a href="" onclick="alert('我是一个弹窗')">弹出窗口</a>
+    <a href="JavaScript:alert('我是一个弹窗')">弹出窗口</a>
+
+    <!-- 2.书写到script标签中 -->
+    <script>
+        alert('我是直接弹出的弹窗');
+    </script>
+
+    <!-- 3.从外部引入JavaScript文件 -->
+    <script src="./js/test.js"></script>
+</body>
+</html>

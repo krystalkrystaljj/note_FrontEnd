@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap {
+            width: 300px;
+            margin: 100px auto;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table td,table th {
+            border: 1px solid #999;
+            padding: 5px 8px;
+        }
+        table thead tr{
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="allcheck">
+                    </th>
+                    <th>商品</th>
+                    <th>价钱</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>iPhone8</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>iPhone8</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>iPhone8</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>iPhone8</td>
+                    <td>8000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var trs = document.querySelectorAll('tbody tr');
+        for (var i = 0; i < trs.length; i++) {
+            trs[i].onmouseover = function() {
+                this.style.backgroundColor = '#ddd';
+            }
+            trs[i].onmouseout = function() {
+                this.style.backgroundColor = '#fff';
+            }
+        }
+
+        var allcheck = document.getElementById('allcheck');
+        var eachcheck = document.querySelectorAll('td input');
+        allcheck.onclick = function() {
+            for( var i = 0; i < eachcheck.length; i++) {
+                eachcheck[i].checked = this.checked;
+            }
+        } 
+        
+
+        for( var i = 0; i < eachcheck.length; i++) {
+            eachcheck[i].onclick = function() {
+                var flag = true;
+                for( var i = 0; i < eachcheck.length; i++) {
+                    if( !eachcheck[i].checked) {
+                        flag = false;
+                        break;
+                    }
+                }
+                allcheck.checked = flag;
+            }
+        }
+    </script>
+</body>
+</html>

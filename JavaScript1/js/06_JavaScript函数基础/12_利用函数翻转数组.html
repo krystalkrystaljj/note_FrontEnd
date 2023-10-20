@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // function reverse() {
+        //     var newArr = [];
+        //     for (var i = arguments.length-1; i >= 0; i--) {
+        //         newArr[newArr.length] = arguments[i]
+        //     }
+        //     return newArr;
+        // }
+        // console.log(reverse(1,2,3,4,5));
+
+        //冒泡排序的封装
+        function bubbleSort() {
+            for (var i = 0; i < arguments.length-1; i++) {
+                for (var j = 0; j < arguments.length-1-i; j++) {
+                    if(arguments[j] > arguments[j+1]) {
+                        var temp = arguments[j];
+                        arguments[j] = arguments[j+1];
+                        arguments[j+1] = temp;
+                    }
+                    
+                }
+                
+            }
+            return arguments;
+        }
+        console.log(bubbleSort(90,2,4,1,77,3,2));
+
+        function isrunYear(year) {
+            var flag  = false;
+            if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+                flag = true;
+            }
+            return flag;
+        }
+        
+        
+
+        function backDay() {
+            var year = prompt("input year");
+            if(isrunYear(year)) {
+                document.write('29天');
+            }else{
+                document.write('28天');
+            }
+            
+        }
+        backDay();
+    </script>
+</body>
+</html>

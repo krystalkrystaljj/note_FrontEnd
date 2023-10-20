@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div>123</div>
+    <ul>
+        <li>abc1</li>
+        <li>abc2</li>
+        <li>abc3</li>
+    </ul>
+    <script>
+        var div = document.querySelector('div');
+        div.addEventListener('click', function (e) {
+            console.log(e.target);
+            console.log(this);
+        })
+
+        var ul = document.querySelector('ul')
+        ul.addEventListener('click', function (e) {
+            console.log(e.target);
+            console.log(this);
+        })
+
+        div.onclick = function(e) {
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+            console.log(target);
+        }
+    </script>
+</body>
+
+</html>
+

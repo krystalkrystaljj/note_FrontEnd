@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // for (var i = 0; i < 10; i++) {
+        //     for (var n = 0; n < 6; n++) {
+        //         document.write("♥");                
+        //     }
+        //     document.write("<br>");
+        // }
+
+        // var person = prompt('请输入班级人数');
+        // var sum = 0;
+        // for (var i = 1; i <= parseInt(person); i++) {
+        //     var score = prompt('第' + i + '个学生的成绩');
+        //     sum +=parseInt(score);  
+        // }
+        // alert('总成绩为' + sum);
+        // alert('平均成绩为' + sum/parseInt(person));
+
+        
+        for (var j = 0; j < 5; j++) {
+            var str = '';
+            for (var i = 0; i < 5; i++) {
+                str +='♥';
+            }
+            document.write(str);
+            document.write('<br>');
+        }
+
+        document.write('<br>');
+
+        for (var j = 0; j < 10; j++) {
+            var str = '';
+            for (var i = j; i < 10; i++) {
+                str +='♥';
+            }
+            document.write(str);
+            document.write("<br>");
+        }
+
+        var str = '';
+        for (var i = 10; i >0; i--) {
+            for (var j = i; j <= 10; j++) {
+                str +='♥'; 
+            }
+            str +='\n';
+        }
+        console.log(str);
+        
+        
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var name = "why";
+
+        // 对象中存放的是键值对：key（键）：value（值）
+        var info ={
+            name: "why",
+            age: 18,
+            height:1.88,
+            
+
+            eating: function(){
+                console.log("吃东西");
+            }
+        };
+
+        // 1、与运算的特殊用法
+        // 短路与：有一个条件为false，那么后续条件不再判断
+        if(info.eating){
+            info.eating()
+        };
+        // info.eating 为undefined Boolean类型为false
+        // info.eating && info.eating();
+        console.log("-----");
+
+        // 2、或运算的特殊用法
+        // 短路或：一旦遇到一个条件为true，那么后面的条件不再判断
+        var message = info.name || info.age || info.height;
+        console.log(message);
+
+    </script>
+</body>
+</html>

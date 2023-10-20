@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 样式重置 */
+        ul,ol,li{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        img{
+            width: 720px;
+            height: 455px;
+        }
+
+        /* 整体布局  */
+        .slider{
+            margin-left: 200px;
+            margin-top: 10px;
+            color: white;
+        }
+        .focus{
+            position: relative;
+            display: inline-block;
+            width: 720px;
+            height: 455px;
+            background-color: red;
+
+            overflow: hidden;
+        }
+        ul li{
+            float: left;
+        }
+
+        ul{
+            position: absolute;
+            left: 0;
+            width: 500%;
+        }
+        
+        /* 箭头样式 */
+        .arrow-l,.arrow-r{
+            display: none;
+            position: absolute;
+            top: 50%;
+            margin-top: -20px;
+            width: 24px;
+            height: 40px;
+            line-height: 40px;
+            background: rgba(0, 0,0, .3);
+
+            color: white;
+            text-align: center;
+            z-index: 99;
+
+        }
+        .arrow-r{
+            right: 0;
+           
+        }
+
+        /* 小圆点样式 */
+        .circle{
+            position: absolute;
+            left: 50px;
+            bottom: 10px;
+        }
+        .circle li{
+            float: left;
+            width: 10px;
+            height: 10px;
+            border: 2px solid rgba(220, 220,220, 0.6);
+            margin: 0 3px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .current{
+            background-color: #fff;
+        }
+    </style>
+    <script src="./fhdf.js"></script>
+    <script src="../js/index_test.js"></script>
+</head>
+
+<body>
+    <div class="slider">
+        <div class="focus">
+           
+            <a href="#" class="arrow-l">&lt;</a>
+            <a href="#" class="arrow-r">&gt;</a>
+            <ul>
+                <li>
+                    <a href="#"><img src="../pic/pic_background/小怪兽.jpeg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="../pic/pic_background/可爱喵.jpeg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="../pic/pic_background/柴犬.jpeg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="../pic/pic_background/橙子.jpeg" alt=""></a>
+                </li>
+            </ul>
+            <ol class="circle">
+                
+            </ol>
+        </div>
+    </div>
+
+
+    <script>
+        
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .user {
+            color: #999;
+            
+        }
+        .change {
+            outline: none;
+            border: 2px solid pink;
+
+            color: #333;
+        }
+        .original {
+            outline: none;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="onload">
+        <input type="text" class="user" value="邮箱/ID/手机号">
+    </div>
+
+    <script>
+        var user = document.querySelector('.user');
+        user.onfocus = function() {
+            if (user.value === '邮箱/ID/手机号') {
+                this.value = '';
+            
+            }
+            this.className = 'change';
+        }
+        user.onblur = function() {
+            if( user.value === '') {
+                user.value = '邮箱/ID/手机号';
+            }
+            this.className = 'original';
+        }
+    </script>
+</body>
+</html>

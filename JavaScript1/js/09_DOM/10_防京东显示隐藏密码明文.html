@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 400px;
+            border-bottom: 1px solid #ccc;
+            margin:  100px auto;
+        }
+        .box input {
+            width: 370px;
+            height: 30px;
+            border:0;
+            outline:none;
+        }
+        .box img{
+            position: absolute;
+            width: 24px;
+            top: 105px;
+            left: 846px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <label for="">
+            <img src="../pic/闭眼.png" alt="" id="eye">
+        </label>
+        <input type="password" name="" id="pwd">
+    </div>
+
+    <script>
+        var eye = document.getElementById('eye');
+        var pwd = document.getElementById('pwd');
+        var img = document.querySelector('img');
+        var flag = true;
+        eye.onclick = function () {
+            //点击一次后flag一定要变化
+            if(flag == true) {
+                pwd.type = 'text';
+                img.src = '../pic/睁眼.png';
+                flag = false;//赋值操作
+            } else {
+                pwd.type = 'password';
+                img.src = '../pic/闭眼.png';
+                flag = true;
+            }
+        }
+        
+    </script>
+</body>
+</html>
+

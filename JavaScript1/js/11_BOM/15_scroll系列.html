@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       div{
+           width: 100px;
+           height: 100px;
+           background-color: pink;
+           border: 10px solid firebrick;
+           padding: 10px;
+           overflow: auto;
+       }
+    </style>
+</head>
+<body>
+    <div>啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+        啦啦啦啦啦啦啦啦啦
+    </div>
+    <script>
+        var div = document.querySelector('div');
+        console.log(div.scrollHeight);
+        console.log(div.clientHeight);
+        div.addEventListener('scroll',function(){
+            console.log(parseInt(div.scrollTop));
+        })
+    </script>
+</body>
+</html>

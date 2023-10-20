@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var arr =["孙悟空", "猪八戒", "沙和尚", "唐僧", "蜘蛛精"];
+        /*  slice()
+            -从数组中提取元素
+            -参数（截取开始位置索引,截取结束位置索引）(左开右闭[)的区间)
+            -该方法不会改变原始数组，而是将截取的元素封装到一个新数组中返回
+            -第二个参数可以省略不写，此时会截取从开始索引往后的所有元素
+            -索引可以传递一个负值，如果传递一个负值，则从后往前计算倒数
+        */
+       var result = arr.slice(0,3);
+       console.log(arr);
+       console.log(result);
+       
+       result = arr.slice(3);
+       console.log(result);
+
+       /*   splice()
+            -删除数组中的指定元素
+            -使用splice()会影响到原始数组，会将指定数组从原数组中删除，并将被删除的元素作为返回值返回
+            -参数：（表示开始位置索引,表示删除的数量，传递新元素）
+       */
+      result = arr.splice(1,2,"牛魔王");
+      console.log(arr);
+      console.log(result);
+    </script>
+</body>
+</html>

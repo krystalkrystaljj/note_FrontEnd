@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            /* position: relative; */
+        }
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+        ul,li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mailbox {
+            /* position: absolute; */
+            /* left: 100px; */
+            width: 140px;
+            margin: 10px auto;
+        }
+        .mailbox .header {
+            text-align: center;
+            padding: 8px 0px;
+            background-color: aqua;
+            border: 2px solid #999;
+        }
+        .mailbox ul {
+            display: none;
+        }
+        
+        .mailbox ul li {
+            border-bottom: 2px solid #999;
+            border-left: 2px solid #999;
+            border-right: 2px solid #999;
+        }
+        .mailbox ul li a {
+            display: block;
+            padding: 8px 0px; 
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mailbox">
+        <div class="header">邮箱</div>
+        <ul>
+            <li><a href="#">免费邮箱</a></li>
+            <li><a href="#">VIP邮箱</a></li>
+            <li><a href="#">企业邮箱</a></li>
+            <li><a href="#">新浪邮箱客户端</a></li>
+        </ul>
+    </div>
+    <script>
+        var mailbox = document.querySelector('.mailbox');
+        var lis = document.querySelectorAll('li');
+        var ul =document.querySelector('ul');
+        mailbox.onmouseover = function() {
+            ul.style.display = 'list-item';
+        }
+        mailbox.onmouseout = function() {
+            ul.style.display = 'none';
+        }
+
+// 法一
+        for (var i = 0; i < lis.length; i++) {
+            
+            lis[i].onmouseover = function() {
+                
+                // this.style.display = 'block';
+                this.style.backgroundColor = '#FECC5B';
+                
+            }
+            lis[i].onmouseout = function() {
+                
+                // this.style.display = 'none';
+                this.style.backgroundColor = '#fff';
+                
+            }
+        }
+// 法二
+        for (let i = 0; i < lis.length; i++) {
+            
+            lis[i].onmouseover = function() {
+                lis[i].style.backgroundColor = '#FECC5B';
+                
+            }
+            lis[i].onmouseout = function() {
+                lis[i].style.backgroundColor = '#fff';
+                
+            }
+        }
+    </script>
+</body>
+</html>

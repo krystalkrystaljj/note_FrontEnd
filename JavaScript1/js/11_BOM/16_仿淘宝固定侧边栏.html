@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .slider_bar{
+            position: absolute;
+            left: 50%;
+            top: 300px;
+            margin-left: 600px;
+            width: 45px;
+            height: 130px;
+            background-color: orange;
+        }
+        .w{
+            width: 1200px;
+            margin: 10px auto;
+        }
+        .header{
+            height: 150px;
+            background-color: pink;
+        }
+        .banner{
+            height: 300px;
+            background-color: aqua;
+        }
+        .main{
+            height: 1000px;
+            background-color: purple;
+        }
+        span{
+            display: none;
+            position: absolute;
+            bottom: 0;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="slider_bar">
+        <span class="goback">返回顶部</span>
+    </div>
+    <div class="header w">头部区域</div>
+    <div class="banner w">banner区域</div>
+    <div class="main w">主体区域</div>
+
+    <script>
+        var sliderbar = document.querySelector('.slider_bar');
+        var banner = document.querySelector('.banner');
+        var bannerTop = banner.offsetTop;
+        var sliderTop = sliderbar.offsetTop - bannerTop;
+
+        var main = document.querySelector('.main');
+        var span = document.querySelector('span');
+        var mainTop = main.offsetTop;
+        
+
+        document.addEventListener('scroll',function(){
+            if(window.pageYOffset >= bannerTop) {
+                sliderbar.style.position = 'fixed';
+                sliderbar.style.top = sliderTop+ 'px';
+            }else{
+                sliderbar.style.position = 'absolute';
+                sliderbar.style.top = 300 + 'px';
+            }
+        
+            if( window.pageYOffset >= mainTop) {
+                span.style.display = 'block';
+            }else{
+                span.style.display = 'none';
+            }
+        })
+    </script>
+</body>
+</html>

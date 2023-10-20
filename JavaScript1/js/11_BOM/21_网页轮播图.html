@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        ol,
+        ul,
+        li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main img {
+            width: 720px;
+            height: 455px;
+        }
+
+        .main {
+            width: 980px;
+            height: 455px;
+            margin-left: 219px;
+            margin-top: 10px;
+            background-color: red;
+        }
+
+        .focus {
+            position: relative;
+            width: 720px;
+            height: 455px;
+            background-color: purple;
+            overflow: hidden;
+        }
+
+        ul li {
+            float: left;
+        }
+
+        ul {
+            position: absolute;
+            left: 0;
+            width: 400%;
+        }
+
+        .arrow-l,
+        .arrow-r {
+            display: none;
+            position: absolute;
+            top: 50%;
+            margin-top: -20px;
+            width: 24px;
+            height: 40px;
+            background: rgba(0, 0, 0, .3);
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            font-family: 'icomoon';
+            font-style: 18px;
+            z-index: 99;
+        }
+
+        .arrow-r{
+            right: 0;
+        }
+
+        .circle {
+            position: absolute;
+            bottom: 10px;
+            left: 50px;
+        }
+
+        .circle li {
+            float: left;
+            width: 8px;
+            height: 8px;
+            border: 2px solid rgba(225, 225, 225, 0.5);
+            margin: 0 3px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .current {
+            background-color: #fff;
+        }
+    </style>
+    <script src="../js/antimates.js"></script>
+    <script src="../js/index.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <div class="focus">
+            <a href="#" class="arrow-l">&lt;</a>
+            <a href="#" class="arrow-r">&gt;</a>
+            <ul>
+                <li>
+                    <a href=""><img src="../pic/pic_background/小怪兽.jpeg" alt=""></a>
+                </li>
+                <li>
+                    <a href=""><img src="../pic/pic_background/可爱喵.jpeg" alt=""></a>
+                </li>
+                <li>
+                    <a href=""><img src="../pic/pic_background/橙子.jpeg" alt=""></a>
+                </li>
+                
+            </ul>
+            <ol class="circle">
+                
+            </ol>
+        </div>
+    </div>
+</body>
+
+</html>

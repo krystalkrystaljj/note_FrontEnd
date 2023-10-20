@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var num1 = 123;
+        var num2 = "123";
+        // 隐式转换，将string转换成number
+        console.log(num1 == num2);
+        // 隐式转换
+        console.log(num1 != num2);
+
+        var flag1 = true;
+        var flag2 = "true";
+        // 隐式转换：都转成number再比较
+        // flag->1  flag2 -> NaN
+        console.log(flag1 == flag2);
+        
+        // === 要求类型相等，数据相等
+        console.log(num1 === num2);
+    </script>
+</body>
+</html>

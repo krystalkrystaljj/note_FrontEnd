@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var i = 0;
+        var oddTotal = 0;
+        var evenTotal = 0;
+        while (i < 100) {
+            if (i % 2 !== 0){
+                console.log("奇数",i);
+                evenTotal += i;
+            }else if(i !== 0){
+                console.log("偶数", i);
+                oddTotal +=i;
+            }else {
+                console.log(0);
+            }
+            i++;
+        }
+        console.log("所有奇数的和：",oddTotal);
+        console.log("所有偶数的和：",evenTotal);
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="time">2019-9-9</div>
+    <script>
+        var timer = document.getElementById('time');
+        console.log(timer);
+        //console.dir 打印我们返回的元素对象，更好的查看里面的属性和方法
+        console.dir(timer);
+    </script>
+
+    <ul>
+        <li>知否知否，应是绿肥红瘦1</li>
+        <li>知否知否，应是绿肥红瘦2</li>
+        <li>知否知否，应是绿肥红瘦3</li>
+        <li>知否知否，应是绿肥红瘦4</li>
+        <li>知否知否，应是绿肥红瘦5</li>
+    </ul>
+    <ol>
+        <li>知否知否，1</li>
+        <li>知否知否，2</li>
+        <li>知否知否，3</li>
+        <li>知否知否，4</li>
+        <li>知否知否，5</li>
+    </ol>
+    <script>
+
+        var lis = document.getElementsByTagName('li');//获取的是整个页面中的li
+        console.log(lis);
+        console.log(lis[0]);
+
+        //指定父元素，获得其子元素
+        var ol = document.getElementsByTagName('ol');//获得的父元素的形式是伪数组
+        console.log(ol[0].getElementsByTagName('li'));//指定单个父元素
+
+        //也可以给ol指定一个id
+        var ol = document.getElementById('ID');
+        console.log(ol.getElementsByTagName('li'));
+    </script>
+</body>
+</html>

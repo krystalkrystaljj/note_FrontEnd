@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 创建一个对象
+        var obj = new Object();
+
+        // 使用对象字面量来创建一个对象
+        var obj1 = {};
+        console.log(typeof obj1);
+        obj1.name = "孙悟空";
+
+        /* 使用对象字面两，可以在创建对象时，直接指定对象中的属性
+           语法：{属性名：属性值，属性名：属性值....}
+        */
+       var obj2 = {
+           name:"猪八戒",
+           age:17,
+           gender:"男",
+           test:{name:"沙和尚"}
+        //    对象作为属性的值
+        };
+       console.log(obj2);
+
+       
+    </script>
+</body>
+</html>

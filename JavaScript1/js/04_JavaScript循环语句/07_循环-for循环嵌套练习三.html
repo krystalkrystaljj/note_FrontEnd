@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* span{
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-top: 1px solid #f00;
+            border-right:1px solid #f00;
+        }
+        div{
+            display: inline-block;
+            border-left: 1px solid #f00;
+            border-bottom:1px solid #f00;
+        } */
+
+        span{
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-right: 1px solid #f00;
+            border-top: 1px solid #f00;
+        }
+        div{
+            display: inline-block;
+            border-left: 1px solid #f00;
+            border-bottom:1px solid #f00;
+        }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        document.write("<div>");
+        for (var i = 1; i < 10; i++) {
+            for (var j = 1; j <= i; j++) {
+                var str = '<span>' + j + '*' + i + '=' + i*j +'</span>';
+                document.write(str);
+            }
+            document.write('<br>');
+        }
+        document.write("</div>");
+
+
+
+        // document.write("<div>");
+        // for (var i = 1; i < 10; i++) {
+            
+        //     for (var j = 1; j < i+1; j++) {
+        //         // 空格&nbsp;
+        //         var str = "<span>" + j + "*" + i + "=" + j*i + "</span>";
+        //         document.write(str);
+        //     }
+        //     document.write("<br>");
+            
+        // }
+        // document.write("</div>");
+
+        
+    </script>
+</body>
+</html>

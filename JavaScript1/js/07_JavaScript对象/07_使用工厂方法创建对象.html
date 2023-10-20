@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 创建对象
+        var obj = {
+            name:"孙悟空",
+            age:13,
+            gender:"男",
+            sayName:function () {
+                console.log(this.name);
+            }
+        }
+
+        // 使用工厂方法创建对象
+        // 可大批量创建对象
+        function creatPerson(name, age, gender) {
+            var obj = new Object();
+            obj.name = name;
+            obj.age = age;
+            obj.gender = gender;
+            obj.sayName = function () {
+                alert(this.name);
+            };
+            //将新的对象返回
+            return obj;
+        }
+        var obj = creatPerson("沙和尚", 15, "男");
+        var obj1 = creatPerson("孙悟空", 19, "男");
+        obj.sayName();
+        console.log(obj);
+        obj1.sayName();
+        
+    </script>
+</body>
+</html>

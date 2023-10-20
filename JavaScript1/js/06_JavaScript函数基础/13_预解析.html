@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log(num);//结果为undefined
+        var num = 10;
+
+        fn(11);//结果为11
+        function fn() {
+            console.log(11);
+        }
+
+        fun();//报错
+        var fun = function() {
+            console.log(22);
+        }
+
+        var num = 10;
+        fun();
+        function fun() {
+            console.log(num);
+            var num = 20;
+        }
+        //相当于执行了
+        var num;
+        function fun() {
+            var num;
+            console.log(num);
+            var num = 20;
+        }
+        num =10;
+        fun();
+        
+    </script>
+</body>
+</html>

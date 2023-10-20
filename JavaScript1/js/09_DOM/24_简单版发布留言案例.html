@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            
+        }
+        li {
+            width: 300px;
+            height: 25px;
+            background-color: pink;
+            margin-top: 10px;
+        }
+        a {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <textarea name="" id="" cols="30" rows="10"></textarea>
+    <button>发布</button>
+    
+    <ul>
+        
+    </ul>
+    <script>
+        var btn = document.querySelector('button');
+        var text = document.querySelector('textarea');    
+        var ul = btn.nextElementSibling;
+        btn.onclick = function() {
+            if( text.value == '' ) {
+                alert('您没有输入');
+                return false;
+            } else {
+                var li = document.createElement('li');
+                li.innerHTML = text.value + '<a href="JavaScript:;">删除</a>';
+                // ul.appendChild(li);
+                ul.insertBefore(li,ul.children[0]);
+            }
+            
+            var as = document.querySelectorAll('a');
+            for ( var i = 0; i < as.length; i++) {
+                as[i].onclick = function() {
+                    ul.removeChild(this.parentNode);
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

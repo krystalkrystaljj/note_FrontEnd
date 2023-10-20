@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .search{
+            position: relative;
+            width: 300px;
+            height: 130px;
+            border: 1px solid pink;
+            margin: 100px auto;
+        }
+        .search .con{
+            visibility:hidden;
+
+            width: 170px;
+            
+            margin:10px 40px;
+
+            border: 1px solid rgb(0, 0, 0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0,0,.2);
+            padding: 5px 0;
+            font-style: 18px;
+            left: 20px;
+            color: #333;
+        }
+        .search .con::before{
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 38px;
+            left: 80px;
+
+            border: 8px solid #000;
+            border-style: solid dashed dashed;
+            border-color: #fff transparent transparent;
+        }
+        .search .jd{
+            width: 170px;
+            height: 25px;
+            margin-top: 10px;
+
+            margin:0px 40px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="search">
+        <div class="con">123</div>
+        <input type="text" placeholder="请输入您的快递单号" class="jd">
+    </div>
+
+    <script>
+        var jd = document.querySelector('.jd');
+        var con = document.querySelector('.con');
+        jd.addEventListener('keyup', function() {
+            if(this.value == '' ) {
+                con.style.visibility = 'hidden';
+            } else{
+                
+                con.innerHTML = jd.value;
+                con.style.visibility = 'visible';
+            }
+        })
+
+        jd.addEventListener('blur', function() {
+            con.style.visibility = 'hidden';
+        })
+        jd.addEventListener('focus',function() {
+            if(this.value != '') {
+                con.style.visibility = 'visible';
+            }
+        })
+    </script>
+</body>
+</html>

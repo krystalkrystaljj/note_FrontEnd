@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj = {
+                    name : "孙悟空",
+                    age : 18,
+                    gender : "男",
+                    address : "花果山"
+        };
+        // 枚举对象中的属性
+        // 使用for...in语句
+        /*语法：for(var 变量 in 对象) {
+
+        }
+        for...in语句 对象中有几个属性，循环体就会执行几次
+        n：每次执行都会将对象中的属性的名字赋值给变量
+        obj.n是找n这个属性，而obj这个对象中没有n这个属性
+        obj[n]可以传变量，n的值是name那么就找name的值
+        */
+       for (var n in obj) {
+        console.log("属性名：" + n);
+        console.log(obj[n]);
+       }
+
+       function fun() {
+           console.log("我是fun");
+       }
+       window.fun();
+
+       
+    </script>
+</body>
+</html>

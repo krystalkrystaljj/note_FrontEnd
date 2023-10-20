@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var m = 50;
+        var n = 30;
+        var max = m > n ? m : n;
+        console.log(max);
+
+        var age = 20;
+        var result = age > 18 ? "成年人" : "未成年人";
+        console.log(result);
+
+        // 判断要执行哪一个函数
+        function test1(){
+            console.log("test1");
+        }
+        function test2(){
+            console.log("test2");
+        }
+        var flag = true;
+        flag ? test1() : test2();
+
+        var num = prompt('输入数字');
+        var result = num<10 ? '0'+num:num;
+        alert(result);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var nums = [10, 8, 99, 66, 3];
+        var sum = 0;
+        var avg = 0;
+        var max = nums[0];
+        for (var i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (nums[i] > max) {
+                max = nums[i];
+            }
+        }
+        avg = sum/nums.length;
+        console.log("数组的和：" + sum);
+        console.log("数组的平均值：" + avg);
+        console.log("数组的最大值：" + max);
+
+        for (var i = 0; i < (nums.length/2); i++) {
+            var temp = nums[i];
+            nums[i] = nums[nums.length-1-i];
+            nums[nums.length-1-i] = temp;
+        }
+       console.log(nums);
+
+       //求平均值
+        var arr = [2,6,1,7,4];
+        var sum = 0;
+        var avg = 0;
+        for (var i = 0; i < arr.length; i++) {
+            sum += arr[i];  
+        }
+        avg = sum / arr.length;
+        document.write(sum + '<br>' + avg);
+    </script>
+</body>
+</html>

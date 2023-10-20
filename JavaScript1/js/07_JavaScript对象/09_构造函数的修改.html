@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Person(name,age,gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+        }
+
+        //将sayName方法在全局作用域中定义,污染了全局作用域的命名空间
+        Person.prototype.sayName = function () {
+            alert(this.name);
+        }
+        
+        var pre = new Person("孙悟空", 19, "男");
+        var pre2 = new Person("猪八戒", 19, "男");
+        pre.sayName();
+        console.log(pre); 
+        console.log(pre.sayName == pre2.sayName);
+    </script>
+</body>
+</html>

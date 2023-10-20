@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .adver {
+            position: relative;
+        }
+        .adver .icon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+
+            right: 330px;
+            color: #7D9176;
+            background-color: #2d2d2d;
+            opacity: .3;
+
+            cursor: pointer;
+
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="adver">
+        <img src="https://img12.360buyimg.com/babel/jfs/t1/154136/3/21685/47644/625f7fffE5892571d/aa3d86fa17bb1a0d.jpg.webp" alt="">
+        <i class="icon">×</i>
+    </div>
+
+    <script>
+        var icon = document.querySelector('.icon');
+        var adver = document.querySelector('.adver');
+        icon.onclick = function() {
+            adver.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

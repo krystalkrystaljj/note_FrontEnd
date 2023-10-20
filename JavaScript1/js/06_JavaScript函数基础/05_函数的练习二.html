@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 练习四：定义一个函数，传入n，计算1~n数字的和
+        function calNSum(n) {
+            var sum = 0;
+            for (var i = 1;i <= n; i++) {
+                sum += i;
+            }
+            return sum;
+        }
+        var sum = calNSum(100);
+        console.log(sum);
+
+        // 练习五：定义一个函数，传入一个数组，对数组进行反转
+        var nums = [10, 14, 8, 5, 88,9];
+        function reverseArray(arr) {
+            for (var i = 0; i < arr.length/2; i++) {
+                var temp = arr[i];
+                arr[i] = arr[arr.length-1-i];
+                arr[arr.length-1-i] = temp;
+            }
+            return arr;
+        }
+        var result = reverseArray(nums);
+        console.log(result);
+    </script>
+</body>
+</html>

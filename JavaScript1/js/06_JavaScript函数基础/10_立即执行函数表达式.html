@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // JavaScript不允许直接在一个函数的声明后面跟()执行这个函数
+        function test() {
+            console.log("test函数被调用");
+        }
+
+        // 改进一：对数函数加上()
+        // 特点：执行完后会立即销毁，那么test名称就没有意义,test就可以省略掉
+        // (function() {
+        //     console.log("test1函数被调用");
+        // })()
+
+        // 改进二：将函数和执行的()一起外层加一个()
+        // 特点：执行完后会立即销毁，那么test名称就没有意义,test就可以省略掉
+        (function() {
+            console.log("test3函数被调用");
+        }())
+
+        // 匿名函数表达式
+        var demo = function() {
+            console.log("demo函数被调用")
+        }()
+    </script>
+</body>
+</html>

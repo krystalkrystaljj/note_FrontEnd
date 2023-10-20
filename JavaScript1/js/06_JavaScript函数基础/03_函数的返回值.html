@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function sum(num1, num2) {
+            var result = num1 + num2;
+            console.log(result);
+            return result;
+        }
+        var total = sum(10,20);
+        console.log(total);
+        // 注意一：一旦函数中执行了return操作，那么函数会立即停止，后续的代码不再执行
+        // 注意二：如果函数中没有使用return语句，那么函数有默认的返回值，undefined
+        // 注意三：如果使用了return语句，但是后面没有任何值，那么函数的返回值也是：undefined
+
+    </script>
+</body>
+</html>

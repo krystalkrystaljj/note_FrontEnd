@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 设置原始样式 */
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            text-decoration: none;
+            color: #000;
+        }
+
+        .login-header{
+            text-align: center;
+            cursor: pointer;
+            
+        }
+        body{
+            background-color: #999;
+        }
+
+        /* 登录框 */
+        .login{
+            position: relative;
+            /* position: absolute; */
+            width: 450px;
+            height: 210px;
+            border: 1px solid #000;
+            background-color: #fff;
+            top: 200px;
+            left: 580px;
+            
+
+        }
+        .login .title{
+            display: block;
+            text-align: center;
+            font-size: 19px;
+
+            margin-top: 10px;
+        }
+        .login input{
+            width: 280px;
+            height: 30px;
+        }
+        .login label {
+            margin-left: 20px;
+
+        }
+        .login .login-uname{
+            margin: 10px 0;
+        }
+        .login .login-uname input {
+            margin-left: 16px;
+        }
+        .login-btn{
+            text-align: center;
+        }
+        .login-btn a{
+            display: inline-block;
+            text-align: center;
+            margin-top: 20px;
+
+            border: 1px solid #999;
+            width: 140px;
+            height: 35px;
+            line-height: 35px;
+        }
+        .login .arrow{
+            content: '关闭';
+            display: inline-block;
+            position: absolute;
+            left: 425px;
+            top: -28px;
+
+            border: 1px solid #999;
+            font-size: 16px;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 25px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        
+        
+    </style>
+</head>
+<body>
+    <div class="login-header">点击，弹出登录框</div>
+    
+    <div class="login">
+        <span class="title">登录会员</span>
+        <span class="arrow">关闭</span>
+        <div class="login-s">
+            <div class="login-uname">
+                <label for="">用户名：</label>
+                <input type="text" placeholder="请输入用户名">
+            </div>
+            <div class="login-password">
+                <label for="">登录密码：</label>
+                <input type="text" placeholder="请输入登录密码">
+            </div>
+            <div class="login-btn">
+                <a href="javascript:void(0)">登录</a>
+            </div>
+        </div>
+    </div>
+    <div class="login-bg"></div>
+
+    <script>
+        var arrow = document.querySelector('.arrow');
+        var login = document.querySelector('.login');
+        var logins = document.querySelector('.login-s');
+        console.log(logins);
+        var bodyE = document.body;
+        var login_header= document.querySelector('.login-header');
+        
+        arrow.addEventListener('click',function(){
+            login.style.display = 'none';
+            bodyE.style.backgroundColor = 'white';
+            
+        })
+        login_header.addEventListener('click',function(){
+            login.style.display = 'block';
+            bodyE.style.backgroundColor = '#999';
+        })
+        // var flag = true;
+        // logins.addEventListener('click',function(){
+        //     if(flag) {
+        //         document.addEventListener('mousemove',function(e){
+        //             login.style.left = e.pageX -225 + 'px';
+        //             login.style.top = e.pageY - 105 + 'px';
+        //             flag = false;
+        //         })
+        //     }else {
+        //         login.style.left =580 + 'px';
+        //         login.style.top = 200 + 'px';
+        //         flag = true;
+        //     }
+        // })
+
+        var title = document.querySelector('.title');
+        title.addEventListener('mousedown', function(e){
+            var x = e.pageX - login.offsetLeft;
+            var y = e.pageY - login.offsetTop;
+            console.log('按下');
+            document.addEventListener('mousemove', move);
+
+            function move(e){
+                login.style.top = e.pageY - y + 'px';
+                login.style.left = e.pageX - x + 'px';
+                console.log('移动');
+            }
+
+            document.addEventListener('mouseup',function(){
+                document.removeEventListener('mousemove',move);
+                console.log('松开');
+            })
+        })
+
+
+    
+    </script>
+</body>
+</html>

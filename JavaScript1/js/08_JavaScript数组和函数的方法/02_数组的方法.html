@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var arr =["孙悟空", "猪八戒", "沙和尚"];
+
+        /*  push()：
+            -该方法可以向数组末尾添加一个或多个元素，并且返回新的长度
+            -可以将要添加的元素作为方法的参数传递
+            -该方法会将数组长度作为结果返回
+        */
+       
+       var result = arr.push("唐僧", "蜘蛛精");
+       console.log(arr);
+       console.log(result);
+
+       /*   pop()：
+            -该方法可以山出数组的最后一个元素
+            -并将删除的元素作为返回值返回
+       */
+      result = arr.pop();
+      console.log(arr);
+      console.log(result);
+
+      /*    unshift()
+            -向数组开头添加一个或多个元素，并返回新的数组长度
+      */
+     result = arr.unshift("观音");
+     console.log(arr);
+     console.log(result);
+
+     /* shift()
+        -删除数组第一个元素
+        -并将删除的元素作为返回值返回
+     */
+    /*  forEach()
+        -遍历数组，需要一个函数作为参数
+        -像这种函数，由我们创建但是不由我们调用的，我们称为回调函数
+        -数组中有几个元素函数就会执行几次
+        -浏览器在回调函数中传了三个参数，第一个参数，就是当前正在遍历的元素；
+         第二个参数，就是当前正在遍历的索引；
+         第三个参数，就是正在遍历的数组
+    */
+   arr.forEach(function (value,index){
+       console.log(value,index)
+   });
+    </script>
+</body>
+</html>

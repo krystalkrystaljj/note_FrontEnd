@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // arguments对象：在函数中
+        // 定义一个函数，可以计算传入数据的和
+        // function newSum() {
+        //     var total = 0;
+        //     for (var i = 0; i < arguments.length; i++) {
+        //         // console.log(arguments[i]);
+        //         total += arguments[i]
+        //     }
+        //     return total;
+        // }
+        // console.log(newSum(10, 20, 90));
+
+        function fn() {
+            console.log(arguments);
+            console.log(arguments.length);
+            console.log(arguments[2]);
+        }
+        fn(1,2,3,4);
+    </script>
+</body>
+</html>

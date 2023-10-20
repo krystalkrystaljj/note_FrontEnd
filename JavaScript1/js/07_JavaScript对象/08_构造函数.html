@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //创建一个构造函数
+        // function Person(name, age, gender) {
+        //     this.name = name;
+        //     this.age = age;
+        //     this.gender = gender;
+        //     // 向对象中添加一个方法
+        //     this.sayName = function () {
+        //         alert(this.name);
+        //     }
+        // }
+        // var pre = new Person("孙悟空", 19, "男");
+        // var pre1 = new Person("猪八戒", 19, "男");
+        // console.log(pre);
+        // console.log(pre1);
+        // pre.sayName();
+
+        // function Dog() {
+
+        // }
+        // var dog = new Dog();
+        // console.log(dog instanceof Person);
+        // console.log(pre instanceof Person);
+        // console.log(dog instanceof Object);
+
+        // var obj = {
+        //     colour:'black',
+        //     weight:'800克',
+        //     brand:'惠普',
+        //     seeMovie:function() {
+        //         console.log('看电影')
+        //     },
+        //     listen:function() {
+        //         console.log('听音乐')
+        //     },
+        //     planGame:function(game) {
+        //         console.log(game);
+        //     }
+        // }
+        // obj.planGame('王者荣耀')  
+        
+
+        var button = new Object();
+        button.with = '3px';
+        button.height = '5px';
+        button.colourblack = '黑色';
+        button.click = function() {
+            console.log('点击');
+        }
+        for (var k in button) {
+            console.log(k);
+        }
+
+        
+        
+    </script>
+</body>
+</html>

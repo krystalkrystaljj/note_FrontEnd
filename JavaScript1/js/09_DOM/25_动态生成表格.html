@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 100px auto;
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 1px solid #000;
+            text-align: center;
+            width: 100px;
+        }
+        thead th{
+            
+           
+            background-color: #aaa;
+        }
+        a {
+            text-decoration: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>科目</th>
+                <th>成绩</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <script>
+        var datas = [{
+            name:'卫英络',
+            subject: 'javascript',
+            score: 99
+        }, {
+            name:'富恒',
+            subject: 'c++',
+            score: 90
+        }, {
+            name:'红利',
+            subject: 'pyhon',
+            score: 89
+        },{
+            name:'拉拉',
+            subject: 'pyhon',
+            score: 0
+        }];
+
+        var tbody = document.querySelector('tbody');
+        for (var i = 0; i < datas.length; i++) {
+            var tr = document.createElement('tr');
+            tbody.appendChild(tr);
+
+            // 单元格的列的数量取决于每个对象里面的属性个数 for循环遍历对象 datas[i]
+            for( var k in datas[i]) {
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                td.innerHTML = datas[i][k];
+            }
+
+            // 创建删除单元格
+            var td = document.createElement('td');
+            td.innerHTML = '<a href="JavaScript:;">删除</a>';
+            tr.appendChild(td);
+        }
+
+        var as = document.querySelectorAll('a');
+        
+        for ( var i = 0; i< as.length; i++) {
+            as[i].onclick = function() {
+                tbody.removeChild(this.parentNode.parentNode);
+            }
+        }
+    </script>
+</body>
+</html>

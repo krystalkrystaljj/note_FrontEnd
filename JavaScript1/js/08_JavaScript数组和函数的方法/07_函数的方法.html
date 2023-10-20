@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function fun() {
+            alert(this);
+        }
+        /*  call()和apply()
+            -这两个都是函数对象的方法，需要通过函数对象来调用(fun()是返回值，fun才是对象)
+            -当对函数调用call()和apply()都会调用函数执行
+            -在调用call()和apply()可以将一个对象指定为第一个参数,这个对象将会成为函数执行时的this
+        */
+       var obj = {};
+       fun();
+       fun.call(obj);
+       fun.apply(obj);
+
+        /*作用一致
+         fun.call();
+         fun.apply();
+         fun();*/
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function fib(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            var num1 = 1;
+            var num2 = 1;
+            var sum = num1 + num2;
+            for (var i = 2;i < n; i++) {
+                num1 = num2;
+                num2 = sum;
+                sum = num1 + num2;
+            }
+            return sum;
+        }
+        console.log(fib(0));
+        console.log(fib(1));
+        console.log(fib(2));
+        console.log(fib(3));
+        console.log(fib(4));
+        console.log(fib(5));
+        console.log(fib(6));
+
+        // 递归调用方式
+        /* 开发中尽量避免使用递归
+            1、递归如果没有写好结束条件，意味着会无限调用
+            2、递归调用非常占据栈空间内存（空间复杂度）/效率比较低（时间复杂度）
+        */ 
+        function fibna(n) {
+            if (n === 0 ||n === 1) {
+                return 1;
+            }
+            return (fibna(n-1) + fibna(n-2)); 
+        }
+        console.log(fibna(0));
+        console.log(fibna(1));
+        console.log(fibna(2));
+        console.log(fibna(3));
+        console.log(fibna(4));
+        console.log(fibna(5));
+        console.log(fibna(6));
+
+        function test01() {
+            console.log("test01被调用");
+            test02();
+        }
+        function test02() {
+            console .log("test02被调用");
+        }
+        
+        test01();
+    </script>
+</body>
+</html>

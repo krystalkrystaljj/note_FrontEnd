@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="demo" index="1" class="nav"></div>
+    <script>
+        var div = document.querySelector('div');
+        console.log(div.id);
+        console.log(div.getAttribute('index'));
+        div.id = 'test';
+        console.log(div.id);
+        div.setAttribute('index', '10');
+        console.log(div.getAttribute('index'));
+
+        div.className = 'navs';
+        console.log(div.className);
+
+        div.setAttribute('class', 'navs_s');
+        console.log(div.getAttribute('class')); //class特殊这里不是className
+
+        // div.removeAttribute('index');
+    </script>
+</body>
+</html>

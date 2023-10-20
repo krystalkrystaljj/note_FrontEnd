@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var num =123;
+        var obj = null;
+        var message = undefined;
+        var flag = true;
+
+        // 转换方式一：变量.toString();
+        console.log(num.toString());
+        // console.log(obj.toString());null不适用
+        // console.log(message.toString());undefined不适用
+        console.log(flag.toString());
+
+        // 转换方式二：String(变量)
+        console.log(String(num));
+        console.log(String(obj));
+        console.log(String(message));
+        console.log(String(flag));
+
+        //转换方式三：和字符串进行拼接：变量 + ""
+        // 隐式转换：其他的数据类型再和字符串通过+运算符进行拼接时，会自动转换成字符串类型
+        console.log(num + "");
+        console.log(obj + "");
+        console.log(message + "");
+        console.log(flag + "");
+    </script>
+</body>
+</html>

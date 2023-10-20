@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        ul,li{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+        }
+        a{
+            text-decoration: none;
+            color: #000;
+        }
+      
+        .nav {
+            position: absolute;
+            top: 10px;
+            left: 300px;
+        }
+        .nav>li {
+            float: left;
+            width: 100px;
+            
+        }
+        .nav ul {
+            display: none;
+            border-left: 1px solid #FECC5B;
+            border-right: 1px solid #FECC5B;
+        }
+
+        .nav>li a {
+            padding: 0 16px;
+            display: block;
+        }
+        .nav ul li {
+            padding: 0 15px;
+            border-bottom: 1px solid #FECC5B;
+        }
+
+        .nav>li>a:hover {
+            background-color: #bbb;
+        }
+        .nav ul li:hover {
+            background-color: #FECC5B;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <li>
+            <a href="#">微博</a>
+            <ul>
+                <li>私信</li>
+                <li>评论</li>
+                <li>@我</li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">博客</a>
+            <ul>
+                <li>博客评论</li>
+                <li>未读提醒</li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">邮箱</a>
+            <ul>
+                <li>免费邮箱</li>
+                <li>VIP邮箱</li>
+                <li>企业邮箱</li>
+                <li>新浪邮箱客户端</li>
+            </ul>
+        </li>
+    </div>
+
+    <script>
+        // var lis = document.querySelectorAll('.nav>li');
+        var nav = document.querySelector('.nav');
+        var lis = nav.children;
+
+        for ( var i = 0 ; i < lis.length; i++) {
+            lis[i].onmouseover = function() {
+                 this.children[1].style.display = 'block';
+            }
+            lis[i].onmouseout = function() {
+                this.children[1].style.display = 'none';
+            }
+        }
+        
+    </script>
+</body>
+</html>
