@@ -107,7 +107,7 @@ Google爬虫的工作流程分为三个阶段，并非每个网页都会经历�
 
 
 
-## 2. SSR渲染原理
+## 3. SSR渲染原理
 
 ## 服务器端渲染（SSR）
 
@@ -552,7 +552,7 @@ Nuxt3版本：
 
 
 
-Nuxt3特点
+#### Nuxt3特点
 
 Vue技术栈 
 
@@ -584,7 +584,7 @@ Vue技术栈
 
 
 
-nuxt3环境搭建
+#### nuxt3环境搭建
 
 在开始之前，请确保您已安装推荐的设置： 
 
@@ -644,43 +644,30 @@ nuxt3环境搭建
 
 
 
-Nuxt配置（nuxt.config）
+#### Nuxt配置（nuxt.config）
 
 nuxt.config.ts 配置文件位于项目的根目录，可对Nuxt进行自定义配置。比如，可以进行如下配置： 
 
+##### runtimeConfig
+
 + runtimeConfig：运行时配置，即**定义环境变量** 
   +  可通过.env文件中的环境变量来覆盖，优先级（.env > runtimeConfig） 
-    + .env的变量会打入到process.env中，符合规则的会覆盖runtimeConfig的变量 
+    + **.env的变量会打入到process.env中，符合规则的会覆盖runtimeConfig的变量** 
     +  .env一般用于某些终端启动应用时动态指定配置，同时支持dev和pro 
-+ appConfig： 应用配置，定义在构建时确定的公共变量，如：theme 
-  +  配置会和 app.config.ts 的配置合并（优先级 app.config.ts > appConfig） 
-+ app：app配置 
-  + head：给每个页面上设置head信息，也支持 useHead 配置和内置组件。 
-+ ssr：指定应用渲染模式 
-+ router：配置路由相关的信息，比如在客户端渲染可以配置hash路由 
-+ alias：路径的别名，默认已配好 
-+ modules：配置Nuxt扩展的模块，比如：@pinia/nuxt @nuxt/image 
-+ routeRules：定义路由规则，可更改路由的渲染模式或分配基于路由缓存策略（公测阶段） 
-
-+ builder：可指定用 vite 还是 webpack来构建应用，默认是vite。如切换为 webpack 还需要安装额外的依赖。
 
 
 
-nuxt.config.ts文件中
++ 在nuxt.config.ts文件中，而public中的数据可以在服务端和客户端访问
 
 ![image-20231020092509973](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231020092509973.png)
 
 
 
-.env文件(一般开发或部署环境下会用到)
-
-
-
-+ .env文件不会参与打包，之会在运行环境下执行，方便修改开发环境配置
++ .env文件不会参与打包，之会在运行环境下执行，方便修改开发环境配置(一般开发或部署环境下会用到)
 
 + 在运行时手动添加一个环境变量
 
-```
+```.env
 NUXT_APP_KEY = "DDDD"
 NUXT_PUBLIC_BASE_URL="https://localhost"
 
@@ -692,7 +679,11 @@ PORT=9090
 
 
 
-App.vue文件中
+
+
+
+
++ App.vue文件中,可通过process判断当前代码的执行环境
 
 ```vue
 <script setup>
@@ -706,8 +697,6 @@ if (process.server) {
 }
 </script>
 ```
-
-
 
 ```js
 // 是否包含window这个对象
@@ -731,34 +720,232 @@ if (process.client) {
 
 
 
+##### appConfig
+
++ appConfig： 应用配置，定义在构建时确定的公共变量，如：theme 
+  +  配置会和 **app.config.ts**文件 的配置合并（**优先级 app.config.ts > appConfig**） 
+
+```ts
+  // 2.定义应用的配置
+  appConfig: {
+    title: "Hello Nuxt3 tjj",
+    theme: {
+      primary: "yellow",
+    },
+  },
+```
 
 
 
+**app**
 
-应用配置（app.config）
++ app：app配置 
+  + head：给每个页面上设置head信息，也支持 **useHead 配置**和**内置组件**。 
 
-+ Nuxt 3 提供了一个 app.config.ts 应用配置文件，用来定义在构建时确定的公共变量，例如：  网站的标题、主题色 以及任何不敏感的项目配置
+```ts
+// 3.app 配置
+  app: {
+    // 给app所有的页面的head添加的配置(SEO, 添加外部的资源)
+    head: {
+      title: "HYKJ",
+      charset: "UTF-8",
+      viewport:
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no",
+      meta: [
+        {
+          name: "keywords",
+          content: "弘源科教 hykj",
+        },
+        {
+          name: "description",
+          content: "手机商城 hykj",
+        },
+      ],
+      link: [
+        {
+          rel: "shortcut icon",
+          href: "favicon.ico",
+          type: "image/x-icon",
+        },
+      ],
+      style: [
+        {
+          children: `body{ color: red; }`,
+        },
+      ],
+      script: [
+        {
+          src: "http://codercba.com",
+        },
+      ],
+    },
+  },
+```
 
-+ app.config.ts 配置文件中的选项不能使用env环境变量来覆盖，与 runtimeConfig 不同 
++ useHead配置
 
-+ 不要将秘密或敏感信息放在 app.config.ts 文件中，该文件是客户端公开
+```ts
+// 4.动态的该app所有的页面添加 head的内容
+useHead({
+  title: "app useHead", // Ref
+  bodyAttrs: {
+    class: "liujun",
+  },
+  meta: [
+    {
+      name: "dsec",
+      content: "广州弘源科教 hy kj",
+    },
+  ],
+  style: [],
+  link: [],
+  // script: [
+  //   {
+  //     src: "http://liujun.com",
+  //     body: true,
+  //   },
+  // ],
+});
+```
+
++ 内置组件
+
+![image-20231023103801199](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023103801199.png)
 
 
 
-runtimeConifg vs app.config
++ **ssr**：指定应用渲染模式 
+
+```
+ssr: false,//spa渲染模式
+```
+
+
+
++ **router**：配置路由相关的信息，比如在客户端渲染可以配置hash路由 
++ **alias**：路径的别名，默认已配好 
++ **modules**：配置Nuxt扩展的模块，比如：@pinia/nuxt @nuxt/image 
++ **routeRules**：定义路由规则，可更改路由的渲染模式或分配基于路由缓存策略（公测阶段） 
+
++ **builder**：可指定用 vite 还是 webpack来构建应用，默认是vite。如切换为 webpack 还需要安装额外的依赖。
+
+
+
+### 应用配置（app.config）
+
++ Nuxt 3 提供了一个 app.config.ts 应用配置文件，用来定义**在构建时确定的公共变量**，例如：
+  + 网站的标题、主题色 以及任何不敏感的项目配置
+
++ **app.config.ts 配置文件中的选项不能使用env环境变量来覆盖，与 runtimeConfig 不同** 
+
++ 不要将**秘密或敏感信息**放在 app.config.ts 文件中，该文件是客户端公开
+
+
+
+#### runtimeConifg vs app.config
 
 runtimeConfig 和 app.config都用于向应用程序公开变量。要确定是否应该使用其中一种，以下是一些指导原则： 
 
-+ runtimeConfig：定义环境变量，比如：运行时需要指定的私有或公共token。 
-+ app.config：定义公共变量，比如：在构建时确定的公共token、网站配置。
++ runtimeConfig：**定义环境变量**，比如：**运行时**需要指定的私有或公共token。 
++ app.config：**定义公共变量**，比如：在**构建时**确定的公共token、网站配置。
 
-
+![image-20231023110929827](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023110929827.png)
 
 Nuxt3 内置组件
 
+Nuxt3 框架也提供一些内置的组件，常用的如下： 
+
++ **SEO组件**： Html、Body、Head、Title、Meta、Style、Link、NoScript、Base  NuxtWelcome：欢迎页面组件，该组件是 @nuxt/ui的一部分 
++ **NuxtLayout**：是 Nuxt 自带的页面布局组件
++ **NuxtPage**：是 Nuxt 自带的页面占位组件
+  + 需要显示位于目录中的顶级或嵌套页面 pages/ 
+  +  是对 router-view 的封装 
+
+![image-20231023164425675](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023164425675.png)
+
++ **ClientOnly**：该组件中的默认插槽的内容只在客户端渲染 
+  + 而fallback插槽的内容只在服务器端渲染 
+
+```vue
+    <ClientOnly fallback-tag="h3" fallback="loading">
+      <div>我只会在客户端渲染</div>
+    </ClientOnly>
+```
+
+```vue
+    <ClientOnly>
+      <div>我只会在 client 渲染</div>
+      <template #fallback>
+        <h2>服务器端渲染的 loading 页面</h2>
+      </template>
+    </ClientOnly>
+```
 
 
-+ 
+
++ **NuxtLink**：是 Nuxt 自带的页面导航组件 
+  +  是 Vue Router组件 和 HTML标签的封装。 
+
+
+
+### 全局样式
+
+![image-20231023190524063](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023190524063.png)
+
+![image-20231023190605978](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023190605978.png)
+
+编写全局样式步骤 
+
+1. 在assets中编写全局样式，比如：globel.scss 
+2. 接着在nuxt.config中的css选项中配置 
+3. 接着执行npm i –D sass 即可 
+
+
+
+定义全局变量步骤 
+
+1. 在assets中编写全局样式变量，比如：_colors.scss 
+2. 接着在nuxt.config中的vite选项中配置 
+3. 然后就可以在任意组件中或scss文件中直接使用全局变量
+
+
+
++ 方式一手动导入
+
+```vue
+<style scoped lang="scss">
+/* 1.手动导入全局样式 */
+@import "@/assets/styles/variables.scss";
+/*2.方式二*/
+@use "~/assets/styles/variables.scss" as bv;
+@use "~/assets/styles/variables.scss" as *;
+
+.local-style {
+  color: pink;
+  font-size: $fs20;
+  @include border();
+}
+</style>
+```
+
++ 方式二自动导入
+
+![image-20231023204659545](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023204659545.png)
+
+```ts
+vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // 自动的给  scss 模块首行添加额外的数据:@use "@/assets/styles/variables.scss" as *;
+          additionalData: '@use "@/assets/styles/variables.scss" as *;',
+        },
+      },
+    },
+  },
+```
+
+
 
 
 
