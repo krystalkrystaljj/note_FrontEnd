@@ -859,7 +859,7 @@ Nuxt3 框架也提供一些内置的组件，常用的如下：
 + **NuxtLayout**：是 Nuxt 自带的页面布局组件
 + **NuxtPage**：是 Nuxt 自带的页面占位组件
   + 需要显示位于目录中的顶级或嵌套页面 pages/ 
-  +  是对 router-view 的封装 
+  +  **是对 router-view 的封装** 
 
 ![image-20231023164425675](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023164425675.png)
 
@@ -894,7 +894,7 @@ Nuxt3 框架也提供一些内置的组件，常用的如下：
 
 ![image-20231023190605978](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231023190605978.png)
 
-编写全局样式步骤 
+#### 编写全局样式步骤 
 
 1. 在assets中编写全局样式，比如：globel.scss 
 2. 接着在nuxt.config中的css选项中配置 
@@ -902,7 +902,7 @@ Nuxt3 框架也提供一些内置的组件，常用的如下：
 
 
 
-定义全局变量步骤 
+#### 定义全局变量步骤 
 
 1. 在assets中编写全局样式变量，比如：_colors.scss 
 2. 接着在nuxt.config中的vite选项中配置 
@@ -947,6 +947,238 @@ vite: {
 
 
 
+#### 资源导入
 
+public目录 
+
++ 用作静态资产的公共服务器，可在应用程序上直接通过 URL 直接访问 
++ 比如：引用public/img/ 目录中的图像文件 
+  + 在静态 URL 中可用 /img/nuxt.png，如右图 
+  + 静态的URL也支持在背景中使用 
+
+```vue
+    <!-- public资源的访问 -->
+    <img src="/images/user.png" alt="" />
+    <div class="bg-public"></div>
+```
+
+```css
+.bg-public {
+  width: 200px;
+  height: 200px;
+  border: 1px solid red;
+  background-image: url(/images/user.png);
+}
+```
+
+
+
+assets目录 
+
++ assets经常用于存放如样式表、字体或 SVG的资产 
++ 可以使用 ~/assets/ 路径引用位于assets目录中的资产文件
++ ~/assets/ 路径也支持在背景中使用
+
+```vue
+<template>
+  <div>
+    <!-- assets资源的访问 -->
+    <img src="~/assets/images/avatar.png" alt="" />
+    <img src="@/assets/images/avatar.png" alt="" />
+    <img :src="ImgFeel" alt="" />
+    <div class="bg-assets"></div>
+    <NuxtPage></NuxtPage>
+  </div>
+</template>
+
+<script setup>
+import ImgFeel from "@/assets/images/feel.png";
+</script>
+
+<style>
+.bg-assets {
+  width: 200px;
+  height: 200px;
+  border: 1px solid red;
+  background-image: url(@/assets/images/feel.png);
+}
+</style>
+```
+
+
+
+字体图标
+
+字体图标使用步骤 
+
+1. 将字体图标存放在assets目录下 
+
+2. 字体文件可以使用 ~/assets/ 路径引用。 
+3. ![image-20231024095528954](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231024095528954.png)
+4. 在nuxt.config配置文件中导入全局样式 
+
+![image-20231024095008881](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231024095008881.png)
+
+4. 在页面中就可以使用字体图标了
+
+```html
+    <!-- 字体图片的使用 -->
+    <i class="iconfont icon-cart"></i>
+    <i class="iconfont icon-edit"></i>
+```
+
+
+
+
+
+
+
+Nuxt项目中的页面是在 pages目录 下创建的 
+
+在pages目录创建的页面，Nuxt会根据该页面的目录结构和其文件名来自动生成对应的路由。 
+
+页面路由也称为文件系统路由器（file system router），路由是Nuxt的核心功能之一 
+
+新建页面步骤 
+
+1. 创建页面文件，比如： pages/index.vue 
+2. 将内置组件添加到 app.vue 
+3. 页面如果使用scss那么需要安装：npm i sass -D 
+
+命令快速创建页面 
+
++ npx nuxi add page home # 创建home页面 
++ npx nuxi add page detail/[id] # 创建detail页面 
++ npx nuxi add page user-[role]/[id] # 创建user页面
+
+
+
+
+
+是Nuxt内置组件，**是对 RouterLink 的扩展**，用来实现页面的导航。 
+
++ 该组件底层是一个标签，因此使用 a + href 属性也支持路由导航 
++ 但是用a标签导航会有触发浏览器默认刷新事件，而 NuxtLink 不会，NuxtLink还扩展了其它的属性和功能 
+
+**应用Hydration后（已激活，可交互），页面导航会通过前端路由来实现。这可以防止整页刷新** 
+
+当然，手动输入URL后，点击刷新浏览器也可导航，这会导致整个页面刷新 
+
+NuxtLink 组件属性： 
+
++ to：支持路由路径、路由对象、URL 
++ href：to的别名  activeClass：激活链接的类名 
++ target：和a标签的target一样，指定何种方式显示新页面等
+
+
+
+
+
+### 编程导航
+
+Nuxt3除了可以通过内置组件来实现导航，同时也支持编程导航：navigateTo 。 
+
+通过编程导航，在应用程序中就可以轻松实现动态导航了，但是编程导航不利于SEO。 
+
+navigateTo 函数在服务器端和客户端都可用，也可以在插件、中间件中使用，也可以直接调用以执行页面导航，例如： 
+
++ 当用户触发该goToProfile()方法时，我们通过navigateTo函数来实现动态导航。 
++ 建议： goToProfile方法总是返回 navigateTo 函数（该函数不需要导入）或 返回异步函数 
+
+navigateTo( to , options) 函数: 
+
++ to: 可以是纯字符串 或 外部URL 或 路由对象，如右图所示： 
+
++ options: 导航配置，可选 
+  + replace：默认为false，为true时会替换当前路由页面 
+  + external：默认为false，不允许导航到外部连接，true则允许
+  +  等等
+
+
+
+
+
+Nuxt3z中的编程导航除了可以通过 navigateTo 来实现导航，同时也支持 useRouter ( 或 Options API 的 this.$router ) 
+
+useRouter常用的API 
+
++ back：页面返回，和 一样 router.go(-1) 
++ forward：页面前进，同 router.go(1) 
++ go：页面返回或前进，如 router.go(-1) or router.go(1) 
++ push：以编程方式导航到新页面。建议改用 navigateTo 。支持性更好 
++ replace：以编程方式导航到新页面，但会替换当前路由。建议改用 navigateTo 。支持性更好  beforeEach：路由守卫钩子，每次导航前执行（用于全局监听） 
++ afterEach：路由守卫钩子，每次导航后执行（用于全局监听）
+
+
+
+
+
+动态路由
+
+Nuxt3 和 Vue一样，也是支持动态路由的，只不过在Nuxt3中，动态路由也是根据目录结构和文件的名称自动生成。 
+
+动态路由语法： 
+
++ 页面组件目录 或 页面组件文件都 支持 [ ] 方括号语法 
++ 方括号里编写动态路由的参数。 
+
+例如，动态路由 支持如下写法： 
+
++ pages/detail/[id].vue -> /detail/:id 
++ pages/detail/user-[id].vue -> /detail/user-:id 
++ pages/detail/[role]/[id].vue -> /detail/:role/:id 
++ pages/detail-[role]/[id].vue -> /detail-:role/:id 
+
+注意事项： 
+
++ 动态路由 和 index.vue 不能同时存在， Next.js则可以
+
+
+
+#### 路由参数
+
+动态路由参数 
+
+1. 通过 [] 方括号语法定义动态路由，比如：/detail/[id].vue 
+2. 页面跳转时，在URL路径中传递动态路由参数，比如：/detail/10010 
+3. 目标页面通过 route.params 获取动态路由参数 
+
+查询字符串参数 
+
+1. 页面跳转时，通过查询字符串方式传递参数，比如：/detail/10010?name=liujun 
+2. 目标页面通过 route.query 获取查询字符串参数
+
+#### 404Page
+
+ 捕获所有不配路由（即 404 not found 页面） 
+
++ 通过在方括号内添加三个点 ，如：[...slug].vue 语法，其中slug可以是其它字符串。 
++ 除了支持在 pages根目录下创建，也支持在其子目录中创建。 
++ Nuxt3正式版不支持404.vue页面了，以前的候选版是支持的404.vue，但是Next.js是支持。
+
+
+
+#### 路由匹配规则
+
+路由匹配需注意的事项 
+
+预定义路由优先于动态路由，动态路由优先于捕获所有路由。请看以下示例： 
+
+1. 预定义路由：pages/detail/create.vue ➢ 将匹配 /detail/create ✓
+2.  动态路由：pages/detail/[id].vue ➢ 将匹配/detail/1, /detail/abc 等。 ➢ 但不匹配 /detail/create 、/detail/1/1、/detail/ 等 ✓ 
+3. 捕获所有路由：pages/detail/[...slug].vue ➢ 将匹配 /detail/1/2, /detail/a/b/c 等。 ➢ 但不匹配 /detail 等
 
 + npx和npm的区别
+
+
+
+#### 嵌套路由
+
+Nuxt 和 Vue一样，也是支持嵌套路由的，只不过在Nuxt中，嵌套路由也是根据目录结构和文件的名称自动生成。 
+
+编写嵌套路由步骤： 
+
+1. 创建一个一级路由，如：parent.vue 
+2. 创建一个与一级路由同名同级的文件夹，如： parent 
+3. 在parent文件夹下，创建一个嵌套的二级路由 ✓ 如：parent/child.vue， 则为一个二级路由页面 ✓ 如： parent/index.vue 则为二级路由默认的页面 
+4. 需要在parent.vue中添加 NuxtPage 路由占位
