@@ -29,16 +29,47 @@ Nuxt 提供了一个可定制的 **路由中间件**，用来**监听路由的�
 
 + 匿名（或内联）路由中间件 
   + 在页面中使用 **definePageMeta 函数**定义，可监听局部路由。当注册多个中间件时，会按照注册顺序来执行。 
+
+```ts
+definePageMeta({
+  // l路由中间件，监听路由
+  middleware: [
+    function (to, from) {
+      // console.log(to);
+      // console.log(from);
+      console.log("index 第一个中间件");
+      // 如果返回的是null或没有返回语句，则直接执行下一个中间件
+      // 如果返回的是navigateTo，直接导航到新的页面
+      return navigateTo("/detail02");
+      // return abortNavigation("终止导航");
+    },
+    function (to, from) {
+      // console.log(to);
+      // console.log(from);
+      console.log("index 第二个中间件");
+    },
+    "home",
+  ],
+});
+```
+
+
+
 + 命名路由中间件 
   + 在 **middleware 目录**下定义，并会自动加载中间件。命名规范 kebab-case） 
+
+![image-20231027092129014](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231027092129014.png)
+
 + 全局路由中间件（优先级比前面的高，支持两端） 
   + 在**middleware 目录**中，**需带.global后缀**的文件，每次路由更改都会自动运行。
+
+![image-20231027092402674](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231027092402674.png)
 
 
 
 ### 路由验证
 
-Nuxt支持对每个页面路由进行验证，我们可以通过definePageMeta中的validate属性来对路由进行验证。 
+Nuxt支持对**每个页面路由进行验证**，我们可以通过**definePageMeta**中的**validate属性**来对路由进行验证。 
 
 + validate属性接受一个回调函数，回调函数中以 route 作为参数 
 + 回调函数的返回值支持： 
@@ -48,3 +79,46 @@ Nuxt支持对每个页面路由进行验证，我们可以通过definePageMeta�
 路由验证失败，可以自定义错误页面： 
 
 + 在项目根目录（不是pages目录）新建 error.vue
+
+
+
++ [id].vue页面下
+
+```ts
+definePageMeta({
+  // 路由参数的验证
+  validate: (route) => {
+    console.log(route.params.id);
+    // return /^\d+$/.test(route.params.id as string);
+
+    return {
+      statusCode: 401, // 路由验证失败
+      statusMessage: "validata router error",
+    };
+  },
+});
+```
+
++ error页面
+
+```vue
+<template>
+  <div>
+    Error Page {{ error }}
+    <div>
+      <button @click="goHome">Home</button>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+const props = defineProps({
+  error: Object,
+});
+
+function goHome() {
+  clearError({ redirect: "/" });
+}
+</script>
+```
+
