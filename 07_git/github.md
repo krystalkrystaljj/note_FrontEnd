@@ -1,16 +1,18 @@
+# 一、git的使用
+
+## 1 版本控制
+
+### 1.1 集中式与分布式
+
 集中式版本控制（Centralized Version Control System，简称CVCS）
 
 + 它们的主要特点式单一的**集中管理的服务器，保存所有文件的修订版本**
 + 协同开发人员通过客户端**连接到这台服务器，取出最新的文件或者提交更新**
 
-
-
 核心问题：**中央服务器不能出故障**
 
 + 如果宕机一小时，那么在这一小时之内谁也无法提交更新
 + 如果中心数据库所在的磁盘发生损坏，又没有做恰当备份，那么会丢失所有数据
-
-
 
 
 
@@ -22,25 +24,25 @@ git是属于分布式版本控制系统（Distributed Version Control System，�
 + 任何一处协同工作用的**服务器发生故障**，事后都**可以用任何一个镜像出来的本地仓库恢复**
 + 因为每一次的克隆操作，都是**对代码仓库的完整备份**
 
-
-
-集中式就是将我们的仓库都放在服务器上面，而分布式则是每台电脑上都有一个仓库，可以在本地提交，将本地的仓库同步到远程服务器上
+（集中式就是将我们的仓库都放在服务器上面，而分布式则是每台电脑上都有一个仓库，可以在本地提交，将本地的仓库同步到远程服务器上）
 
 
 
-Bash – CMD – GUI 区别
+## 2 git环境安装与搭建
 
-Bash，Unix shell的一种，Linux与Mac OS X都将它作为默认shell
+### 2.1 Bash – CMD – GUI 区别
+
+**Bash**，Unix shell的一种，Linux与Mac OS X都将它作为默认shell
 
 + Git Bash就是一个shell，是**Windows下的命令工具**，可以**执行Linux命令**
 + Git Bash是基于CMD的，在CMD的基础上增添一些新的命令与功能
 
-Git CMD 
+**Git CMD** 
 
 + 命令行提示符（CMD）是 Windows 操作系统上的命令行解释程序； 
 + 当你在 Windows 上安装 git 并且习惯使用命令行时，可以使用 cmd 来运行 git 命令；
 
- Git GUI 
+ **Git GUI** 
 
 + 基本上针对那些不喜欢黑屏（即命令行）编码的人； 
 + 它提供了一个图形用户界面来运行 git 命令； 
@@ -51,18 +53,18 @@ Git的配置分类
 
 
 
+## 3 git记录本地仓库的变化
 
-
-### 获取Git仓库 – git init/git clone
+### 3.1 获取Git仓库 – git init/git clone
 
 + 通过git来管理源代码，那么本地也需要有一个Git仓库
 
 通常有两种获取Git仓库的方式
 
-+ 初始化一个Git仓库，并且将当前的项目文件添加到Git仓库中（目前很多的脚手架在创建项目时都会默认创建一个Git仓库）
-+ 从其他服务器克隆（clone）一个已经存在的Git仓库
++ 方式一：初始化一个Git仓库，并且将当前的项目文件添加到Git仓库中（目前很多的脚手架在创建项目时都会默认创建一个Git仓库）
++ 方式二：从其他服务器克隆（clone）一个已经存在的Git仓库
 
-方式一：初始化git仓库
+方式一：**初始化git仓库**
 
 + 该命令将创建一个名为.git的子目录，这个子目录含有初始化的GIt仓库中所有的必须文件，这些文件是Git仓库的核心
 + 这时仅仅做了一个初始化的操作，仓库中的文件还没有被跟踪
@@ -71,17 +73,15 @@ Git的配置分类
 git init
 ```
 
-方式二：从远程仓库克隆
+方式二：**从远程仓库克隆**
 
 ```
-git clone ....
+git clone url
 ```
 
 
 
-
-
-### 文件的状态划分
+### 3.2 文件的状态划分
 
 现在我们的电脑上已经有一个Git仓库： 
 
@@ -105,19 +105,17 @@ git add .
 + **unmodified**：commit命令，可以将staged中文件提交到Git仓库
 + **Modified**：修改了某个文件后，会处于Modified状态
 
-![image-20231114170957070](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231114170957070.png)
+![image-20231117085640733](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231117085640733.png)
 
 
 
-
-
-### 检测文件的状态 - git status
+### 3.3 检测文件的状态 - git status
 
 
 
-![image-20231115085801434](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231115085801434.png)
+![image-20231117085821932](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231117085821932.png)
 
-Untracked files：未跟踪的文件 
+**Untracked files：未跟踪的文件** 
 
 + 未跟踪的文件意味着 Git 在之前的提交中没有这些文件； 
 + Git 不会自动将之纳入跟踪范围，除非你明明白白地告诉它“我需要跟踪该文件”；
@@ -131,9 +129,7 @@ git status --short
 
 
 
-
-
-### 文件添加到暂存区 – git add
+### 3.4 文件添加到暂存区 – git add
 
 跟踪新文件的命令
 
@@ -145,15 +141,19 @@ git add aaa.js
 
 跟踪修改的文件命令
 
-+ 如果已经跟踪了某一个文件，这hi和修改了文件也需要重新添加到暂存区中
++ 如果已经跟踪了某一个文件，这和修改了文件也需要重新添加到暂存区中
 
 通过一下命令将所有文件添加到暂存区中：
 
+```
 git add .
+```
 
 
 
-### git忽略文件
+
+
+### 3.5 git忽略文件
 
 一般我们总会有些文件无需纳入 Git 的管理，也不希望它们总出现在 未跟踪文件列表。 
 
@@ -167,13 +167,11 @@ git add .
 + 包括一些日志文件； 
 + 包括一些编辑器自动生成的文件；
 
-![image-20231115090256738](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231115090256738.png)
+![image-20231117085741403](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231117085741403.png)
 
 
 
-
-
-### 文件更新提交 – git commit
+### 3.6 文件更新提交 – git commit
 
 暂缓区已经准备就绪，可以进行提交了
 
@@ -191,7 +189,7 @@ git commit -a -m “修改了bbb文件”
 
 
 
-### Git的校验和
+### 3.7 Git的校验和
 
 Git 中所有的数据在存储前都计算校验和，然后以**校验和** 来引用。 
 
@@ -200,11 +198,11 @@ Git 中所有的数据在存储前都计算校验和，然后以**校验和** �
 
 校验和也可以认为是commit id，用来唯一标识此次提交
 
-想通过这次提交来查看修改过哪些文件，校验和就是一个索引
+如果想通过这次提交来查看修改过哪些文件，校验和就是一个索引
 
 
 
-### 查看提交的历史 – git log
+### 3.8 查看提交的历史 – git log
 
 在提交了若干更新，又或者克隆了某个项目之后，有时候我们想要查看一下所有的历史提交记录。 
 
@@ -234,7 +232,7 @@ git log --pretty=oneline --graph
 
 
 
-### 版本回退 – git reset
+### 3.9 版本回退 – git reset
 
 如果想要进行版本回退，我们需要先知道目前处于哪一个版本：**Git通过HEAD指针记录当前版本**。 
 
@@ -271,7 +269,9 @@ git reflog
 
 
 
-## 什么是远程仓库
+## 4 git远程仓库和验证
+
+### 4.1 什么是远程仓库
 
 什么是**远程仓库（Remote Repository）**呢？
 
@@ -292,7 +292,9 @@ git reflog
 
 一台服务器（云服务器），通过一些软件搭建git服务器，然后在git服务器上搭建远程仓库
 
-## 远程仓库的验证
+
+
+### 4.2 远程仓库的验证
 
 常见的远程仓库有哪些呢？目前比较流行使用的是三种： 
 
@@ -313,7 +315,7 @@ git reflog
 
 
 
-### 远程仓库的验证 – 凭证
+### 4.3 远程仓库的验证 – 凭证
 
  因为本身HTTP协议是无状态的连接，所以每一个连接都需要用户名和密码： 
 
@@ -332,7 +334,7 @@ git reflog
 
 
 
-### 远程仓库的验证 – SSH密钥
+### 4.4 远程仓库的验证 – SSH密钥
 
 **Secure Shell（安全外壳协议，简称SSH）**是一种加密的网络传输协议，可在**不安全的网络中为网络服务提供安全的传输环境**。 
 
@@ -361,7 +363,7 @@ ssh-keygen -t rsa -b 2048 -C “your email"
 
 
 
-### 管理远程服务器
+### 4.5 管理远程服务器
 
 查看远程地址：比如我们之前从GitHub上clone下来的代码，它就是有自己的远程仓库的： 
 
@@ -376,24 +378,103 @@ git reomte -v #查看本地远程仓库的详细信（verbose冗长的）
 
 ```
 git remote add <shortname> <url>
+git remote add gitlab http://152.136.185.210:7888/coderwhy/gitremotedemo.git
 ```
 
 ![image-20231115163649707](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231115163649707.png)
 
-重命名远程地址： 
+重命名远程地址： 	
 
-移除远程地址： 管理远程服务器 git remote git remote –v -v是—verbose的缩写(冗长的) git remote add   git remote add gitlab http://152.136.185.210:7888/coderwhy/gitremotedemo.git
+```
+git remote rename gitlab glab
+```
 
-git fetch 仅仅将东西拿下来，存放在git仓库上，并不能在文件上看见，要再进行git merge命令才能看见
+移除远程地址： 
+
+```
+git remote remove gitlab
+```
+
+（git fetch 仅仅将东西拿下来，存放在git仓库上，并不能在文件上看见，要再进行git merge命令才能看见）
 
 
 
 
 
+### 4.6 本地分支的上游分支（跟踪分支）
+
+问题一：当前分支没有track的分支 
+
+![image-20231117092029571](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231117092029571.png)
+
+原因：当前分支没有和远程的origin/master分支进行跟踪
+
++ 在没有跟踪的情况下，我们直接执行pull操作的时候必须指定**从哪一个远程仓库中的哪一个分支中获取内容；** 
+
+![image-20231116140108443](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231116140108443.png)
+
+**如果我们想要直接执行git fetch是有一个前提的：必须给当前分支设置一个跟踪分支：**
+
+```
+git branch --set-upstream-to=origin/master
+```
 
 
-就会加快离开家解开了‘；记录空间链接离开了 ；’
+
+![image-20231116140343451](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231116140343451.png)
+
+本地仓库默认有很多分支，远程仓库也是如此
 
 
 
-就看见了了
+### 拒绝合并不相干的历史
+
+问题二：合并远程分支时，拒绝合并不相干的历史
+
+![image-20231117100506957](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231117100506957.png) 
+
+原因：我们将两个不相干的分支进行了合并： 
+
++ https://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories-on-rebase 
++ 简单来说就是：过去git merge允许将两个没有共同基础的分支进行合并，这导致了一个后果：新创建的项目可能被一个毫不 怀疑的维护者合并了很多没有必要的历史，到一个已经存在的项目中，目前这个命令已经被纠正，但是我们依然可以通过-- all  ow-unrelated-histories选项来逃逸这个限制，来合并两个独立的项目；
+
+gitHub的操作
+
+```
+git remote add origin git@github.com:krystalkrystaljj/gitDemo2.git #origin是远程仓库的名
+```
+
+
+
+```
+git push -u origin
+```
+
+
+
++ 将本地仓库的分支设置一个上游分支
+
+```
+git branch --set-upstream-to=origin/master
+git pull
+```
+
+
+
+github的私密仓库与公开仓库有什么区别
+
+
+
+
+
+## 远程仓库的交互
+
+从远程仓库clone代码：将存储库克隆到新创建的目录中； 
+
+将代码push到远程仓库：将本地仓库的代码推送到远程仓库中； 
+
++ 默认情况下是将当前分支（比如master）push到origin远程仓库的； 
+
+从远程仓库fetch代码：从远程仓库获取最新的代码  默认情况下是从origin中获取代码；  获取到代码后默认并没有合并到本地仓库，我们需要通过merge来合并； 
+
+从远程仓库pull代码：上面的两次操作有点繁琐，我们可以通过一个命令来操作 远程仓库的交互 git clone http://152.136.185.210:7888/coderwhy/gitremotedemo.git git push git push origin master git fetch git fetch origin git merge git pull git fetch + git merge(rebase)
