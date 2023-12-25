@@ -2,6 +2,26 @@
 
 ## 1、什么是对象
 
+在数据类型中我们提到还有一种特别的类型：对象类型。 
+
++ 对象类型涉及到JavaScript的各个方面，所以掌握对象类型非常重要； 
++ 对象类型是一种**存储键值对（key-value）**的更复杂的数据类型；
+
+
+
++ 对象类型可以使用{…}来创建的复杂类型，里面包含的是键值对（“key: value”）； 
++ 键值对可以是**属性和方法**（在对象中的函数称之为方法）； 
++ 其中**key是字符串**（也叫做属性名property name ，ES6之后也可以是Symbol类型，后续学习）； 
++ 其中**value可以是任意类型**，包括**基本数据类型、函数类型、对象类型**等；
+
+
+
+> 如果将一个函数放到对象中，作为对象的一个属性，那么将这个函数称之为一个方法
+>
+> 如果在JavaScript代码中通过function默认定义一个结构，称之为函数
+
+
+
 + 对象是一个**具体的事物**
 + 在JavaScript中，对象是一组无序的**相关属性**和**方法**的集合，所有的事物都是对象，例如字符串、数值、数组、函数等。
   + 属性：是事物的**特征**，在对象中用属性来表示（常用名词）
@@ -154,10 +174,54 @@ console.log(ldh);
 
 
 
+
+
+对象的括号使用方式
+
+```js
+var obj = {
+        "my friend": "tjj",
+      };
+
+      console.log(obj["my friend"]);
+```
+
+
+
 ## 2、遍历对象
 
-+ 遍历对象属性
+方式一：普通佛如循环
+
+```js
+      var info = {
+        name: "why",
+        age: 18,
+        height: 1.88,
+      };
+      console.log(Object.keys(info));
+
+      var infoKeys = Object.keys(info);
+      for (var i = 0; i < infoKeys.length; i++) {
+        var key = infoKeys[i];
+        var value = info[key];
+        console.log(`key:${key}, value:${value}`);
+      }
+```
+
+
+
+
+
+方式二：遍历对象属性
+
 + for...in语句用于对数组或者**对象的属性**进行循环操作
+
+```js
+      for (key in info) {
+        var value = info[key];
+        console.log(`key:${key}, value:${value}`);
+      }
+```
 
 
 
@@ -174,6 +238,9 @@ for(var k in obj) {
 ```
 
 
+
++ for...of....默认是不能遍历对象的
++ 
 
 # 二、内置对象
 
