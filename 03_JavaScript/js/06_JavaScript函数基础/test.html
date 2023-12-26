@@ -7,22 +7,15 @@
   </head>
   <body>
     <script>
-      // 现象一：两个对象比较
-      var obj1 = {};
-      var obj2 = {};
-      console.log(obj1 === obj2);
+      function bar() {
+        console.log(this);
+      }
 
-      // 现象二：引用的赋值
-      var info = {
-        name: "why",
-        friend: {
-          name: "Kobe",
-        },
-      };
-
-      var friend = info.friend;
-      friend.name = "james";
-      console.log(info.friend.name);
+      var obj = {
+        name:"why",
+        bar:bar
+      }
+      obj.bar()
     </script>
   </body>
 </html>
