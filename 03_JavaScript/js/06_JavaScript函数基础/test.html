@@ -7,15 +7,18 @@
   </head>
   <body>
     <script>
-      function bar() {
-        console.log(this);
-      }
+       function student(name,age,height) {
+        
+        this.name = name
+        this.age = age
+        this.height = height
+        this.running = function () {
+          console.log("running");
+        }
+       }
 
-      var obj = {
-        name:"why",
-        bar:bar
-      }
-      obj.bar()
+       var stu1 = new student('tjj', 18, 1.88)
+       var stu2 = new student('rl', 18, 1.88)
     </script>
   </body>
 </html>
