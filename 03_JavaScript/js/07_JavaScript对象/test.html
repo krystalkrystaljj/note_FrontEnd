@@ -7,12 +7,30 @@
   </head>
   <body>
     <script>
-      var num1 = "123.521";
-      console.log(Number(num1).toFixed(0));
-      console.log(Number.parseInt(num1));
-      console.log(Number.parseFloat(num1));
-      // Number这个构造函数下的方法和window对象上的parseInt方法是一样的
-      console.log(Number.parseInt === parseInt);
+      // 判断一个字符串中是否有另外一个字符串
+      // 1.indexOf(searchString, fromIndex)
+      /*
+      index:
+        情况一: 搜索到, 搜索字符串所在索引位置
+        情况二: 没有搜索到, 返回-1
+      */
+
+      var message = "my name is why.";
+      var name = "why";
+
+      if (message.startsWith("my")) {
+        console.log("message以my开头");
+      }
+
+      // 4.endsWith: 是否以xxx结束
+      if (message.endsWith("why")) {
+        console.log("message以why结尾");
+      }
+
+      // 5.replace 替换字符串
+      var newMessage = message.replace("why", "kobe");
+      console.log(message);
+      console.log(newMessage);
     </script>
   </body>
 </html>
