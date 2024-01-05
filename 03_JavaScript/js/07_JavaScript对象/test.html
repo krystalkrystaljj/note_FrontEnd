@@ -7,30 +7,24 @@
   </head>
   <body>
     <script>
-      // 判断一个字符串中是否有另外一个字符串
-      // 1.indexOf(searchString, fromIndex)
-      /*
-      index:
-        情况一: 搜索到, 搜索字符串所在索引位置
-        情况二: 没有搜索到, 返回-1
-      */
-
-      var message = "my name is why.";
-      var name = "why";
-
-      if (message.startsWith("my")) {
-        console.log("message以my开头");
+      // 1.创建新的空对象
+      // 2.this指向这个新的空对象
+      // 3.执行函数体中的代码
+      // 4.没有显示返回非空对象时，默认返回这个对象
+      function foo(name, age, height) {
+        console.log("foo函数被调用:", this);
+        console.log("打印参数:", name, age, height);
       }
 
-      // 4.endsWith: 是否以xxx结束
-      if (message.endsWith("why")) {
-        console.log("message以why结尾");
-      }
+      // apply
+      // 第一个参数: 绑定this
+      // 第二个参数: 传入额外的实参, 以数组的形式
+      foo.apply("apply", ["kobe", 30, 1.88]);
 
-      // 5.replace 替换字符串
-      var newMessage = message.replace("why", "kobe");
-      console.log(message);
-      console.log(newMessage);
+      // call
+      // 第一个参数: 绑定this
+      // 参数列表: 后续的参数以多参数的形式传递, 会作为实参
+      foo.call("call", "james", 25, 2.5);
     </script>
   </body>
 </html>
