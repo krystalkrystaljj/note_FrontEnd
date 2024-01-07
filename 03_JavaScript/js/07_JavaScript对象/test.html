@@ -6,25 +6,35 @@
     <title>Document</title>
   </head>
   <body>
+    <button>按钮</button>
     <script>
-      // 1.创建新的空对象
-      // 2.this指向这个新的空对象
-      // 3.执行函数体中的代码
-      // 4.没有显示返回非空对象时，默认返回这个对象
-      function foo(name, age, height) {
-        console.log("foo函数被调用:", this);
-        console.log("打印参数:", name, age, height);
+
+     
+      // 网络请求的工具函数
+      function request(url,callbackFn) {
+        var result = ["abc","cba","nba"]
+        callbackFn(result)
       }
 
-      // apply
-      // 第一个参数: 绑定this
-      // 第二个参数: 传入额外的实参, 以数组的形式
-      foo.apply("apply", ["kobe", 30, 1.88]);
+      // 实际操作的位置(业务)
+      var obj = {
+        names:[],
+        network:function () {
+          // 1.早期时候
+          // var _this = this
+          // request("/home",function (res) {
+          //   _this.names = [].concat(res)
+          // })
 
-      // call
-      // 第一个参数: 绑定this
-      // 参数列表: 后续的参数以多参数的形式传递, 会作为实参
-      foo.call("call", "james", 25, 2.5);
+          // 箭头函数不绑定this,直接查找外层作用域的this
+          request("/home", (res)=> {
+            this.names = [].concat(res)
+          })
+        }
+      }
+
+      obj.network()
+      console.log(obj.names);
     </script>
   </body>
 </html>
