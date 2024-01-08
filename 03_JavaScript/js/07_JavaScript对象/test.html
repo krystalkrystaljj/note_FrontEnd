@@ -9,32 +9,19 @@
     <button>按钮</button>
     <script>
 
-     
-      // 网络请求的工具函数
-      function request(url,callbackFn) {
-        var result = ["abc","cba","nba"]
-        callbackFn(result)
+      var foo = "abc"
+      console.log(foo);
+
+      var message = "Global Message"
+      function foo() {
+        var message = "Foo Message"
+        console.log("foo function");
       }
 
-      // 实际操作的位置(业务)
-      var obj = {
-        names:[],
-        network:function () {
-          // 1.早期时候
-          // var _this = this
-          // request("/home",function (res) {
-          //   _this.names = [].concat(res)
-          // })
-
-          // 箭头函数不绑定this,直接查找外层作用域的this
-          request("/home", (res)=> {
-            this.names = [].concat(res)
-          })
-        }
-      }
-
-      obj.network()
-      console.log(obj.names);
+      var num1 = 10
+      var num2 = 20
+      var result = num1 + num2
+      console.log(result);
     </script>
   </body>
 </html>
