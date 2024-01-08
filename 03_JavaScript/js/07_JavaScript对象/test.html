@@ -8,20 +8,26 @@
   <body>
     <button>按钮</button>
     <script>
+      // 2.函数中没有自己的message
+      var message = "Global Message";
 
-      var foo = "abc"
-      console.log(foo);
+      debugger;
 
-      var message = "Global Message"
       function foo() {
-        var message = "Foo Message"
-        console.log("foo function");
+        console.log(message);
       }
 
-      var num1 = 10
-      var num2 = 20
-      var result = num1 + num2
-      console.log(result);
+      foo();
+
+      var obj = {
+        name: "obj",
+        bar: function () {
+          var message = "bar message";
+          foo();
+        },
+      };
+
+      obj.bar();
     </script>
   </body>
 </html>
