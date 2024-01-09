@@ -8,10 +8,16 @@
   <body>
     <button>按钮</button>
     <script>
-      // 纯函数
-      function sum(num1, num2) {
-        return num1 + num2;
-      }
+      var names = ["abc", "cba", "nba", "mba"]
+
+      // 1.slice: 纯函数
+      var newNames = [].slice.apply(names,[1,3])
+      var newNames = names.slice(1,3)
+      console.log(names)
+
+      // 2.splice: 操作数组的利器(不是纯函数)
+      names.splice(2.2)
+      console.log(names)
     </script>
   </body>
 </html>
