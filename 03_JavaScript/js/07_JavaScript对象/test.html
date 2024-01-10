@@ -8,11 +8,17 @@
   <body>
     <button>按钮</button>
     <script>
-      "use strict";
-      function foo() {
-        console.log(this);
-      }
-      console.log(0123);
+          var n = 100
+
+function foo1() {
+  console.log(n)
+}
+function foo2() {
+  var n = 200
+  console.log(n)
+  foo1()
+}
+foo2()
     </script>
   </body>
 </html>
