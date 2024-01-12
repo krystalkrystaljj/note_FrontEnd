@@ -8,17 +8,18 @@
   <body>
     <button>按钮</button>
     <script>
-          var n = 100
+      // 非常重要的属性：constructor，指向Person函数对象
+      function Person() {}
 
-function foo1() {
-  console.log(n)
-}
-function foo2() {
-  var n = 200
-  console.log(n)
-  foo1()
-}
-foo2()
+      var PersonPrototype = Person.prototype;
+      console.log(PersonPrototype);
+      console.log(PersonPrototype.constructor); //输出：ƒ Person() {}
+      console.log(PersonPrototype.constructor === Person); //true
+
+      // 2.实例对象p
+      var p = new Person();
+      console.log(p.__proto__.constructor.name); //函数自带属性name，输出：Person
+      console.log(p.__proto__.constructor === Person);
     </script>
   </body>
 </html>
