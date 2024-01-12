@@ -8,46 +8,19 @@
   <body>
     <button>按钮</button>
     <script>
-      // 定义Person构造函数(类)
-      function Person(name, age, height, address) {
-        this.name = name;
-        this.age = age;
-        this.height = height;
-        this.address = address;
-      }
-      Person.prototype.running = function () {
-        console.log("running~");
-      };
-      Person.prototype.eating = function () {
-        console.log("eating~");
-      };
-
-      // 定义学生类
-      function Student(name, age, height, address, sno) {
-        // 重点：借用构造函数
-        Person.call(this, name, age, height, address);
-
-        this.sno = sno;
+      var obj = {
+        name:"why",
+        age:18
       }
 
-      // 4.创建父类对象，并且作为子类的原型对象
-      var p = new Person("why", 18, 1.88);
-      Student.prototype = p;
+      // 创建另一个对象，这个对象可以继承自obj
+      // 添加属性得单独添加不够方便
 
-      // 5.在子类原型上添加内容
-      Student.prototype.studying = function () {
-        console.log("studying~");
-      };
 
-      // 创建学生
-      var stu1 = new Student("kobe", 30, 1.88, "武汉");
-      var stu2 = new Student("james", 25, 1.77, "北京");
-      stu1.running();
-      stu1.studying();
 
-      console.log(stu1.name, stu1.age); //why 18
-      console.log(stu2.name, stu2.age); //why 18
-      console.log(stu1); //Student {address: 111, sno: 100}没有name和age属性
+      
+
+
     </script>
   </body>
 </html>
