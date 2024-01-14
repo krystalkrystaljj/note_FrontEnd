@@ -1,4 +1,4 @@
-#  JavaScript函数的this指向
+# 一 JavaScript函数的this指向
 
 ## 1 this的绑定规则
 
@@ -29,7 +29,7 @@
 
 ### 规则一：默认绑定
 
-+ 独立函数调用：可以理解为函数没有被绑定到某个对象上进行调用
++ 独立函数调用：可以理解为**函数没有被绑定到某个对象上进行调用**
 + 严格模式下, 独立调用的函数中的this指向的是undefined
 
 ```js
@@ -58,27 +58,9 @@
 
 
 
-```js
-      function foo() {
-        console.log("foo函数", this);
-      }
-
-      var obj1 = {
-        name: "obj1",
-        foo: foo,
-      };
-
-      var bar = obj1.foo;
-      bar();//window
-```
-
-
-
-
-
 ### 规则二：隐式绑定
 
-+ 通过某个对象进行调用的，即它调用的位置中，是通过某个对象发起的函数调用
++ 通过**某个对象进行调用**的，即**它调用的位置中，是通过某个对象发起的函数调用**
 
 ```js
       function foo() {
@@ -89,8 +71,11 @@
         bar: foo,
       };
 
-      obj.bar();//对象{bar：f}
+      obj.bar();
 ```
+
++ 指向的是obj这个对象（因为是通过obj对象发起的调用）
++ 输出：foo函数{bar：f}
 
 
 
@@ -98,7 +83,6 @@
       function foo() {
         console.log("foo函数", this);
       }
-      foo();
 
       var obj1 = {
         name: "obj1",
@@ -110,8 +94,11 @@
         obj1: obj1,
       };
 
-      obj2.obj1.foo();//object
+      obj2.obj1.foo();
 ```
+
++ this指向obj1，通过obj1发起的调用
++ 输出：foo函数 {name: 'obj1', foo: ƒ}
 
 
 
@@ -119,7 +106,7 @@
 
 隐式绑定有一个前提条件：
 
-+ **必须再调用函数的内部有一个对函数的引用**（比如一个属性）
++ **必须在调用对象的内部有一个对函数的引用**（比如一个属性）
 + 如果没有这样的引用，在进行函数调用时，会报找不到该函数的错误
 + 正是通过这个引用，间接的将this绑定到了这个对象上
 
@@ -129,10 +116,10 @@ JavaScript所有的函数都可以使用**call和apply方法(调用函数同时�
 
 + 第一个参数是相同的，要求传入一个对象
   + 这个对象的作用是给this准备的
-  + 在调用这个函数时，会将this绑定到这个传入的对象
-+ 后面的参数，apply为数组，call为参数列表
+  + 在调用这个函数时，会**将this绑定到这个传入的对象**
++ 后面的参数，apply为**数组**，call为**参数列表**
 
-因为上面的过程，我们明确的绑定了this指向的对象，所以称之为 显式绑定。
+因为上面的过程，我们明确的绑定了this指向的对象，所以称之为**显式绑定**。
 
 ```js
       var obj = {
@@ -143,16 +130,18 @@ JavaScript所有的函数都可以使用**call和apply方法(调用函数同时�
       }
 
       foo.call(obj);
-      foo.call(123); //基本数据类型会产生一个包装类的对象 Number{123}
-      foo.call("abc");//String{'abc'}
+      foo.call(123); //基本数据类型会产生一个包装类的对象
+      foo.call("abc");
       foo.call(undefined)//null和undefined没有包装类型的传入，指向window
 ```
+
++ 输出：*{**name**:* 'obj'}   Number {123} String {'abc'}
 
 
 
 ### 规则四：new绑定
 
-JavaScript中的函数可以当作一个类的构造函数来使用，也就是new关键字
+JavaScript中的函数可以当作一个**类的构造函数**来使用，也就是new关键字
 
 使用new关键字来调用函数，会执行如下操作：
 
@@ -175,9 +164,45 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
+### 内置函数的绑定思考
+
+有些时候，我们会调用一些JavaScript的内置函数，或者一些第三方库中的内置函数。 
+
++ 这些内置函数会要求我们传入另外一个函数； 
++ 我们自己并不会显示的调用这些函数，而且JavaScript内部或者第三方库内部会帮助我们执行； 
++ 这些函数中的this又是如何绑定的呢？ 
+
+ **setTimeout、数组的forEach、div的点击**
+
+ ```js
+// 内置函数（第三方库）:根据一些经验
+      // 1.定时器
+      setTimeout(function () {
+        console.log("定时器",this);
+      },1000)//指向window
+
+      // 2.按钮的点击监听
+      var btnEl = document.querySelector("button")
+      btnEl.onclick = function () {
+        console.log("btn的点击",this);
+      }
+
+      btnEl.addEventListener("click",function() {
+        console.log("btn的点击",this);
+      }) //指向监听的元素btnEl
+
+      // 3.forEach
+      var names = ["abc","cba","bda"]
+      names.forEach(function(item) {
+        console.log("forEach",this);
+      },'aaa')// 三次都指向window,第二个参数可以绑定this的指向 String {'aaa'}
+ ```
+
+
+
 ## 2 apply/call/bind
 
-### apply/call
+### 2.1 apply/call
 
 通过call或者apply绑定this对象 
 
@@ -202,13 +227,13 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-### bind方法
+### 2.2 bind方法
 
 如果我们希望**一个函数总是显示的绑定到一个对象上**，可以怎么做呢？
 
 + 使用bind方法，bind()方法创建一个新的**绑定函数（bound function BF）**
 + 绑定函数是一个**exotic function object（怪异函数对象**，ECMAScript 2015 中的术语）
-+ 在 bind() 被调用时，这个新函数的 this 被指定为 bind() 的第一个参数，而其余参数将作为新函数的参数，供调用时使用。
++ 在 bind() 被调用时，这个**新函数的 this 被指定为 bind() 的第一个参数**，而其余参数将作为**新函数的参数**，供调用时使用。
 
 ```js
 	  function foo(name, age, height, address) {
@@ -226,51 +251,13 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-
-
-### 内置函数的绑定思考
-
-有些时候，我们会调用一些JavaScript的内置函数，或者一些第三方库中的内置函数。 
-
-+ 这些内置函数会要求我们传入另外一个函数； 
-+ 我们自己并不会显示的调用这些函数，而且JavaScript内部或者第三方库内部会帮助我们执行； 
-+ 这些函数中的this又是如何绑定的呢？ 
-
- **setTimeout、数组的forEach、div的点击**
-
- ```js
- // 内置函数（第三方库）:根据一些经验
-       // 1.定时器
-       setTimeout(function () {
-         console.log("定时器",this);
-       },1000)//指向window
- 
-       // 2.按钮的点击监听
-       var btnEl = document.querySelector("button")
-       btnEl.onclick = function () {
-         console.log("btn的点击",this);
-       }
- 
-       btnEl.addEventListener("click",function() {
-         console.log("btn的点击",this);
-       }) //指向监听的元素btnEl
- 
-       // 3.forEach
-       var names = ["abc","cba","bda"]
-       names.forEach(function(item) {
-         console.log("forEach",this);
-       },'aaa')// 三次都指向window,第二个参数可以绑定this的指向 String {'aaa'}
- ```
-
-
-
 ## 3 this绑定优先级
 
 学习了四条规则，接下来开发中我们只需要去查找函数的调用应用了哪条规则即可，但是如果一个函数调用位置应用了多 条规则，优先级谁更高呢？
 
-1.默认规则的优先级最低 
+### 1.默认规则的优先级最低 
 
-+ 毫无疑问，默认规则的优先级是最低的，因为存在其他规则时，就会通过其他规则的方式来绑定this 
++ 毫无疑问，默认规则的优先级是最低的，因为**存在其他规则时，就会通过其他规则的方式来绑定this** 
 
 ```js
       function foo() {
@@ -283,7 +270,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-2.显示绑定优先级高于隐式绑定 
+### 2.显示绑定优先级高于隐式绑定 
 
 ```js
       function foo() {
@@ -313,7 +300,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-3.new绑定优先级高于隐式绑定 
+### 3.new绑定优先级高于隐式绑定 
 
 ```js
 // new绑定优先级高于隐式绑定
@@ -323,19 +310,20 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
           console.log("foo",this);
         }
       }
-      new obj.foo() //foo {} 返沪的是新产生的空对象
+      new obj.foo() //foo {} 返沪的是新产生的空对象(foo应该是一个类型)
+	  var bar = new obj.foo() //foo {}
 ```
 
 
 
-4.new绑定优先级高于bind 
+### 4.new绑定优先级高于bind 
 
 + **new绑定和call、apply是不允许同时使用的**，所以不存在谁的优先级更高 
 + new绑定可以和bind一起使用，new绑定优先级更高 
 
 ```js
       function foo() {
-        console.log("foo:",this);
+        console.log(this);
       }
 
       var bindFn = foo.bind("aaa")
@@ -346,7 +334,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 ## 4 绑定之外的情况
 
-我们讲到的规则已经足以应付平时的开发，但是总有一些语法，超出了我们的规则之外。（神话故事和动漫中总是有类似这样的 人物）
+我们讲到的规则已经足以应付平时的开发，但是总有一些语法，超出了我们的规则之外。
 
 ### 情况一
 
@@ -355,7 +343,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 ```js
       "use strict"
       function foo() {
-        console.log("foo:",this);
+        console.log(this);
       }
 
       foo.call("abc") //String {'abc'}
@@ -401,7 +389,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 ## 5 箭头函数的使用
 
-### 箭头函数 arrow function(重要)
+### 5.1 箭头函数 arrow function(重要)
 
 1. 通过function声明一个函数
 
@@ -426,7 +414,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-### 箭头函数的编写优化(重要)
+### 5.2 箭头函数的编写优化(重要)
 
 优化一: 如果只有一个参数()可以省略
 
@@ -466,6 +454,8 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
+### 5.3  案例
+
 箭头函数实现nums的所有偶数平方和
 
 ```js
@@ -478,7 +468,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 
 
 
-### 箭头函数中this使用(重要)
+### 5.4 箭头函数中this使用(重要)
 
 箭头函数中不绑定this  
 
@@ -491,20 +481,83 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
       bar.apply("aaa") //window
 ```
 
-   
+  
+
+#### 案例一
+
+```js
+    var obj = {
+      name: "obj",
+      foo: function() {
+        console.log("foo",this);
+        var bar = () => {
+          console.log("bar:", this)
+        }
+        return bar
+        
+      }
+    }
+    var fn = obj.foo()
+    fn.apply("bbb")
+```
+
++ 通过obj对象调用执行后的foo函数赋值给fn，也就是foo函数的返回值bar函数，bar函数因为是一个箭头函数所以不能进行显式绑定this
+
+```js
+    var fn = obj.foo
+    fn.apply("bbb")
+
+    var bar = fn()
+    bar()
+```
+
++ 输出：foo：String {'bbb'}
+
+​				  window
+
+​				  window
+
+```js
+    var fn = obj.foo.apply("bbb")
+    fn() 
+
+```
+
++ 输出：foo: String {'bbb'} 
+
+  ​           bar: String {'bbb'}
 
 ![image-20240107173129587](https://raw.githubusercontent.com/bigshcool/myPic/main/image-20240107173129587.png)
 
+注意：
+
++ es5作用域只有**全局作用域和函数作用域**，所以**对象obj不能形成作用域**
++ es6之后也只有**代码块**才能形成作用域，而**对象obj不是代码块也不能形成作用域**
+
+#### 案例二
+
+```js
+    var obj = {
+      name: "obj",
+      foo: () => {
+        var bar = () => {
+          console.log("bar:", this)
+        }
+        return bar
+        
+      }
+    }
+    var fn = obj.foo()
+    fn.apply("bbb")
+```
 
 
-+ es5作用域只有全局作用域和函数作用域，所以对象obj不能形成作用域
-+ es6之后也只有代码块才能形成作用域，而对象obj不是代码块也不能形成作用域
 
 ![image-20240107173309742](https://raw.githubusercontent.com/bigshcool/myPic/main/image-20240107173309742.png)
 
 
 
-
+### 箭头函数this原理
 
 箭头函数**不使用this的四种标准规则（也就是不绑定this）**，而是**根据外层作用域来决定this。** 
 
@@ -514,8 +567,6 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
 + 我们需要拿到obj对象，设置data； 
 + 但是直接拿到的this是window，我们需要在外层定义：var _this = this _
 + _在setTimeout的回调函数中使用_this就代表了obj对象
-
-![image-20240107201435255](https://raw.githubusercontent.com/bigshcool/myPic/main/image-20240107201435255.png)
 
 ```js
       // 网络请求的工具函数
@@ -534,7 +585,7 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
             _this.names = [].concat(res)
           })
 
-          // 箭头函数不绑定this,直接查找外层作用域的this
+          // 2.现在：箭头函数不绑定this,直接查找外层作用域的this
           request("/home", (res)=> {
             this.names = [].concat(res)
           })
@@ -544,6 +595,8 @@ JavaScript中的函数可以当作一个类的构造函数来使用，也就是n
       obj.network()
       console.log(obj.names);
 ```
+
+![image-20240107201435255](https://raw.githubusercontent.com/bigshcool/myPic/main/image-20240107201435255.png)
 
 
 
@@ -563,18 +616,17 @@ var person = {
 
 function sayName() {
   var sss = person.sayName;
-
-  sss(); // 绑定: 默认绑定, window -> window
-
-  person.sayName(); // 绑定: 隐式绑定, person -> person
-
-  (person.sayName)(); // 绑定: 隐式绑定, person -> person
-
-  (b = person.sayName)(); // 术语: 间接函数引用,返回的是一个独立函数 window -> window
+    
+  sss(); 
+  person.sayName(); 
+  (person.sayName)(); 
+  (b = person.sayName)(); 
 }
 
 sayName();
 ```
+
++ 输出：window	person	person	window（术语: 间接函数引用,返回的是一个独立函数）
 
 
 
@@ -626,6 +678,8 @@ person1.foo4()(); // person1
 person1.foo4.call(person2)(); // person2
 person1.foo4().call(person2); // person1
 ```
+
+
 
 ### 面试题三
 
@@ -727,11 +781,297 @@ person1.obj.foo2().call(person2) // 上层作用域查找: obj(隐式绑定)
 
 
 
-# 深入JavaScript的运行原理
+# 二 深入浏览器的渲染原理
+
+## 1 网页渲染原理
+
+### 网页被解析的过程
+
+![image-20240114213335942](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240114213335942.png)
+
+
+
+### 浏览器内核
+
++  浏览器内核指的是浏览器的排版引擎（layout engine），也称为浏览器引擎（browser engine）、页面渲染引擎（rendering engine）或样版引擎
+
+**浏览器解析网页的过程**通常是由**浏览器内核**完成的，浏览器内核又可以分成两部分：
+
++ **浏览器内核**是指浏览器中负责解析HTML、CSS JavaScript等文件的核心组成，也被称为**渲染引擎**
++ **JS 引擎**则是解析 Javascript 语言，执行 javascript 语言来实现网页的动态效果。
+
+常见的浏览器内核有 
+
++ Trident （ 三叉戟）：IE、360安全浏览器、搜狗高速浏览器、百度浏览器、UC浏览器；
++ Gecko（ 壁虎） ：Mozilla Firefox；
++ Presto（急板乐曲）-> Blink （眨眼）：Opera 
++ Webkit ：Safari、360极速浏览器、搜狗高速浏览器、移动端浏览器（Android、iOS） 
++ Webkit -> Blink ：Google Chrome，Edge
+
+## 2 浏览器渲染流程
+
+### 页面渲染整体流程
+
+渲染引擎在拿到一个页面后，如何解析整个页面并且最终呈现出我们的网页呢？
+
+![image-20230925154624141](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20230925154624141.png)
+
+
+
+### 渲染页面的详细流程
+
+![](https://web-dev.imgix.net/image/T4FyVKpzu4WKF1kBNvXepbi08t52/S9TJhnMX1cu1vrYuQRqM.png?auto=format&w=741)
+
+​																									
+
++ https://www.html5rocks.com/en/tutorials/internals/howbrowserswork
+
+
+
+### 解析一：HTML解析过程
+
++ 因为默认情况下服务器会给浏览器返回index.html文件，所以解析HTML是所有步骤的开始： 
+
++ 解析HTML，会构建DOM Tree：
+
+
+
+### 解析二 – 生成CSS规则
+
+在解析的过程中，如果遇到CSS的link元素，那么会由浏览器负责下载对应的CSS文件： 
+
++ 注意：下载CSS文件是不会影响DOM的解析的； 
+
+浏览器下载完CSS文件后，就会对CSS文件进行解析，解析出对应的规则树：
+
++  我们可以称之为 CSSOM（CSS Object Model，CSS对象模型）；
+
+
+
+### 解析三 – 构建Render Tree
+
++ 当有了DOM Tree和 CSSOM Tree后，就可以两个结合来构建Render Tree了
+
+![preview](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/view)
+
+注意一：
+
++ 需要注意的是，link元素不会阻塞DOM树的构建过程，但会阻塞Render Tree的构建过程
++ 这是因为Render Tree在构建时需要对应的CSSOM Tree
+
+注意二：
+
++ 同时，需要注意的是Render Tree和DOM Tree并不是一一对应的关系
++ 例如，对于display为none的元素，它不会在Render Tree中出现。这是因为该元素被隐藏了，不会影响页面的呈现，因此也不需要在渲染树中进行渲染
+
+
+
+### 解析四 – 布局（layout）和绘制（Paint）
+
+第四步是在**渲染树（Render Tree）上运行布局（Layout）以计算每个节点的几何体。** 
+
++ 渲染树会表示显示哪些节点以及其他样式，但是**不表示每个节点的尺寸、位置等信息；** 
++ 布局是确定呈现树中**所有节点的宽度、高度和位置信息；** 
+
+第五步是将**每个节点绘制（Paint）到屏幕上** 
+
++ 在绘制阶段，浏览器将布局阶段计算的**每个frame转为屏幕上实际的像素点；** 
++ 包括**将元素的可见部分进行绘制**，比如**文本、颜色、边框、阴影、替换元素（比如img）**
+
+
+
+## 3 回流和重绘解析
+
+#### 2.6.1. 回流的解析
+
+理解回流reflow：（也可以称之为重排）
+
++ 第一次确定节点的大小和位置，称之为布局（layout）
++ 之后对节点的大小、位置修改重新计算称之为回流。
+
+也就是说回流是指浏览器必须 重新计算渲染树中部分或全部元素的集合信息（位置和大小）
+
+
+
+**触发回流**的情况有很多，常见的包括：
+
+1. DOM结构的变化，比如添加、删除、移动元素等操作
+2. 改变元素的布局，比如修改元素的宽高、padding、margin、border、position、display 等属性；
+3. 页面尺寸的变化，比如浏览器窗口大小的变化，或者文档视口的变化
+
+回流的代价比较高，因为它会涉及到大量的计算和页面重排，这会导致页面的性能和响应速度下降。
+
+
+
+#### 2.6.2. 重绘的解析
+
+理解重绘repaint：
+
++ 第一次渲染内容称为绘制（paint）
++ 之后重新渲染称之为重绘
+
+重绘是指浏览器不需要重新计算元素的几何信息，而只需要重新绘制元素的内容的过程。
+
+
+
+**触发重绘**的情况有很多，常见的包括：
+
+1. 修改元素的颜色、背景色、边框颜色、文本样式等属性；
+2. 修改元素的 box-shadow、text-shadow、outline 等属性；
+3. 添加、移除、修改元素的 class；
+4. 使用 JavaScript 直接修改样式。
+
+重绘的代价比较小，因为它不涉及到元素的位置和大小等计算，只需要重新绘制元素的内容即可。
+
+**回流一定会引起重绘，所以回流是一件很消耗性能的事情。**
+
+## 
+
+
+
+
+
+## 4 合成和性能优化
+
+## 2.3 **composite**合成
+
+默认情况下，标准流中的内容都是被绘制在同一个图层（Layer）中的；
+
+而一些特殊的属性，会创建一个新的合成层（ CompositingLayer ），并且新的图层可以利用GPU来加速绘制；
+
+- 因为每个合成层都是单独渲染的；
+
+
+
+有些属性可以触发合成层的创建，包括：
+
+1. 3D 变换（3D Transforms）：如 rotateX、rotateY、translateZ 等属性，可以创建一个新的合成层。
+2. video、iframe 等标签：这些标签会创建一个新的合成层。
+3. opacity 动画转换时：当元素透明度发生变化时，会创建一个新的合成层。
+4. position: fixed：将元素定位为固定位置时，也会创建一个新的合成层。
+5. will-change 属性：可以通过这个实验性的属性，告诉浏览器元素可能会发生哪些变化，从而预先创建合成层。
+
+需要注意的是，过度使用合成层也会带来一些问题，如占用更多的内存、增加页面的复杂度等。
+
+因此，在使用合成层时需要谨慎，避免滥用
+
+## 5 defer和async属性
+
+### script元素和页面解析的关系
+
+ 我们现在已经知道了页面的渲染过程，但是JavaScript在哪里呢？
+
++ 事实上，浏览器在解析HTML的过程中，遇到了**script元素是不能继续构建DOM树的；** 
++ 它会**停止继续构建，首先下载JavaScript代码，并且执行JavaScript的脚本；** 
++ 只有**等到JavaScript脚本执行结束后，才会继续解析HTML，构建DOM树；** 
+
+为什么要这样做呢？
+
+这是**因为JavaScript的作用之一就是操作DOM，并且可以修改DOM；** 
+
+如果我们**等到DOM树构建完成并且渲染再执行JavaScript，会造成严重的回流和重绘，影响页面的性能**； 
+
+所以会在**遇到script元素时，优先下载和执行JavaScript代码，再继续构建DOM树；**
+
+但是这个也往往会带来新的问题，特别是现代页面开发中： 
+
++ 在目前的开发模式中（比如Vue、React），**脚本往往比HTML页面更“重”，处理时间需要更长；** 
++ 所以会**造成页面的解析阻塞，在脚本下载、执行完成之前，用户在界面上什么都看不到；** 
+
+为了解决这个问题，script元素给我们提供了两个属性（attribute）：**defer和async**。
+
+
+
+### defer属性
+
++ defer属性告诉浏览器**不要等待脚本下载**，而**继续解析HTML，构建DOM Tree**
+  + 脚本**会由浏览器进行下载，但是不会阻塞DOM Tree**的构建过程
+  + 如果脚本提前下载好了，他会**等待DOM Tree构建完成，在DOMContentLoaded事件之前先执行defer中的代码**
++ 所以**DOMContentLoaded总是会等待defer中的代码先执行完成**。
++ 另外**多个带defer的脚本是可以保持正确的顺序执行的**。
++ 从某种角度来说，**defer可以提高页面的性能，并且推荐放到head元素中；**
++ 注意：**defer仅适用于外部脚本，对于script默认内容会被忽略。**
+
+
+
+### async属性
+
++ async属性与defer属性类似，他也能够让脚本不阻塞页面
++ async是一个让脚本完全独立的：
+  + 浏览器不会因 async 脚本而阻塞（与 defer 类似）； 
+  + **async脚本不能保证顺序，它是独立下载、独立运行，不会等待其他脚本；** 
+  + **async不会能保证在DOMContentLoaded之前或者之后执行；**
++ defer通常用于需要在文档解析后操作DOM的JavaScript代码，并且对多个script文件有顺序要求的；
++ async通常用于独立的脚本，对其他脚本，甚至DOM没有依赖的；
+
+# 三 深入JavaScript的运行原理
 
 ## 1 深入V8引擎原理
 
+### JavaScript代码的执行
 
+WebKit事实上由两部分组成的：
+
+- WebCore：负责HTML解析、布局、渲染等等相关的工作。
+- JavaScriptCore：解析、执行JavaScript代码。
+
+![image-20231106101720224](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20231106101720224.png)
+
+
+
+### V8引擎的执行原理
+
+V8引擎是一款Google开源的高性能JavaScript和WebAssembly引擎，它是使用**C++编写**的。
+
+- V8引擎的主要目标是**提高JavaScript代码的性能和执行速度。**
+- V8引擎可以在多种操作系统上运行，包括Windows 7或更高版本、macOS 10.12+以及使用x64、IA-32、ARM或MIPS处理器的Linux系统。
+
+V8引擎可以作为一个**独立的应用程序运行，也可以嵌入到其他C++应用程序中，例如Node.js**。
+
+- 由于V8引擎的开源性和高性能，许多现代浏览器都使用了V8引擎或其修改版本，以提供更快、更高效的JavaScript执行体验。
+
+![image-20240114220736623](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240114220736623.png)
+
+
+
+### V8引擎的架构
+
+V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对JavaScript执行的：
+
+**Parse**模块会将JavaScript代码转化为AST抽象语法树，这是因为解释器并不直接认识JavaScript代码：
+
++ 如果函数没有被调用，那么是不会被转换成AST的
++ Parse的V8官方文档：https://v8.dev/blog/scanner
+
+**Ignition**是一个解释器，会将AST转换成ByteCode（字节码）
+
++ 同时会收集TurboFan优化所需要的信息（比如函数参数的类型信息，有了类型才能进行真实的运算）
++ 如果函数只调用一次，Ignition会执行解释执行ByteCode
++ Ignition的V8官方文档：https://v8.dev/blog/ignition-interpreter
+
+**TurboFan**是一个编译器，可以将字节码编译为CPU可以直接执行的机器码；
+
++ 如果一个函数被多次调用，那么就会被标记为**热点函数**，那么就会
+
+**经过TurboFan转化成优化的机器码，提高代码的执行性能**；
+
++ 但是，**机器码实际上也会被还原为ByteCode**，这是因为后续执行函数的过程中，**类型发生了变化（比如sum函数原来执行的是number类型，后来执行变成了string类型）**，之前优化的机器码并不能正确处理运算，就会逆向的转化为字节码
+
++ TurboFan的V8官方文档：https://v8.dev/blog/turbofan-jit
+
+### V8引擎的解析图（官方）
+
+![image-20240114221054940](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240114221054940.png)
+
+词法分析（英文lexical analysis）
+
++ 将字符序列转换成token序列 的过程。 
++ token是记号化 （tokenization）的缩写 
++ 词法分析器（lexical analyzer，简称lexer），也 叫扫描器（scanner）
+
+语法分析（英语：syntactic analysis，也叫 parsing）
+
++ 语法分析器也可以称之为 parser。
 
 ## 2 JS执行上下文
 

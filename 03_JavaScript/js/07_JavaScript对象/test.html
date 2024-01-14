@@ -10,61 +10,27 @@
 <body>
   <button>按钮</button>
   <script>
-    var obj = {
-      name: "why",
-      age: 18
+    var name = "window";
+
+    var person = {
+      name: "person",
+      sayName: function () {
+        console.log(this.name);
+      }
+    };
+
+    function sayName() {
+      var sss = person.sayName;
+
+      sss(); 
+
+      person.sayName(); 
+
+      (person.sayName)(); 
+      (b = person.sayName)(); 
     }
 
-    function createObject(o) {
-      function F() { }
-      F.prototype = o
-      return new F()
-    }
-
-    var info = createObject(obj)
-    info.address = "中国"
-    info.intro = "大好河山"
-
-    // 1.hasOwnProperty("name")
-    console.log(info.hasOwnProperty("name"));//false
-    console.log(info.hasOwnProperty("address"));//true
-
-    // 2.in操作符
-    console.log("name" in info); //true
-    console.log("address" in info); //true
-    // 注意：for in遍历不仅仅是自己对象上的属性，也包括原型对象上的
-    for (var key in info) {
-      console.log(key);
-    }
-
-    // 3.instanceof
-    // instanceof用于判断对象和类(构造函数)之间的关系
-    function Person() { }
-    function Student() { }
-    function inherit (Subtype, Subertype) {
-      Subtype.prototype = Object.create(Subertype.prototype)
-      Object.defineProperty(Subtype,"constructor",{
-        enumerable:false,
-        writable:true,
-        value:Subtype
-      })
-    }
-    inherit(Student, Person)
-
-    // stu实例(instance)对象
-    var stu = new Student()
-    console.log(stu instanceof Student) //true
-    console.log(stu instanceof Person) //true
-    console.log(stu instanceof Object) //true
-    console.log(stu instanceof Array) //false
-
-    // 4.isPrototypeOf
-    console.log(Student.prototype.isPrototypeOf(stu))
-    console.log(Person.prototype.isPrototypeOf(stu))
-
-    // 可以用于判断对象之间的继承
-    console.log(obj.isPrototypeOf(info))
-
+    sayName();
 
 
 
