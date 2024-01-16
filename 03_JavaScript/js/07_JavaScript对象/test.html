@@ -1,42 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+  <body>
+    <button>按钮</button>
+    <script>
+      class Person {
+        constructor(name, age) {
+          this.name = name;
+          this.age = age;
+        }
 
-<body>
-  <button>按钮</button>
-  <script>
-    var name = "window";
-
-    var person = {
-      name: "person",
-      sayName: function () {
-        console.log(this.name);
+        // 2.实例方法
+        // 本质上是放在Person.protoype
+        running() {
+          console.log(this.name + "在奔跑");
+        }
       }
-    };
 
-    function sayName() {
-      var sss = person.sayName;
+      var p = new Person("tjj", "18");
+      console.log(p);
 
-      sss(); 
-
-      person.sayName(); 
-
-      (person.sayName)(); 
-      (b = person.sayName)(); 
-    }
-
-    sayName();
-
-
-
-
-
-  </script>
-</body>
-
+      p.running();
+      console.log(Person.prototype === p.__proto__); //true
+      p.__proto__.running(); //undefined在奔跑
+      Person.prototype.running();
+    </script>
+  </body>
 </html>
