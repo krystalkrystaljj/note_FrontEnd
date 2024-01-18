@@ -9,26 +9,13 @@
   <body>
     <button>按钮</button>
     <script>
-      class Person {
-        constructor(name, age) {
-          this.name = name;
-          this.age = age;
-        }
-
-        // 2.实例方法
-        // 本质上是放在Person.protoype
-        running() {
-          console.log(this.name + "在奔跑");
-        }
+      // 应用: 在函数中(其他类似的地方)
+      function getPosition({ x, y }) {
+        console.log(x, y);
       }
 
-      var p = new Person("tjj", "18");
-      console.log(p);
-
-      p.running();
-      console.log(Person.prototype === p.__proto__); //true
-      p.__proto__.running(); //undefined在奔跑
-      Person.prototype.running();
+      getPosition({ x: 10, y: 20 });
+      getPosition({ x: 25, y: 35 });
     </script>
   </body>
 </html>
