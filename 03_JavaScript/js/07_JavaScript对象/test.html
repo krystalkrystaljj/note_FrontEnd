@@ -9,13 +9,33 @@
   <body>
     <button>按钮</button>
     <script>
-      // 应用: 在函数中(其他类似的地方)
-      function getPosition({ x, y }) {
-        console.log(x, y);
+      // apply/call
+      function foo(name, age, height, address) {
+        console.log(this, name, age, height, address);
       }
 
-      getPosition({ x: 10, y: 20 });
-      getPosition({ x: 25, y: 35 });
+      // Function.prototype
+
+      // 实现bind绑定函数
+      Function.prototype.tjbind = function (thisArg, ...otherArgs) {
+        thisArg =
+          thisArg === null || thisArg === undefined ? window : Object(thisArg);
+
+        // 采用默认绑定
+        Object.defineProperty(thisArg, "fn", {
+          enumerable: false,
+          configurable: true,
+          value: this,
+        });
+        return (...newArgs) => {
+          // this();
+          // var allArgs = otherArgs.concat(newArgs);
+          var allArgs = [...otherArgs, ...newArgs];
+          thisArg.fn(...allArgs);
+        };
+      };
+      var newFoo = foo.tjbind({ name: "why" }, "why", 18);
+      newFoo(1.88, "武汉市"); //输出{name: 'why', fn: ƒ} 'why' 18 1.88 '武汉市'
     </script>
   </body>
 </html>
