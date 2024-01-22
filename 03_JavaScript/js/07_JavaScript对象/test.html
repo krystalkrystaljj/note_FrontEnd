@@ -7,35 +7,38 @@
   </head>
 
   <body>
-    <button>按钮</button>
+    <button>按钮0</button>
+    <button>按钮1</button>
+    <button>按钮2</button>
+    <button>按钮3</button>
     <script>
-      // apply/call
-      function foo(name, age, height, address) {
-        console.log(this, name, age, height, address);
+      // 1.基本演练
+      // ES6
+      const names = ["abc", "cba", "nba", "mba"];
+      const str = "Hello";
+
+      function foo(name1, name2, ...args) {
+        console.log(name1, name2, args);
       }
 
-      // Function.prototype
+      foo(...names);
+      foo(...str);
 
-      // 实现bind绑定函数
-      Function.prototype.tjbind = function (thisArg, ...otherArgs) {
-        thisArg =
-          thisArg === null || thisArg === undefined ? window : Object(thisArg);
-
-        // 采用默认绑定
-        Object.defineProperty(thisArg, "fn", {
-          enumerable: false,
-          configurable: true,
-          value: this,
-        });
-        return (...newArgs) => {
-          // this();
-          // var allArgs = otherArgs.concat(newArgs);
-          var allArgs = [...otherArgs, ...newArgs];
-          thisArg.fn(...allArgs);
-        };
+      // ES9(ES2018)
+      const obj = {
+        name: "why",
+        age: 18,
       };
-      var newFoo = foo.tjbind({ name: "why" }, "why", 18);
-      newFoo(1.88, "武汉市"); //输出{name: 'why', fn: ƒ} 'why' 18 1.88 '武汉市'
+      // 不可以这样来使用
+      // foo(...obj); // 在函数的调用时, 用展开运算符, 将对应的展开数据, 进行迭代
+      // 可迭代对象: 数组/string/arguments
+
+      const info = {
+        ...obj,
+        height: 1.88,
+        address: "广州市",
+      };
+      console.log(info);
     </script>
   </body>
 </html>
