@@ -12,33 +12,24 @@
     <button>按钮2</button>
     <button>按钮3</button>
     <script>
-      // 1.基本演练
-      // ES6
-      const names = ["abc", "cba", "nba", "mba"];
-      const str = "Hello";
-
-      function foo(name1, name2, ...args) {
-        console.log(name1, name2, args);
+    const obj = {
+      name: "why",
+      age: 18,
+      height: 1.88,
+      friend: {
+        name: "curry"
       }
-
-      foo(...names);
-      foo(...str);
-
-      // ES9(ES2018)
-      const obj = {
-        name: "why",
-        age: 18,
-      };
-      // 不可以这样来使用
-      // foo(...obj); // 在函数的调用时, 用展开运算符, 将对应的展开数据, 进行迭代
-      // 可迭代对象: 数组/string/arguments
-
-      const info = {
-        ...obj,
-        height: 1.88,
-        address: "广州市",
-      };
-      console.log(info);
+    }
+ 
+    // 3.深拷贝
+    // 方式一: 第三方库
+    // 方式二: 自己实现
+    // function deepCopy(obj) {}
+    // 方式三: 利用先有的js机制, 实现深拷贝JSON
+    const obj3 = JSON.parse(JSON.stringify(obj))
+    obj3.friend.name = 'tjj'
+    console.log("obj3.friend.name",obj3.friend.name);
+    console.log(obj.friend.name)
     </script>
   </body>
 </html>
