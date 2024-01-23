@@ -12,24 +12,27 @@
     <button>按钮2</button>
     <button>按钮3</button>
     <script>
-    const obj = {
-      name: "why",
-      age: 18,
-      height: 1.88,
-      friend: {
-        name: "curry"
-      }
-    }
- 
-    // 3.深拷贝
-    // 方式一: 第三方库
-    // 方式二: 自己实现
-    // function deepCopy(obj) {}
-    // 方式三: 利用先有的js机制, 实现深拷贝JSON
-    const obj3 = JSON.parse(JSON.stringify(obj))
-    obj3.friend.name = 'tjj'
-    console.log("obj3.friend.name",obj3.friend.name);
-    console.log(obj.friend.name)
+      const obj = {
+        name: "why",
+        age: 18,
+        height: 1.88,
+      };
+      // 需求: 监听对象属性的所有操作
+      // 监听属性的操作
+      // 1.针对一个属性
+      let _name = obj.name;
+      Object.defineProperty(obj, "name", {
+        set: function (newValue) {
+          console.log("监听给name设置了新的值：", newValue);
+          _name = newValue;
+        },
+        get: function () {
+          console.log("监听:获取name的值");
+          return _name;
+        },
+      });
+      console.log(obj.name);
+      obj.name = "kobe";
     </script>
   </body>
 </html>
