@@ -12,6 +12,8 @@
 
 左边这段代码就利用了前面讲过的 Object.defineProperty 的存储属性描述符来 对属性的操作进行监听。
 
+> 什么是响应式？当一处数据发生变化时，其他内容随之变化
+
 ```js
       const obj = {
         name: "why",
@@ -21,7 +23,7 @@
       // 需求: 监听对象属性的所有操作
       // 监听属性的操作
       // 1.针对一个属性
-      let _name = obj.name;
+      let _name = obj.name;// 保存修改后的name值，默认值是obj.name
       Object.defineProperty(obj, "name", {
         set: function (newValue) {
           console.log("监听给name设置了新的值：", newValue);
@@ -34,6 +36,32 @@
       });
       console.log(obj.name);
       obj.name = "kobe";
+```
+
+
+
+```js
+    // 2.监听所有的属性: 遍历所有的属性, 对每一个属性使用defineProperty
+    const keys = Object.keys(obj)
+    for (const key of keys) {
+      let value = obj[key]
+      Object.defineProperty(obj, key, {
+        set: function(newValue) {
+          console.log(`监听: 给${key}设置了新的值:`, newValue)
+          value = newValue
+        },
+        get: function() {
+          console.log(`监听: 获取${key}的值`)
+          return value
+        }
+      })
+    }
+
+    // console.log(obj.name)
+    // obj.name = "kobe"
+    console.log(obj.age)
+    obj.age = 17
+    console.log(obj.age)
 ```
 
 
