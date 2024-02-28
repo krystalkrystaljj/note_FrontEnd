@@ -1349,8 +1349,372 @@ next方法有如下的要求：
 
 + 通过自定义类创建出来的对象都是可迭代的
 
-4 生成器理解和作用
+## 4 生成器理解和作用
 
-5 自定义生成器方案
+### 什么是生成器？
 
-6 异步处理方案解析
+生成器是ES6中新增的一种函数控制、使用的方案，它可以让我们更加灵活的**控制函数什么时候继续执行、暂停执行**等。 
+
++ 平时我们会编写很多的函数，这些函数终止的条件通常是返回值或者发生了异常。 
+
+生成器函数也是一个函数，但是和普通的函数有一些区别： 
+
++ 首先，**生成器函数需要在function的后面加一个符号：*** 
++ 其次，生**成器函数可以通过yield关键字来控制函数的执行流程**： 
++ 最后，**生成器函数的返回值是一个Generator（生成器）**： 
+  + **生成器事实上是一种特殊的迭代器**； 
+  + MDN：Instead, they return a special type of iterator, called a Generator
+
+```js
+    /*
+      生成器函数: 
+        1.function后面会跟上符号: *
+        2.代码的执行可以被yield控制
+        3.生成器函数默认在执行时, 返回一个生成器对象
+          * 要想执行函数内部的代码, 需要生成器对象, 调用它的next操作
+          * 当遇到yield时, 就会中断执行
+    */
+
+    // 1.定义了一个生成器函数
+    function* foo() {
+      console.log("1111")
+      console.log("2222")
+      yield
+      console.log("3333")
+      console.log("4444")
+      yield
+      console.log("5555")
+      console.log("6666")
+    }
+
+    // 2.调用生成器函数, 返回一个 生成器对象
+    const generator = foo()
+    // 调用next方法
+    generator.next()
+    generator.next()
+    generator.next()
+```
+
+![image-20240228125615056]()
+
+![image-20240228141446135](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228141446135.png)
+
+### 生成器函数执行
+
+我们发现下面的生成器函数foo的执行体压根没有执行，它只是返回了一个生成器对象。 
+
++ 那么我们**如何可以让它执行函数中的东西**呢？**调用next即可**； 
++ 我们之前学习迭代器时，知道**迭代器的next是会有返回值**的； 
++ 但是我们很多时候**不希望next返回的是一个undefined**，这个时候我们**可以通过yield来返回结果**；
+
+
+
+### 生成器传递参数 – next函数
+
+函数既然可以暂停来分段执行，那么函数应该是可以**传递参数**的，我们是否可以给每个分段来传递参数呢？ 
+
++ 答案是可以的； 
++ 我们在**调用next函数的时候，可以给它传递参数，那么这个参数会作为上一个yield语句的返回值**； 
++ 注意：也就是说**我们是为本次的函数代码块执行提供了一个值**；
+
+```js
+      // 1.定义了一个生成器函数
+      function* foo(name1) {
+        console.log("执行内部代码:1111", name1);
+        console.log("执行内部代码:2222", name1);
+        const name2 = yield "aaaa";
+        console.log("执行内部代码:3333", name2);
+        console.log("执行内部代码:4444", name2);
+        const name3 = yield "bbbb";
+        // return "bbbb"
+        console.log("执行内部代码:5555", name3);
+        console.log("执行内部代码:6666", name3);
+        yield "cccc";
+        return undefined;
+      }
+
+      // 2.调用生成器函数, 返回一个 生成器对象
+      const generator = foo("next1");
+      // 调用next方法
+      console.log(generator.next()); // { done: false, value: "aaaa" }
+      console.log(generator.next()) // { done: false, value: "bbbb" }
+      console.log(generator.next()) //  { done: false, value: "cccc" }
+      console.log(generator.next()) // {done: true, value: undefined}
+
+      // 3.在中间位置直接return, 结果
+      console.log(generator.next()) // { done: false, value: "aaaa" }
+      console.log(generator.next()) // { done: true, value: "bbbb" }
+      console.log(generator.next()) // { done: true, value: undefined }
+      console.log(generator.next()) // { done: true, value: undefined }
+      console.log(generator.next()) // { done: true, value: undefined }
+      console.log(generator.next()) // { done: true, value: undefined }
+
+      // 4.给函数每次执行的时候, 传入参数
+      console.log(generator.next());
+      console.log(generator.next("next2"));
+      console.log(generator.next("next3"));
+      console.log(generator.next())
+```
+
+![image-20240228141924661](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228141924661.png)
+
+
+
+![image-20240228142221440](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228142221440.png)
+
+### 生成器提前结束 – return函数
+
+还有一个可以给生成器函数传递参数的方法是通过return函数： 
+
++ return传值后这个**生成器函数就会结束，之后调用next不会继续生成值了**；
+
+
+
+
+
+### 生成器抛出异常 – throw函数
+
+ 除了给生成器函数内部传递参数之外，也可以给**生成器函数内部抛出异常**： 
+
++ **抛出异常后我们可以在生成器函数中捕获异常**； 
+
++ 但是在**catch语句中不能继续yield新的值了，但是可以在catch语句外使用yield继续中断函数的执行**；
+
+```js
+      function* foo(name1) {
+        console.log("执行内部代码:1111", name1);
+        console.log("执行内部代码:2222", name1);
+        const name2 = yield "aaaa";
+        console.log("执行内部代码:3333", name2);
+        console.log("执行内部代码:4444", name2);
+        const name3 = yield "bbbb";
+        // return "bbbb"
+        console.log("执行内部代码:5555", name3);
+        console.log("执行内部代码:6666", name3);
+        yield "cccc";
+
+        console.log("最后一次执行");
+        return undefined;
+      }
+
+      const generator = foo("next1");
+
+      // 1.generator.return提前结束函数
+      console.log(generator.next());
+      console.log(generator.return("next2"));
+      console.log("-------------------");
+      console.log(generator.next("next3"));
+      console.log(generator.next("next4"));
+
+      // 2.generator.throw向函数抛出一个异常
+      console.log(generator.next())
+      console.log(generator.throw(new Error("next2 throw error")))
+      console.log("-------------------")
+      console.log(generator.next("next3"))
+      console.log(generator.next("next4"))
+```
+
+
+
+![image-20240228130855711](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228130855711.png)
+
+
+
+### 生成器替代迭代器
+
+```js
+    // 1.对之前的代码进行重构(用生成器函数)
+    const names = ["abc", "cba", "nba"]
+    const nums = [100, 22, 66, 88, 55]
+
+    function* createArrayIterator(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        yield arr[i]
+      }
+      // yield arr[0]
+      // yield arr[1]
+      // yield arr[2]
+      // return undefined
+    }
+
+    // const namesIterator = createArrayIterator(names)
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+
+    // const numsIterator = createArrayIterator(nums)
+    // console.log(numsIterator.next())
+    // console.log(numsIterator.next())
+    // console.log(numsIterator.next())
+    // console.log(numsIterator.next())
+    // console.log(numsIterator.next())
+    // console.log(numsIterator.next())
+```
+
+
+
+
+
+```js
+    // 2.生成器函数, 可以生成某个范围的值
+    // [3, 9)
+    function* createRangeGenerator(start, end) {
+      for (let i = start; i < end; i++) {
+        yield i
+      }
+    }
+
+    const rangeGen = createRangeGenerator(3, 9)
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+```
+
+### 生成器yield语法糖
+
+yield*拿到可迭代对象，并且依次开始迭代
+
+事实上我们还可以使用yield*来生产一个可迭代对象： 
+
++ 这个时候相当于是一种yield的语法糖，只不过会依次迭代这个可迭代对象，每次迭代其中的一个值；
+
+```js
+      const names = ["abc", "cba", "nba"]
+      const nums = [100, 22, 66, 88, 55]
+
+      function* createArrayIterator(arr) {
+        yield* arr
+      }
+```
+
+
+
+## 5 自定义生成器方案
+
+```js
+// 2.yield替换类中的实现
+    class Person {
+      constructor(name, age, height, friends) {
+        this.name = name
+        this.age = age
+        this.height = height
+        this.friends = friends
+      }
+
+      // 实例方法
+      *[Symbol.iterator]() {
+        yield* this.friends
+        // yield* Object.keys(this);
+      }
+    }
+
+    const p = new Person("why", 18, 1.88, ["kobe", "james", "curry"])
+    for (const item of p) {
+      console.log(item)
+    }
+
+    const pIterator = p[Symbol.iterator]()
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+```
+
+
+
+## 6 异步处理方案解析
+
+```js
+    /*
+      需求: 
+        1.发送一次网络请求, 等到这次网络请求的结果
+        2.发送第二次网络请求, 等待这次网络请求的结果
+        3.发送第三次网络请求, 等待这次网络请求的结果
+    */
+    // 方式一: 层层嵌套(回调地狱 callback hell)
+    function getData() {
+      // 1.第一次请求
+      requestData("why").then(res1 => {
+        console.log("第一次结果:", res1)
+
+        // 2.第二次请求
+        requestData(res1 + "kobe").then(res2 => {
+          console.log("第二次结果:", res2)
+
+          // 3.第三次请求
+          requestData(res2 + "james").then(res3 => {
+            console.log("第三次结果:", res3)
+          })
+        })
+      })
+    }
+
+    // 方式二: 使用Promise进行重构(解决回调地狱)
+    // 链式调用
+    function getData() {
+      requestData("why").then(res1 => {
+        console.log("第一次结果:", res1)
+        return requestData(res1 + "kobe")
+      }).then(res2 => {
+        console.log("第二次结果:", res2)
+        return requestData(res2 + "james")
+      }).then(res3 => {
+        console.log("第三次结果:", res3)
+      })
+    }
+
+    // 方式三: 最终代码
+    function* getData() {
+      const res1 = yield requestData("why")
+      console.log("res1:", res1)
+
+      const res2 = yield requestData(res1 + "kobe")
+      console.log("res2:", res2)
+
+      const res3 = yield requestData(res2 + "james")
+      console.log("res3:", res3)
+    }
+
+    const generator = getData()
+    generator.next().value.then(res1 => {
+      generator.next(res1).value.then(res2 => {
+        generator.next(res2).value.then(res3 => {
+          generator.next(res3)
+        })
+      })
+    })
+```
+
+
+
+![image-20240228142720212](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228142720212.png)
+
+
+
+```js
+    // 自动化执行生成器函数(了解)
+    function execGenFn(genFn) {
+      // 1.获取对应函数的generator
+      const generator = genFn()
+      // 2.定义一个递归函数
+      function exec(res) {
+        // result -> { done: true/false, value: 值/undefined }
+        const result = generator.next(res)
+        if (result.done) return
+        result.value.then(res => {
+          exec(res)
+        })
+      }
+      // 3.执行递归函数
+      exec()
+    }
+
+    execGenFn(getData)
+```
+
