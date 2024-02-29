@@ -558,7 +558,7 @@ WebStorage主要提供了一种机制，可以让浏览器提供一种比cookie�
 
 > 数据保存在内存中,但是我们的数据可能不是写死的,来自于服务器的
 
-
+![image-20240229085813125](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229085813125.png)
 
 ### localStorage和sessionStorage的区别
 
@@ -567,8 +567,33 @@ WebStorage主要提供了一种机制，可以让浏览器提供一种比cookie�
 那么它们有什么区别呢？ 
 
 + 验证一：关闭网页后重新打开，localStorage会保留，而sessionStorage会被删除； 
-+ 验证二：在页面内实现跳转，localStorage会保留，sessionStorage也会保留； 
++ 验证二：**在页面内实现跳转，localStorage会保留，sessionStorage也会保留；** 
 + 验证三：在页面外实现跳转（打开新的网页），localStorage会保留，sessionStorage不会被保留；
+
+```html
+  <a href="./static/about.html" target="_blank">关于</a>
+
+  <script>
+
+    // 1.验证一: 关闭网页
+    // 1.1.localStorage的存储保持
+    localStorage.setItem("name", "localStorage")
+
+    // 1.2.sessionStorage的存储会消失
+    sessionStorage.setItem("name", "sessionStorage")
+
+
+    // 2.验证二: 打开新的网页
+    localStorage.setItem("info", "local")
+    sessionStorage.setItem("info", "session")
+
+    
+    // 3.验证三: 打开新的页面, 并且是在新的标签中打开
+    localStorage.setItem("infoTab", "local")
+    sessionStorage.setItem("infoTab", "session")
+
+  </script>
+```
 
 
 
@@ -578,17 +603,85 @@ Storage有如下的属性和方法：
 
 属性： 
 
-+ Storage.length：只读属性 ✓ 返回一个整数，表示存储在Storage对象中的数据项数量； 
++ Storage.length：只读属性 
+  + 返回一个整数，**表示存储在Storage对象中的数据项数量**； 
+
 
 方法： 
 
 + Storage.key(index)：该方法接受一个数值n作为参数，返回存储中的第n个key名称； 
 + Storage.getItem()：该方法接受一个key作为参数，并且返回key对应的value； 
-+ Storage.setItem()：该方法接受一个key和value，并且将会把key和value添加到存储中。 ✓ 如果key存储，则更新其对应的值； 
++ Storage.setItem()：该方法接受一个key和value，并且将会把key和value添加到存储中。 
+  + 如果key存储，则更新其对应的值； 
+
 + Storage.removeItem()：该方法接受一个key作为参数，并把该key从存储中删除； 
 + Storage.clear()：该方法的作用是清空存储中的所有key；
 
 
+
+#### 工具封装
+
++ 后续使用的时候可以更加便捷方便
+
+```js
+class Cache {
+  constructor(isLocal = true) {
+    this.storage = isLocal ? localStorage: sessionStorage
+  }
+
+  setCache(key, value) {
+    if (!value) {
+      throw new Error("value error: value必须有值!")
+    }
+
+    if (value) {
+      this.storage.setItem(key, JSON.stringify(value))
+    }
+  }
+
+  getCache(key) {
+    const result = this.storage.getItem(key)
+    if (result) {
+      return JSON.parse(result)
+    }
+  }
+
+  removeCache(key) {
+    this.storage.removeItem(key)
+  }
+
+  clear() {
+    this.storage.clear()
+  }
+}
+
+const localCache = new Cache()
+const sessionCache = new Cache(false)
+```
+
+
+
+```js
+    localCache.setCache("sno", 111)
+
+    // storage本身是不能直接存储对象类型的
+    const userInfo = {
+      name: "why",
+      nickname: "coderwhy",
+      level: 100,
+      imgURL: "http://github.com/coderwhy.png"
+    }
+
+    // localStorage.setItem("userInfo", JSON.stringify(userInfo))
+    // console.log(JSON.parse(localStorage.getItem("userInfo")))
+
+    sessionCache.setCache("userInfo", userInfo)
+    console.log(sessionCache.getCache("userInfo"))
+```
+
+
+
+![image-20240229093042298](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229093042298.png)
 
 ## 正则表达式的使用 
 
@@ -596,7 +689,7 @@ Storage有如下的属性和方法：
 
 我们先来看一下维基百科对正则表达式的解释： 
 
-+ 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常 规表示法，是计算机科学的一个概念； 
++ 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称**正则表示式、正则表示法、规则表达式、常 规表示法**，是计算机科学的一个概念； 
 + 正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。 
 + 许多程序设计语言都支持利用正则表达式进行字符串操作。 
 
@@ -604,11 +697,189 @@ Storage有如下的属性和方法：
 
 在JavaScript中，正则表达式使用RegExp类来创建，也有对应的字面量的方式： 
 
-+ 正则表达式主要由两部分组成：模式（patterns）和修饰符（flags）
++ 正则表达式主要由两部分组成：**模式（patterns）**和**修饰符（flags）**
+
+```js
+    // 创建正则
+    // 1> 匹配的规则pattern
+    // 2> 匹配的修饰符flags
+    const re1 = new RegExp("abc", "ig")
+    const re2 = /abc/ig // 字面量方式创建
+```
 
 
 
-4 正则表达式常见规则 
+#### 正则表达式的优势
+
+```js
+    // 创建正则
+    const re1 = /abc/ig
+
+    const message = "fdabc123 faBC323 dfABC222 A2324aaBc"
+
+    // 1.使用正则对象上的实例方法
+
+
+    // 2.使用字符串的方法, 传入一个正则表达式
+    // 需求: 将所有的abc(忽略大小写)换成cba
+    // const newMessage = message.replaceAll("abc", "cba")
+    // console.log(newMessage)
+    
+    const newMessage = message.replaceAll(/abc/ig, "cba")
+    console.log(newMessage)
+
+    // 需求: 将字符串中数字全部删除
+    const newMessage2 = message.replaceAll(/\d+/ig, "")
+    console.log(newMessage2)
+```
+
+
+
+## 4 正则表达式常见规则 
+
+有了正则表达式我们要如何使用它呢？ 
+
++ JavaScript中的正则表达式被用于 RegExp 的 exec 和 test 方法； 
++ 也包括 String 的 match、matchAll、replace、search 和 split 方法；
+
+![image-20240229095728475](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229095728475.png)
+
+
+
+#### test方法案例
+
++ test方法: 检测某一个字符串是否符合正则的规则
+
+```html
+    输入账号: <input type="text" />
+    <p class="tip">请输入账号</p>
+    <script>
+      const inputEl = document.querySelector("input");
+      const tipEl = document.querySelector(".tip");
+
+      inputEl.oninput = function () {
+        const value = this.value;
+        if (/^aaa$/.test(value)) {
+          console.log("符合规则");
+        } else {
+          console.log("不符合规则");
+        }
+      };
+    </script>
+```
+
+
+
+#### exec
+
+```js
+   const re1 = /abc/ig
+    const message = "fdabc123 faBC323 dfABC222 A2324aaBc"
+
+    // 1.2.exec方法: 使用正则执行一个字符串
+    const res1 = re1.exec(message)
+    console.log(res1)
+```
+
+
+
+exec方法: 使用正则执行一个字符串
+
+
+
+#### match
+
+```js
+    // 2.使用字符串的方法, 传入一个正则表达式
+    // 2.1. match方法:
+    const result2 = message.match(re1)
+    console.log(result2)
+
+    // 2.2. matchAll方法
+    // 注意: matchAll传入的正则修饰符必须加g
+    const result3 = message.matchAll(re1)
+    // console.log(result3.next())
+    // console.log(result3.next())
+    // console.log(result3.next())
+    // console.log(result3.next())
+    for (const item of result3) {
+      console.log(item)
+    }
+```
+
+
+
+#### split
+
+```js
+    // 2.4. split方法
+    // const result4 = message.split(re1)
+    // console.log(result4)
+
+    // 2.5. search方法
+    const result5 = message.search(re1)
+    console.log(result5)
+```
+
+
+
+### 修饰符flag的使用
+
+g:gloabl，全部的
+
+i:ignore忽略大小写
+
+m：多行匹配（multiple）
+
+
+
+ 需求： 
+
++ 获取一个字符串中所有的abc； 
++  将一个字符串中的所有abc换成大写；
+
+```js
+      let message = "Hello ABC,abc, Abc,AAaBc";
+      const pattern = /abc/gi;
+      const result = message.match(pattern);
+      console.log(result);
+      message = message.replaceAll(pattern, "ABC");
+      console.log(message);
+```
+
+
+
+### 规则 – 字符类（Character classes）
+
+**字符类（Character classes）** 是一个特殊的符号，匹配特定集中的任何符号
+
+`\d`：匹配所有的数字，0到9的字符
+
+`\s`：空格符号：包括空格，制表符 \t，换行符 \n 和其他少数稀有字符，例如 \v，\f 和 \r。
+
+`\w`：“单字”字符：拉丁字母或数字或下划线 _。word => [a-z A-Z 0-9]
+
+点 . 是一种特殊字符类，它与 “除换行符之外的任何字符” 匹配
+
+**反向类（Inverse classes）**
+
+\D 非数字：除 \d 以外的任何字符，例如字母。 
+
+\S 非空格符号：除 \s 以外的任何字符，例如字母。
+
+ \W 非单字字符：除 \w 以外的任何字符，例如非拉丁字母或空格。
+
+
+
+### 规则 – 锚点（Anchors）
+
+
+
+### 规则 – 转义字符串
+
+
+
+### 集合（Sets）和范围（Ranges）
 
 5正则练习-歌词解析
 
@@ -620,12 +891,329 @@ Storage有如下的属性和方法：
 
 1 认识防抖和节流 
 
+防抖和节流的概念其实最早并不是出现在软件工程中，防抖是出现在电子元件中，节流出现在流体流动中 
+
++ 而JavaScript是事件驱动的，大量的操作会触发事件，加入到事件队列中处理。 
++ 而对于**某些频繁的事件处理会造成性能的损耗**，我们就可以通过防抖和节流来限制事件频繁的发生； 
+
+防抖和节流函数目前已经是前端实际开发中两个非常重要的函数，也是面试经常被问到的面试题。 
+
+但是很多前端开发者面对这两个功能，有点摸不着头脑： 
+
++ 某些开发者根本无法区分防抖和节流有什么区别（面试经常会被问到）； 
++ 某些开发者可以区分，但是不知道如何应用； 
++ 某些开发者会通过一些第三方库来使用，但是不知道内部原理，更不会编写； 
+
+接下来我们会一起来学习防抖和节流函数： 
+
++ 我们不仅仅要区分清楚防抖和节流两者的区别，也要明白在实际工作中哪些场景会用到； 
++ 并且我会带着大家一点点来编写一个自己的防抖和节流的函数，不仅理解原理，也学会自己来编写；
+
+
+
+### 认识防抖debounce函数
+
+我们用一副图来理解一下它的过程： 
+
++ 当事件触发时，**相应的函数并不会立即触发，而是会等待一定的时间**； 
++ **当事件密集触发时，函数的触发会被频繁的推迟；** 
++ **只有等待了一段时间也没有事件触发，才会真正的执行响应函数；**
+
+防抖的应用场景很多：
+
++ 输入框中频繁的输入内容，搜索或 者提交信息；
++ 频繁的点击按钮，触发某个事件；
++ 监听浏览器滚动事件，完成某些特 定操作；
++ 用户缩放浏览器的resize事件；
+
+> 在输入框输入一个字符时，下拉框会进行很多联想，这些联想词汇一定不是放在本地的，会发送网络请求
+>
+> 用户快速输入时不会频繁的进行交互，对服务器压力非常大，
+
+### 防抖函数的案例
+
+我们都遇到过这样的场景，在某个搜索框中输入自己想要搜索的内容： 
+
+比如想要搜索一个MacBook：  当我输入m时，为了更好的用户体验，通常会出现对应的联想内容，这些联想内容通常是保存在服务器的，所以需要一次网 络请求；  当继续输入ma时，再次发送网络请求；  那么macbook一共需要发送7次网络请求；  这大大损耗我们整个系统的性能，无论是前端的事件处理，还是对于服务器的压力; 
+
+但是我们需要这么多次的网络请求吗？  不需要，正确的做法应该是在合适的情况下再发送网络请求；  比如如果用户快速的输入一个macbook，那么只是发送一次网络请求；  比如如果用户是输入一个m想了一会儿，这个时候m确实应该发送一次网络请求；  也就是我们应该监听用户在某个时间，比如500ms内，没有再次触发时间时，再发送网络请求； 
+
+这就是防抖的操作：只有在某个时间内，没有再次触发某个函数时，才真正的调用这个函数；
+
+> 需要传入什么样的参数
+>
+> 参数一：回调函数
+>
+> 参数二：延迟时间
+>
+> 有什么返回值
+>
+> 内部实现
+
+![image-20240229112304976](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229112304976.png)
+
+
+
+![image-20240229124011941](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229124011941.png)
+
 2 underscore使用 
 
-3 防抖函数实现优化 
+3 防抖函数实现优化
+
+```js
+    function hydebounce(fn, delay) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+
+      // 2.触发事件时执行的函数
+      const _debounce = () => {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          fn()
+          timer = null // 执行过函数之后, 将timer重新置null
+        }, delay);
+      }
+
+      // 返回一个新的函数
+      return _debounce
+    }
+```
+
++ this和参数绑定
++ 取消功能
++ 立即执行的功能，第一次立刻发送请求
++ 获取返回值
+
+
+
+
 
 4 节流函数实现优化 
 
-5深拷贝函数的实现 
+![image-20240229140509919](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229140509919.png)
+
+```js
+```
+
+
+
+5深拷贝函数的实现
+
+前面我们已经学习了对象相互赋值的一些关系，分别包括： 
+
++ 引入的赋值：指向同一个对象，相互之间会影响； 
++ **对象的浅拷贝：只是浅层的拷贝，内部引入对象时，依然会相互影响；** 
++ 对象的深拷贝：两个对象不再有任何关系，不会相互影响； 
+
+前面我们已经可以通过一种方法来实现深拷贝了：**JSON.parse** 
+
++ 这种**深拷贝的方式其实对于函数、Symbol等是无法处理的；** 
++ 并且如果**存在对象的循环引用，也会报错的**； 
+
+![image-20240229141633484](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229141633484.png)
+
+自定义深拷贝函数： 
+
++ 1.自定义深拷贝的基本功能； 
++ 2.对Symbol的key进行处理； 
++ 3.其他数据类型的值进程处理：数组、函数、Symbol、Set、Map； 
++ 4.对循环引用的处理；
+
+```js
+      function isObject(value) {
+        const valueType = typeof value;
+        return (
+          value != null && (valueType === "object" || valueType === "function")
+        );
+      }
+      function deepCopy(originValue) {
+        // 1.如果是原始类型, 直接返回
+        if (!isObject(originValue)) return originValue;
+
+        // 2.如果是对象类型, 才需要创建对象
+        const newObj = Array.isArray(originValue) ? [] : {};
+        for (const key in originValue) {
+          newObj[key] = deepCopy(originValue[key]);
+        }
+        return newObj;
+      }
+      const info = {
+        name: "why",
+        age: 18,
+        friend: {
+          name: "kobe",
+          address: {
+            name: "洛杉矶",
+            detail: "斯坦普斯中心",
+          },
+        },
+      };
+
+      const newObj = deepCopy(info);
+      info.friend.address.name = "北京市";
+      console.log(newObj.friend.address.name);
+
+      const books = [
+        {
+          name: "黄金时代",
+          price: 28,
+          desc: { intro: "这本书不错", info: "这本书讲了一个很有意思的故事" },
+        },
+        { name: "你不知道JavaScript", price: 99 },
+      ];
+
+      const newBooks = deepCopy(books);
+      books[0] = "1";
+      console.log(newBooks);
+```
+
+
+
+#### 属性为Set类型
+
++ for in 不支持set，for in主要用于遍历数组
+
+![image-20240229162148261](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229162148261.png)
+
+
+
+#### function类型
+
+不需要进行深拷贝，函数只是调用执行
+
+```js
+      // 3.如果是函数function类型, 不需要进行深拷贝
+      if (typeof originValue === "function") {
+        return originValue
+      }
+```
+
+#### 值为Symbol类型
+
++ 默认为原始类型直接返回了
+
+![image-20240229165954878](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229165954878.png)
+
+
+
+```js
+        // 0.如果值是Symbol的类型
+        if (typeof originValue === "symbol") {
+          return Symbol(originValue.description);
+        }
+```
+
+
+
+#### Symbol作为key
+
++ symbol用for in去进行遍历时，不会进行遍历symbol
+
+```js
+        // 单独遍历symbol
+        const symbolKeys = Object.getOwnPropertySymbols(originValue);
+        // symbolKeys是一个数组用for of
+        for (const symbolKey of symbolKeys) {
+          newObj[Symbol(symbolKey.description)] = deepCopy(
+            originValue[symbolKey]
+          );
+        }
+```
+
+
+
+
+
+![image-20240229172838713](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229172838713.png)
+
+
+
+![image-20240229190719698](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229190719698.png)
 
 6 事件总线工具实现
+
+自定义事件总线
+
+ **自定义事件总线属于一种观察者模式**，其中包括三个角色： 
+
++ 发布者（Publisher）：**发出事件（Event）；** 
++ 订阅者（Subscriber）：**订阅事件（Event），并且会进行响应（Handler）；** 
++ 事件总线（EventBus）：无论是发布者还是订阅者都是通过事件总线作为中台的； 
+
+当然我们可以选择一些第三方的库： 
+
++ Vue2默认是带有事件总线的功能； 
++ Vue3中推荐一些第三方库，比如**mitt**； 
+
+当然我们也可以实现自己的事件总线： 
+
++ **事件的监听方法on**； 
++ **事件的发射方法emit**； 
++ **事件的取消监听off**；
+
+
+
+# JavaScript XHR、Fetch
+
+1 前端数据请求方式
+
+前后端分离优势
+
+早期的网页都是通过后端渲染来完成的：**服务器端渲染（SSR，server side render）**： 
+
++ **客户端发出请求 -> 服务端接收请求并返回相应HTML文档 -> 页面刷新**，客户端加载新的HTML文档； 
+
+服务器端渲染的缺点： 
+
++ 当用户点击页面中的某个按钮向服务器发送请求时，**页面本质上只是一些数据发生了变化，而此时服务器却要将重绘的整个页面再返 回给浏览器加载**，这显然有悖于程序员的“DRY（ Don‘t repeat yourself ）”原则； 
++ 而且明明**只是一些数据的变化却迫使服务器要返回整个HTML文档**，这本身也会给网络带宽带来不必要的开销。 
+
+有没有办法在页面数据变动时，**只向服务器请求新的数据，并且在阻止页面刷新的情况下**，动态的替换页面中展示的数据呢？ 
+
++ 答案正是“AJAX”。 
+
+AJAX是“Asynchronous JavaScript And XML”的缩写(异步的JavaScript和XML)，是一种实现 **无页面刷新 获取服务器数据的技术。** 
+
++ AJAX最吸引人的就是它的“异步”特性，也就是说它可以在**不重新刷新页面的情况下与服务器通信**，交换数据，或更新页面。 
+
+你可以使用AJAX最主要的两个特性做下列事： 
+
++ 在**不重新加载页面的情况下发送请求给服务器**； 
++ **接受并使用从服务器发来的数据**。 
+
+### 网页的渲染过程 – 服务器端渲染
+
++ SEO优化
++ 首屏渲染速度
+
+![image-20240229202038138](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240229202038138.png)
+
+开发好的前端项目静态资源部署在前端服务器上，由浏览器向前端服务器发送请求，服务器返回对应的静态资源，包含JavaScript的代码，执行JavaScript代码，在js中会有例如fetch这样的api然后向后端请求数据，后端服务器就会去数据库查询数据，拿到对应的数据之后，由后端将这些数据组装好，然后返回给前端，再由js将这些DOM添加到整个document中
+
+2 Http协议的解析
+
+ 什么是HTTP呢？我们来看一下维基百科的解释： 
+
++ 超文本传输协议（英语：HyperText Transfer Protocol，缩写：HTTP）是一种用于**分布式、协作式和超媒体信息系统的应用层协议；** 
++ HTTP是万维网的数据通信的基础，设计HTTP最初的目的是**为了提供一种发布和接收HTML页面的方法**； 
++ 通过HTTP或者HTTPS协议**请求的资源**由**统一资源标识符（Uniform Resource Identifiers，URI）来标识**； 
+
+HTTP是一个客户端（用户）和服务端（网站）之间请求和响应的标准。 
+
++ 通过使用网页浏览器、网络爬虫或者其它的工具，客户端发起一个HTTP请求到服务器上指定端口（默认端口为80）； 
+  + 我们称这个客户端为**用户代理程序（user agent）**； 
++ 响应的服务器上存储着一些资源，比如HTML文件和图像。 
+  + 我们称这**个响应服务器为源服务器（origin server）**；
+
+### http的组成
+
+3 XHR的基本用法 
+
+4 XHR的进阶和封装
+
+5 Fetch的使用详解 
+
+6 前端文件上传流程
