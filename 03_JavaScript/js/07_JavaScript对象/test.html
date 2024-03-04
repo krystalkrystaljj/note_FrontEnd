@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <style>
-      .wrap {
-          background: #eee;
-          overflow: hidden; <!-- 生成BFC，计算高度时考虑浮动的元素 -->
-          padding: 20px;
-          height: 200px;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <button>按钮</button>
+  <script>
+    let arr = [11, 15, 2, 7]
+    // target 9
+    function twoSum(nums,target) {
+      for(let i = 0; i < nums.length; i++) {
+        const targetIndex = arr.indexOf(target - nums[i])
+        if(targetIndex > -1 && targetIndex !== i) {
+          return [i,targetIndex]
+        }
       }
-      .left {
-          width: 200px;
-          height: 200px;
-          float: left;
-          background: coral;
-      }
-      .right {
-          width: 120px;
-          height: 200px;
-          float: right;
-          background: lightblue;
-      }
-      .middle {
-          margin-left: 220px;
-          height: 200px;
-          background: lightpink;
-          margin-right: 140px;
-      }
-    </style>
-    <div class="wrap">
-      <div class="left">左侧</div>
-      <div class="right">右侧</div>
-      <div class="middle">中间</div>
-    </div>
-  </body>
+    }
+    console.log(twoSum(arr,9));
+
+
+
+  </script>
+</body>
+
 </html>
