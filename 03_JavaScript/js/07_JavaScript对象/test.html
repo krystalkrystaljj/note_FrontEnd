@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
-
-<body>
-  <button>按钮</button>
-  <script>
-    let arr = [11, 15, 2, 7]
-    // target 9
-    function twoSum(nums,target) {
-      for(let i = 0; i < nums.length; i++) {
-        const targetIndex = arr.indexOf(target - nums[i])
-        if(targetIndex > -1 && targetIndex !== i) {
-          return [i,targetIndex]
-        }
+  <body>
+    <script>
+      function foo(name, age, height, address) {
+        console.log(this, name, age, height, address);
       }
-    }
-    console.log(twoSum(arr,9));
+      Function.prototype.tjbind = function (thisArg, otherArg) {
+        thisArg =
+          thisArg === null || thisArg === undefined ? window : Object(thisArg);
 
+        Object.defineProperty(thisArg, "fn", {
+          enumerable: false,
+          configurable: true,
+          value: this,
+        });
 
-
-  </script>
-</body>
-
+        return (...newArg) => {
+          let allArgs = [...otherArg, ...newArg];
+          thisArg.fn(...allArgs);
+        };
+      };
+      var newFoo = foo.tjbind({ name: "why" }, "why", 18);
+      newFoo(1.88, "武汉市"); //输出{name: 'why', fn: ƒ} 'why' 18 1.88 '武汉市'
+    </script>
+  </body>
 </html>
