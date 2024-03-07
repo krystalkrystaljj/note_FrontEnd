@@ -301,7 +301,7 @@ JavaScript的代码执行是在一个单独的线程中执行的：
 4 Promise面试题解析
 
 + 同步任务执行完成之后再执行任务队列中的队伍，在执行任何宏任务之前必须先将微任务队列中的任务清空
-+ 不要无限的向微任务中加微任务，宏任务会无线延长
++ **不要无限的向微任务中加微任务，宏任务会无线延长**
 
 ![image-20240228170638218](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228170638218.png)
 
@@ -1000,7 +1000,7 @@ m：多行匹配（multiple）
 
 
 
-5深拷贝函数的实现
+# 5深拷贝函数的实现
 
 前面我们已经学习了对象相互赋值的一些关系，分别包括： 
 
@@ -1208,9 +1208,132 @@ HTTP是一个客户端（用户）和服务端（网站）之间请求和响应�
 + 响应的服务器上存储着一些资源，比如HTML文件和图像。 
   + 我们称这**个响应服务器为源服务器（origin server）**；
 
-### http的组成
+## http的组成
+
+## 请求方式
+
+GET：**GET 方法请求一个指定资源的表示形式，使用 GET 的请求应该只被用于获取数据。** 
+
+HEAD：**HEAD 方法请求一个与 GET 请求的响应相同的响应，但没有响应体。**
+
++ 比如在准备下载一个文件前，先获取文件的大小，再决定是否进行下载； 
+
+POST：**POST 方法用于将实体提交到指定的资源**。 
+
+PUT：PUT 方法用请求有效载荷（payload）替换目标资源的所有当前表示； 
+
+DELETE：**DELETE 方法删除指定的资源；** 
+
+PATCH：PATCH 方法用于对资源应部分修改； 
+
+CONNECT：CONNECT 方法建立一个到目标资源标识的服务器的隧道，通常用在代理服务器，网页开发很少用到。 
+
+TRACE：TRACE 方法沿着到目标资源的路径执行一个消息环回测试
+
+### 请求头
+
+**content-type**是这次**请求携带的数据的类型：** 
+
++ application/x-www-form-urlencoded：表示数据被编码成以 '&' 分隔的键 - 值对，同时以 '=' 分隔键和值 
++ application/json：表示是一个json类型； 
++ text/plain：表示是文本类型； 
++ application/xml：表示是xml类型； 
++ multipart/form-data：表示是上传文件；
+
+
+
+**content-length**：文件的大小长度 
+
+**keep-alive**： 
+
+**http是基于TCP协议的，但是通常在进行一次请求和响应结束后会立刻中断**； 
+
+在http1.0中，如果想要继续保持连接： 
+
++ 浏览器需要在请求头中添加 connection: keep-alive； 
++ 服务器需要在响应头中添加 connection:keey-alive； 
++ 当客户端再次放请求时，就会使用同一个连接，直接一方中断连接； 
+
+在http1.1中，所有连接默认是 connection: keep-alive的； 
+
++ 不同的Web服务器会有不同的保持 keep-alive的时间； 
++ Node中默认是5s中； 
+
+**accept-encoding**：告知服务器，客户端支持的文件压缩格式，比如js文件可以使用gzip编码，对应 .gz文件； 
+
+**accept**：告知服务器，客户端可接受文件的格式类型； 
+
+**user-agent**：客户端相关的信息；
+
+![image-20240307092848604](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240307092848604.png)
+
+## 响应行
+
+### 响应状态码
+
+200 OK 客户端请求成功
+
+201 Created POST请求，创建新的资源
+
+301 Moved Permanently 请求资源的URL已经修改，响应中会给出新的URL
+
+400 Bad Request 客户端的错误，服务器无法或者不进行处理
+
+401 Unauthorized 未授权的错误，必须携带请求的身份信息
+
+403 Forbidden 客户端没有权限访问，被拒接
+
+404 Not Found 服务器找不到请求的资源。
+
+500 Internal Server Error 服务器遇到了不知道如何处理的情况。 503 Service Unavailable 服务器不可用，可能处理维护或者重载状态，暂时无法访问
+
+
 
 3 XHR的基本用法 
+
+
+
+```js
+    // 1.创建XMLHttpRequest对象
+    const xhr = new XMLHttpRequest()
+
+    // 2.监听状态的改变(宏任务)
+    xhr.onreadystatechange = function() {
+      // console.log(xhr.response)
+      if (xhr.readyState !== XMLHttpRequest.DONE) return
+
+      // 将字符串转成JSON对象(js对象)
+      const resJSON = JSON.parse(xhr.response)
+      const banners = resJSON.data.banner.list
+      console.log(banners)
+    }
+
+    // 3.配置请求open
+    // method: 请求的方式(get/post/delete/put/patch...)
+    // url: 请求的地址
+    xhr.open("get", "http://123.207.32.32:8000/home/multidata")
+
+    // 4.发送请求(浏览器帮助发送对应请求)
+    xhr.send()
+```
+
++ 创建XMLHttpRequest（xhr）对象
++ 监听状态的改变
++ 配置请求open（method url）
++ 发送请求
+
+
+
+AJAX 是异步的 JavaScript 和 XML（Asynchronous JavaScript And XML） 
+
++ 它可以使用 JSON，XML，HTML 和 text 文本等格式发送和接收数据； 
+
+如何来完成AJAX请求呢？ 
+
++ 第一步：创建**网络请求的AJAX对象（使用XMLHttpRequest）** 
++ 第二步：监听XMLHttpRequest对象状态的变化，或者监听onload事件（请求完成时触发）； 
++ 第三步：配置网络请求（通过open方法）； 
++ 第四步：发送send网络请求；
 
 4 XHR的进阶和封装
 

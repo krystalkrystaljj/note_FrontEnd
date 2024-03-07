@@ -8,26 +8,20 @@
 
   <body>
     <script>
-      function foo(name, age, height, address) {
-        console.log(this, name, age, height, address);
-      }
-      Function.prototype.tjbind = function (thisArg, otherArg) {
-        thisArg =
-          thisArg === null || thisArg === undefined ? window : Object(thisArg);
+      const clothes = ["shoes", "path", "overcoat"];
+      const person = { name: "xiaoming", age: 18, clothes };
+      let name = person.name;
+      name = "zhangsan";
+      console.log(person.name);
 
-        Object.defineProperty(thisArg, "fn", {
-          enumerable: false,
-          configurable: true,
-          value: this,
-        });
+      let xiaomingclothes = person.clothes;
+      xiaomingclothes.push("t-shirt");
+      console.log(typeof person.clothes);
+      console.log(person.clothes);
 
-        return (...newArg) => {
-          let allArgs = [...otherArg, ...newArg];
-          thisArg.fn(...allArgs);
-        };
-      };
-      var newFoo = foo.tjbind({ name: "why" }, "why", 18);
-      newFoo(1.88, "武汉市"); //输出{name: 'why', fn: ƒ} 'why' 18 1.88 '武汉市'
+      xiaomingclothes = [];
+      console.log(person.clothes);
+      console.log(xiaomingclothes);
     </script>
   </body>
 </html>
