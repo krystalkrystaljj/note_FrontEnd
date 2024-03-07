@@ -6,7 +6,8 @@
 
 async关键字用于声明一个异步函数： 
 
-+ async是asynchronous单词的缩写，异步、非同步；  sync是synchronous单词的缩写，同步、同时； 
++ async是asynchronous单词的缩写，异步、非同步； 
++ sync是synchronous单词的缩写，同步、同时； 
 
 async异步函数可以有很多中写法：
 
@@ -56,14 +57,14 @@ async异步函数可以有很多中写法：
       //   setTimeout(() => {
       //     resolve("aaa")
       //   }, 3000)
-      // })
+      // })// aaa
 
       // 3.返回一个thenable对象
       // return {
       //   then: function(resolve, reject) {
       //     resolve("bbb")
       //   }
-      // }
+      // } //bbb
     }
 
     foo2().then(res => {
@@ -277,7 +278,10 @@ JavaScript的代码执行是在一个单独的线程中执行的：
 
 ### 浏览器的事件循环
 
-如果在执行JavaScript代码的过程中，有异步操作呢？  中间我们插入了一个setTimeout的函数调用；  这个函数被放到入调用栈中，执行会立即结束，并不会阻塞后续代码的执行；
+如果在执行JavaScript代码的过程中，有异步操作呢？ 
+
++ 中间我们插入了一个setTimeout的函数调用； 
++ 这个函数被放到入调用栈中，执行会立即结束，并不会阻塞后续代码的执行；
 
 ![image-20240228161524764](https://raw.githubusercontent.com/krystalkrystaljj/myimg/main/image-20240228161524764.png)
 
@@ -1317,10 +1321,10 @@ TRACE：TRACE 方法沿着到目标资源的路径执行一个消息环回测试
     xhr.send()
 ```
 
-+ 创建XMLHttpRequest（xhr）对象
-+ 监听状态的改变
-+ 配置请求open（method url）
-+ 发送请求
++ **创建XMLHttpRequest（xhr）对象**
++ **监听状态的改变**
++ **配置请求open（method url）**
++ **发送请求**
 
 
 
@@ -1335,8 +1339,84 @@ AJAX 是异步的 JavaScript 和 XML（Asynchronous JavaScript And XML）
 + 第三步：配置网络请求（通过open方法）； 
 + 第四步：发送send网络请求；
 
-4 XHR的进阶和封装
+# 4 XHR的进阶和封装
 
-5 Fetch的使用详解 
+post请求的参数放在请求体里面
 
-6 前端文件上传流程
+传递一个Content-type的参数，目的告诉服务器参数的类型
+
+常见的传递给服务器数据的方式有如下几种： 
+
++ 方式一：GET请求的query参数 
++ 方式二：POST请求 x-www-form-urlencoded 格式 
++ 方式三：POST请求 FormData 格式 
++ 方式四：POST请求 JSON 格式
+
+# 5 Fetch的使用详解 
+
+认识Fetch和Fetch API
+
+Fetch可以看做是早期的XMLHttpRequest的替代方案，它提供了一种更加现代的处理方案：
+
++ 比如**返回值是一个Promise，提供了一种更加优雅的处理结果方式** 
+  + 在请求发送成功时，调用resolve回调then； 
+  + 在请求发送失败时，调用reject回调catch； 
++ 比如不像XMLHttpRequest一样，所有的操作都在一个对象上； 
+
+
+
+fetch函数的使用： 
+
++ input：**定义要获取的资源地址**，可以是一个URL字符串，也可以使用一个Request对象（实验性特性）类型； 
++ init：**其他初始化参数** 
+  + method: 请求使用的方法，如 GET、POST； 
+  + headers: 请求的头信息； 
+  + body: 请求的 body 信息；
+
+# 6 前端文件上传流程
+
+拿到这个文件然后调用服务器的某个接口，将这个文件传递给服务器，然后服务器将这个文件保存到某个位置（本地文件）（服务器硬盘），然后服务器返回这个图片的url地址
+
+1. 创建一个type类型为file的input组件（被选择的文件会记录到这个元素上）
+2. 监听结果
+3. 配置请求参数，设置响应的数据类型
+4. 将这个文件加到表单
+5. 发送表单请求到服务器
+
+```html
+  <input class="file" type="file">
+  <button class="upload">上传文件</button>
+  
+  <script>
+
+    // xhr/fetch
+
+    const uploadBtn = document.querySelector(".upload")
+    uploadBtn.onclick = function() {
+      // 1.创建对象
+      const xhr = new XMLHttpRequest()
+
+      // 2.监听结果
+      xhr.onload = function() {
+        console.log(xhr.response)
+      }
+
+      xhr.onprogress = function(event) {
+        console.log(event)
+      }
+
+      xhr.responseType = "json"
+      xhr.open("post", "http://123.207.32.32:1888/02_param/upload")
+
+      // 表单
+      const fileEl = document.querySelector(".file")
+      const file = fileEl.files[0]
+
+      const formData = new FormData()
+      formData.append("avatar", file)
+
+      xhr.send(formData)
+    }
+```
+
+fetch的话就是将参数（表单）放在body中
