@@ -8,34 +8,83 @@
 
   <body>
     <script>
-      class Observer {
+      class Depend {
         constructor() {
-          this.message = [];
+          this.reactiveFns = new Set();
         }
-
-        on(event, fn) {
-          if (!this.message[type]) {
-            this.message[type] = [];
+        addDepend(fn) {
+          if (fn) {
+            this.reactiveFns.add(fn);
           }
-          this.message[type].push(fn);
         }
-
-        off(event, fn) {
-          if (!this.message[type]) return;
-          if (!fn) {
-            this.message[type] = null;
-            return;
-          }
-          this.message[type] = this.message[type].fliter((item) => item !== fn);
-        }
-
-        emit(type) {
-          if (!this.message[type]) return;
-          this.message[type].forEach((fn) => {
+        notify() {
+          this.reactiveFns.forEach((fn) => {
             fn();
           });
         }
       }
+
+      let reactiveFn = null;
+      // 执行响应式的函数，只有执行了才能进行依赖收集
+      function watchFn(fn) {
+        reactiveFn = fn;
+        fn();
+        reactiveFn = null;
+      }
+
+      let objMap = new WeakMap();
+      function getDepend(obj, key) {
+        // 根据对象obj, 找到对应的map对象
+        let map = objMap.get(obj);
+        if (!map) {
+          map = new Map();
+          objMap.set(obj, map);
+        }
+
+        let dep = map.get(key);
+        if (!dep) {
+          dep = new Depend();
+          map.set(key, dep);
+        }
+        return dep;
+      }
+
+      function reactive(obj) {
+        Object.keys(obj).forEach((key) => {
+          let value = obj[key];
+          Object.defineProperty(obj, key, {
+            set: function (newValue) {
+              value = newValue;
+              // 找到对应的obj对象的key对应的dep对象
+              const dep = getDepend(obj, key);
+              dep.notify();
+            },
+            get: function () {
+              const dep = getDepend(obj, key);
+              dep.addDepend(reactiveFn);
+              return value;
+            },
+          });
+        });
+        return obj;
+      }
+
+      const obj = reactive({
+        name: "why",
+        age: 18,
+        address: "广州市",
+      });
+
+      // 执行响应式的函数，只有执行了才能进行依赖收集
+      watchFn(function () {
+        console.log(obj.name);
+        console.log(obj.age);
+        console.log(obj.age);
+      });
+
+      console.log("--------------");
+      // obj.name = "kobe"
+      obj.age = 20;
     </script>
   </body>
 </html>
